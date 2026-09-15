@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#09090c">
+<title>IHSG Momentum Screener V7.1</title>
+<style>
+:root{--bg:#09090c;--panel:#121217;--panel2:#17171d;--line:#292932;--text:#f4f4f7;--muted:#9696a6;--accent:#a855f7;--good:#39d98a;--bad:#ff647c;--warn:#f5c451}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",sans-serif}
+body{min-height:100vh}.wrap{max-width:1500px;margin:auto;padding:14px 12px 40px}
+.header{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}.brand{display:flex;align-items:center;gap:10px}
+.logo{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#a855f7,#5b21b6);display:grid;place-items:center;font-weight:900}
+h1{font-size:19px;margin:0}small,.muted{color:var(--muted)}.actions{display:flex;gap:7px;align-items:center}
+.btn{border:1px solid var(--line);background:var(--panel);color:var(--text);padding:9px 12px;border-radius:10px;font-weight:800;cursor:pointer}.btn.primary{background:linear-gradient(135deg,#a855f7,#7c3aed);border-color:transparent}.btn:disabled{opacity:.45}
+.status{font-size:11px;color:var(--muted)}.alert{border:1px solid #6d28d955;background:#15121b;border-left:3px solid var(--accent);border-radius:12px;padding:11px 13px;margin:9px 0}.alert strong{display:block;margin-bottom:3px}.alert span{color:var(--muted);font-size:11px;line-height:1.5}
+.metrics{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:10px 0}.metric{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px}.metric label{display:block;color:var(--muted);font-size:9px}.metric b{display:block;font-size:15px;margin-top:3px}
+.toolbar{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:10px;display:flex;gap:7px;flex-wrap:wrap;margin-bottom:11px}.input{background:#0c0c10;border:1px solid var(--line);color:var(--text);padding:8px 10px;border-radius:9px;min-height:37px}.grow{flex:1;min-width:180px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:12px}.top{display:flex;justify-content:space-between;gap:8px}.symbol{font-size:17px;font-weight:900}.name{color:var(--muted);font-size:9px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.price{display:flex;justify-content:space-between;align-items:end;margin-top:10px}.big{font-size:21px;font-weight:900}.up{color:var(--good)}.down{color:var(--bad)}.flat{color:var(--muted)}.change{font-size:13px;font-weight:900;text-align:right}
+.badge{padding:5px 8px;border-radius:8px;font-size:9px;font-weight:900;white-space:nowrap}.buy{background:#123c2b;color:var(--good)}.strongbuy{background:#154b35;color:#69f0ad}.watch{background:#443814;color:var(--warn)}.avoid{background:#451b26;color:var(--bad)}.neutral{background:#262630;color:var(--muted)}
+.info{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:9px}.box{background:#0d0d11;border:1px solid var(--line);padding:7px;border-radius:8px;min-width:0}.box label{display:block;color:var(--muted);font-size:8px;margin-bottom:2px}.box b{font-size:10px;word-break:break-word}
+.levels{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:7px}.level{background:#0d0d11;border:1px solid var(--line);padding:7px;border-radius:8px}.level label{display:block;color:var(--muted);font-size:8px}.level b{font-size:10px}.entry{color:#c084fc}.sl{color:var(--bad)}.tp{color:var(--good)}.rr{color:var(--warn)}
+.footerline{display:flex;justify-content:space-between;gap:8px;margin-top:8px;font-size:9px;color:var(--muted)}.empty{padding:35px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:13px;grid-column:1/-1}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(2,1fr)}.metrics{grid-template-columns:repeat(3,1fr)}}@media(max-width:650px){.grid{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}.info{grid-template-columns:repeat(2,1fr)}.levels{grid-template-columns:repeat(2,1fr)}.header{align-items:flex-start}h1{font-size:16px}.status{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="header">
+<div class="brand"><div class="logo">IH</div><div><h1>IHSG Momentum Screener <span style="color:#c084fc">V7.1</span></h1><small>Targeted Swing & Momentum Scanner</small></div></div>
+<div class="actions"><span id="status" class="status">Siap</span><button id="analyzeBtn" class="btn primary" onclick="analyzeAll()">⚡ Analisis</button><button id="liveBtn" class="btn" onclick="refreshPrices()">↻ Harga Live</button></div>
+</header>
+
+<div class="alert"><strong>V7.1 — Cara baca</strong><span>Signal → Technical → Trend → RSI → Volume → Foreign → Entry/SL/TP → R:R. Ini decision-support untuk swing/momentum, bukan jaminan profit. Foreign = data harian, Bandar per saham tidak diklaim dari broker-summary.</span></div>
+
+<div class="metrics">
+<div class="metric"><label>Watchlist</label><b id="total">52</b></div>
+<div class="metric"><label>Ter-analisis</label><b id="analyzed">0</b></div>
+<div class="metric"><label>Strong Buy</label><b id="strong">0</b></div>
+<div class="metric"><label>Buy</label><b id="buys">0</b></div>
+<div class="metric"><label>Avg Score</label><b id="avg">—</b></div>
+<div class="metric"><label>Foreign +</label><b id="foreignPlus">0</b></div>
+</div>
+
+<div class="toolbar">
+<input id="search" class="input grow" placeholder="Cari kode saham…" oninput="render()">
+<button class="btn" onclick="sortBy('score')">Sort Score</button>
+<button class="btn" onclick="sortBy('change')">Sort %</button>
+<button class="btn" onclick="sortBy('rr')">Sort R:R</button>
+<button class="btn" onclick="sortBy('foreign')">Sort Foreign</button>
+<button class="btn" onclick="sortBy('price')">Sort Harga</button>
+</div>
+
+<main id="cards" class="grid"><div class="empty">Tekan ⚡ Analisis untuk mengambil OHLCV harian + foreign flow.</div></main>
+</div>
+
+<script>
+const WATCHLIST=["AADI","ADMR","ADRO","AKRA","AMMN","ANTM","APLN","ASII","ASRI","BACH","BBCA","BBRI","BEST","BMRI","BNBR","BREN","BRMS","BRPT","BSSR","BULL","BUMI","BUVA","CDIA","COIN","CTRA","CUAN","DEWA","DSSA","ELSA","EMAS","EMMI","ENRG","GGRM","HMSP","IMPC","INDY","INET","INKP","ITMG","MDKA","MINA","PANI","PGEO","PTRO","PWON","RAJA","RMKE","SRTG","SUPA","TINS","TKIM","TPIA"];
+const BATCH_SIZE=20, MIN_CANDLES=52;
+let data=Object.fromEntries(WATCHLIST.map(symbol=>[symbol,{symbol}]));
+let sortMode="score",busy=false;
+const $=id=>document.getElementById(id);
+const num=v=>(v===null||v===undefined||v==="")?null:(Number.isFinite(Number(v))?Number(v):null);
+const fmt=n=>num(n)===null?"—":Number(n).toLocaleString("id-ID",{maximumFractionDigits:2});
+const pct=n=>num(n)===null?"—":(Number(n)>=0?"+":"")+Number(n).toFixed(2)+"%";
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function setStatus(t){$("status").textContent=t}
+function batches(a){let r=[];for(let i=0;i<a.length;i+=BATCH_SIZE)r.push(a.slice(i,i+BATCH_SIZE));return r}
+
+async function apiJSON(url,options={}){
+ const res=await fetch(url,{...options,cache:"no-store"});
+ const text=await res.text(); let body=null; try{body=JSON.parse(text)}catch{}
+ if(!res.ok||body?.success===false)throw new Error(body?.message||body?.error||("HTTP "+res.status));
+ return body;
+}
+async function maelyn(path,body){
+ const u=new URL("/api/v7",location.origin);u.searchParams.set("path",path);
+ return apiJSON(u,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(body)});
+}
+async function zapi(path,params={}){
+ const u=new URL("/api/zapi",location.origin);u.searchParams.set("path",path);
+ Object.entries(params).forEach(([k,v])=>{if(v!==undefined&&v!==null)u.searchParams.set(k,String(v))});
+ return apiJSON(u);
+}
+
+function normalizeCandle(c){
+ return {open:num(c?.open??c?.o),high:num(c?.high??c?.h),low:num(c?.low??c?.l),close:num(c?.close??c?.c),volume:num(c?.volume??c?.v),timestamp:c?.timestamp??c?.time??null,date:c?.date??null};
+}
+function normalizeCandles(raw){
+ if(!Array.isArray(raw))return [];
+ return raw.map(normalizeCandle).filter(c=>c.close!==null&&c.high!==null&&c.low!==null).sort((a,b)=>new Date(a.timestamp||a.date||0)-new Date(b.timestamp||b.date||0));
+}
+function extractBatchItems(result){
+ const d=result?.data;
+ if(Array.isArray(d?.items))return d.items;
+ if(Array.isArray(result?.items))return result.items;
+ if(Array.isArray(d))return d;
+ return [];
+}
+function itemSymbol(item){
+ return String(item?.symbol??item?.code??item?.ticker??item?.StockCode??item?.Symbol??"").toUpperCase();
+}
+function itemCandles(item){
+ return normalizeCandles(item?.candles??item?.data?.candles??item?.result?.candles??item?.data?.result?.candles??[]);
+}
+
+function sma(a,p){if(!Array.isArray(a)||a.length<p)return null;return a.slice(-p).reduce((s,v)=>s+v,0)/p}
+function rsi(a,p=14){
+ if(a.length<p+1)return null;let g=0,l=0;
+ for(let i=a.length-p;i<a.length;i++){const d=a[i]-a[i-1];if(d>0)g+=d;else l-=d}
+ if(l===0)return 100;const rs=(g/p)/(l/p);return 100-100/(1+rs)
+}
+function atr(c,p=14){
+ if(c.length<p+1)return null;const tr=[];
+ for(let i=1;i<c.length;i++)tr.push(Math.max(c[i].high-c[i].low,Math.abs(c[i].high-c[i-1].close),Math.abs(c[i].low-c[i-1].close)));
+ return sma(tr,p)
+}
+function recentHigh(c,p=20){return c.length<p?null:Math.max(...c.slice(-p).map(x=>x.high))}
+function recentLow(c,p=20){return c.length<p?null:Math.min(...c.slice(-p).map(x=>x.low))}
+function avgVolume(c,p=20){return sma(c.map(x=>x.volume??0),p)}
+function liquidityScore(value){
+ value=num(value);if(value===null)return {score:0,label:"N/A"};
+ if(value>=100e9)return {score:10,label:"VERY HIGH"};if(value>=20e9)return {score:8,label:"HIGH"};if(value>=5e9)return {score:6,label:"MEDIUM"};if(value>=1e9)return {score:3,label:"LOW"};return {score:1,label:"VERY LOW"}
+}
+
+function buildTechnical(c,summary){
+ if(!c||c.length<MIN_CANDLES)return null;
+ const closes=c.map(x=>x.close), last=c[c.length-1], close=last.close;
+ const ma20=sma(closes,20),ma50=sma(closes,50),r=rsi(closes,14),a=atr(c,14),av=avgVolume(c,20);
+ const vol=last.volume??null,volRatio=av&&vol!==null?vol/av:null;
+ const hi20=recentHigh(c,20),lo20=recentLow(c,20);
+ const ret5=closes.length>=6?(close/closes[closes.length-6]-1)*100:null;
+ const ret20=closes.length>=21?(close/closes[closes.length-21]-1)*100:null;
+ let trend="SIDEWAYS";
+ if(ma20!==null&&ma50!==null){
+   if(close>ma20&&ma20>ma50)trend="BULLISH";
+   else if(close<ma20&&ma20<ma50)trend="BEARISH";
+   else if(close>=ma20)trend="RECOVERY";
+ }
+ let trendScore=0;
+ if(trend==="BULLISH")trendScore=25; else if(trend==="RECOVERY")trendScore=18; else if(trend==="SIDEWAYS")trendScore=10;
+ let rsiScore=0;
+ if(r!==null){if(r>=50&&r<=70)rsiScore=15;else if(r>70&&r<=80)rsiScore=10;else if(r>=45)rsiScore=8;else if(r>=35)rsiScore=4}
+ let volumeScore=0;
+ if(volRatio!==null){if(volRatio>=2)volumeScore=15;else if(volRatio>=1.5)volumeScore=13;else if(volRatio>=1.2)volumeScore=10;else if(volRatio>=1)volumeScore=7;else volumeScore=3}
+ let paScore=0;
+ if(ret5!==null){if(ret5>=5)paScore=25;else if(ret5>=3)paScore=22;else if(ret5>=1)paScore=18;else if(ret5>=0)paScore=12;else if(ret5>=-3)paScore=7;else paScore=2}
+ if(hi20!==null&&close>=hi20*.98)paScore=Math.min(25,paScore+3);
+ const liq=liquidityScore(num(summary?.Value));
+ const score=Math.round(trendScore+rsiScore+volumeScore+paScore+liq.score);
+ const baseEntry=ma20!==null?Math.max(close,ma20):close;
+ const entryLow=a!==null?Math.max(lo20??close,baseEntry-a*.35):Math.max(lo20??close,baseEntry*.985);
+ const entryHigh=a!==null?Math.min(close+a*.25,(hi20??close)):close*1.01;
+ const entry=Math.max(entryLow,Math.min(baseEntry,entryHigh));
+ const sl=a!==null?Math.max(lo20??0,entry-a*1.25):entry*.95;
+ const risk=entry-sl;
+ const tp1=hi20!==null?Math.max(entry+risk*1.5,hi20*.995):entry+risk*1.5;
+ const tp2=hi20!==null?Math.max(entry+risk*2.5,hi20*1.03):entry+risk*2.5;
+ const rr=risk>0?(tp2-entry)/risk:null;
+ const foreignBuy=num(summary?.ForeignBuy),foreignSell=num(summary?.ForeignSell);
+ const foreignNet=foreignBuy!==null&&foreignSell!==null?foreignBuy-foreignSell:null;
+ let signal="AVOID";
+ if(score>=80&&trend==="BULLISH"&&r!==null&&r>=50&&r<=75&&rr!==null&&rr>=2)signal="STRONG BUY";
+ else if(score>=70&&(trend==="BULLISH"||trend==="RECOVERY")&&r!==null&&r>=45&&r<=75&&rr!==null&&rr>=1.5)signal="BUY";
+ else if(score>=60||trend==="BULLISH")signal="WATCH";
+ return {close,ma20,ma50,rsi:r,atr:a,avgVol:av,volume:vol,volRatio,hi20,lo20,ret5,ret20,trend,score,liquidity:liq.label,liquidityScore:liq.score,foreignBuy,foreignSell,foreignNet,entry,entryLow,entryHigh,sl,tp1,tp2,rr,signal,conviction:score>=80?"HIGH":score>=70?"MEDIUM-HIGH":score>=60?"MEDIUM":"LOW"};
+}
+
+function applySummary(rows){
+ const map=new Map(rows.map(x=>[String(x?.StockCode??x?.Code??x?.symbol??"").toUpperCase(),x]));
+ WATCHLIST.forEach(s=>{
+   const x=map.get(s); if(x){
+     data[s]={...data[s],summary:x,name:x.StockName??x.name??s,summaryPrice:num(x.Close??x.Price??x.Previous),changePct:num(x.percentage??x.persen??(num(x.Close)!==null&&num(x.Previous)!==null?(num(x.Close)/num(x.Previous)-1)*100:null)),value:num(x.Value),volume:num(x.Volume),foreignBuy:num(x.ForeignBuy),foreignSell:num(x.ForeignSell)}
+   }
+ });
+}
+
+async function loadSummary(){
+ setStatus("ZPI stock-summary…");
+ const result=await zapi("stock-summary",{length:5000,start:0});
+ const rows=Array.isArray(result?.data)?result.data:Array.isArray(result?.data?.items)?result.data.items:[];
+ if(!rows.length)throw new Error("ZPI stock-summary kosong");
+ applySummary(rows); return rows.length;
+}
+
+async function loadOHLCV(){
+ const chunks=batches(WATCHLIST);
+ let done=0;
+ for(const symbols of chunks){
+   setStatus("OHLCV "+done+"/"+WATCHLIST.length+"…");
+   const result=await maelyn("ohlcv",{symbols,range:"3mo",interval:"1d",mode:"batch"});
+   const items=extractBatchItems(result);
+   items.forEach(item=>{
+     const s=itemSymbol(item); if(!s)return;
+     const candles=itemCandles(item); if(candles.length)data[s]={...data[s],candles,name:item?.name??item?.StockName??data[s].name};
+   });
+   done+=symbols.length; await sleep(200);
+ }
+ return done;
+}
+
+function resetTechnical(){WATCHLIST.forEach(s=>{data[s].technical=null})}
+function analyzeTechnicals(){
+ WATCHLIST.forEach(s=>{
+   const d=data[s]; if(!d.candles)return;
+   d.technical=buildTechnical(d.candles,d.summary||{});
+   if(d.technical){d.price=d.technical.close;d.changePct=d.changePct??null}
+ });
+}
+
+function badgeClass(signal){return signal==="STRONG BUY"?"strongbuy":signal==="BUY"?"buy":signal==="WATCH"?"watch":signal==="AVOID"?"avoid":"neutral"}
+function signalText(s){return s||"N/A"}
+function metric(label,value,cls=""){return `<div class="box"><label>${label}</label><b class="${cls}">${value}</b></div>`}
+function level(label,value,cls=""){return `<div class="level"><label>${label}</label><b class="${cls}">${value}</b></div>`}
+
+function card(d){
+ const t=d.technical;
+ const price=d.price??d.summaryPrice??t?.close;
+ const ch=d.changePct;
+ const s=t?.signal??"N/A";
+ const foreign=t?.foreignNet;
+ const priceClass=ch===null||ch===undefined?"flat":ch>0?"up":ch<0?"down":"flat";
+ return `<article class="card">
+ <div class="top"><div><div class="symbol">${d.symbol}</div><div class="name">${d.name??"IDX"}</div></div><span class="badge ${badgeClass(s)}">${signalText(s)}</span></div>
+ <div class="price"><div><div class="big">${fmt(price)}</div><div class="${priceClass}">${pct(ch)}</div></div><div class="change">Score<br><span style="font-size:18px">${t?.score??"—"}</span></div></div>
+ <div class="info">
+ ${metric("Trend",t?.trend??"—")}
+ ${metric("RSI 14",fmt(t?.rsi))}
+ ${metric("MA20",fmt(t?.ma20))}
+ ${metric("MA50",fmt(t?.ma50))}
+ ${metric("Volume/20D",t?.volRatio===null||t?.volRatio===undefined?"—":t.volRatio.toFixed(2)+"x")}
+ ${metric("Liquidity",t?.liquidity??"—")}
+ ${metric("Foreign Net",foreign===null||foreign===undefined?"—":fmt(foreign))}
+ ${metric("Conviction",t?.conviction??"—")}
+ </div>
+ <div class="levels">
+ ${level("ENTRY",t?`${fmt(t.entry)}–${fmt(t.entryHigh??t.entry)}`:"—","entry")}
+ ${level("SL",fmt(t?.sl),"sl")}
+ ${level("TP1",fmt(t?.tp1),"tp")}
+ ${level("TP2",fmt(t?.tp2),"tp")}
+ ${level("R:R",t?.rr===null||t?.rr===undefined?"—":t.rr.toFixed(2)+"x","rr")}
+ </div>
+ <div class="footerline"><span>5D ${pct(t?.ret5)} · 20D ${pct(t?.ret20)}</span><span>ATR ${fmt(t?.atr)}</span></div>
+ </article>`;
+}
+
+function render(){
+ const q=($("search").value||"").trim().toUpperCase();
+ let arr=WATCHLIST.map(s=>data[s]).filter(d=>!q||d.symbol.includes(q)||(d.name||"").toUpperCase().includes(q));
+ arr.sort((a,b)=>{
+   const A=a.technical,B=b.technical;
+   if(sortMode==="change")return (b.changePct??-Infinity)-(a.changePct??-Infinity);
+   if(sortMode==="rr")return (B?.rr??-Infinity)-(A?.rr??-Infinity);
+   if(sortMode==="foreign")return (B?.foreignNet??-Infinity)-(A?.foreignNet??-Infinity);
+   if(sortMode==="price")return (b.price??b.summaryPrice??0)-(a.price??a.summaryPrice??0);
+   return (B?.score??-Infinity)-(A?.score??-Infinity);
+ });
+ $("cards").innerHTML=arr.length?arr.map(card).join(""):`<div class="empty">Tidak ada saham yang cocok.</div>`;
+ updateMetrics();
+}
+
+function updateMetrics(){
+ const analyzed=WATCHLIST.map(s=>data[s].technical).filter(Boolean);
+ $("analyzed").textContent=analyzed.length;
+ $("strong").textContent=analyzed.filter(x=>x.signal==="STRONG BUY").length;
+ $("buys").textContent=analyzed.filter(x=>x.signal==="BUY").length;
+ $("avg").textContent=analyzed.length?(analyzed.reduce((a,x)=>a+x.score,0)/analyzed.length).toFixed(1):"—";
+ $("foreignPlus").textContent=analyzed.filter(x=>(x.foreignNet??0)>0).length;
+}
+
+function sortBy(mode){sortMode=mode;render()}
+
+async function analyzeAll(){
+ if(busy)return;busy=true;$("analyzeBtn").disabled=true;$("liveBtn").disabled=true;
+ try{
+   setStatus("Mulai analisis…");resetTechnical();
+   await loadSummary();
+   await loadOHLCV();
+   setStatus("Hitung indikator…");analyzeTechnicals();render();
+   const ok=WATCHLIST.map(s=>data[s].technical).filter(Boolean).length;
+   setStatus("Selesai · "+ok+"/"+WATCHLIST.length+" saham");
+ }catch(e){
+   console.error(e);setStatus("ERROR: "+(e?.message||e));
+   $("cards").innerHTML=`<div class="empty"><strong>Analisis gagal</strong><br>${String(e?.message||e)}<br><br>Tekan Analisis lagi setelah error diperbaiki.</div>`;
+ }finally{busy=false;$("analyzeBtn").disabled=false;$("liveBtn").disabled=false}
+}
+
+async function refreshPrices(){
+ if(busy)return;busy=true;$("liveBtn").disabled=true;
+ try{
+   const chunks=batches(WATCHLIST);let done=0;
+   for(const symbols of chunks){
+     setStatus("Harga Live "+done+"/"+WATCHLIST.length+"…");
+     const result=await maelyn("realtime-price",{symbols});
+     const prices=result?.data?.prices??result?.prices??{};
+     symbols.forEach(s=>{
+       const p=prices[s]||prices[String(s).toUpperCase()];
+       if(!p)return;
+       data[s].price=num(p.price)??data[s].price??data[s].summaryPrice;
+       data[s].changePct=num(p.tickPct)??data[s].changePct;
+     });
+     done+=symbols.length;await sleep(150);
+   }
+   render();setStatus("Harga Live diperbarui");
+ }catch(e){console.error(e);setStatus("Harga Live ERROR: "+(e?.message||e))}
+ finally{busy=false;$("liveBtn").disabled=false}
+}
+
+render();
+</script>
+</body>
+</html>
