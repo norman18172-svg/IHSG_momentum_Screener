@@ -32,7 +32,7 @@ body{min-height:100vh}.wrap{max-width:1440px;margin:auto;padding:18px 18px 50px}
   </header>
 
   <div class="alert"><strong>Market Regime</strong><span id="marketText">Memuat kondisi pasar…</span></div>
-  <div class="alert"><strong>Risk Control</strong><span>Default scoring: Price Action 25 • Volume 20 • Foreign 30 • Bandar 15 • Likuiditas 10. Foreign/Bandar diberi status “belum terhubung” bila provider belum menyediakan datanya.</span></div>
+  <div class="alert"><strong>Risk Control</strong><span>Technical score sementara: Price Action • Momentum • Volume • Trend. Harga/perubahan harian diprioritaskan dari snapshot realtime. Foreign & Bandar belum dihitung sampai ada feed resmi yang terhubung.</span></div>
 
   <div class="metrics">
     <div class="metric"><label>Modal</label><b id="capital">Rp 50.000.000</b></div>
@@ -57,7 +57,7 @@ body{min-height:100vh}.wrap{max-width:1440px;margin:auto;padding:18px 18px 50px}
   <section id="settings" class="settings">
     <h3 style="margin-top:0">Live Data</h3>
     <p class="note">Versi Live terhubung ke Maelyn melalui server proxy/Vercel. API key tidak disimpan di browser. Jika provider gagal, aplikasi menampilkan error dan TIDAK diam-diam mengganti data Live dengan data demo.</p>
-    <label>Refresh interval (detik)</label><input id="interval" class="input" type="number" min="60" value="60">
+    <label>Refresh interval (detik)</label><input id="interval" class="input" type="number" min="60" value="900">
     <div style="display:flex;gap:8px;margin-top:12px"><button class="btn primary" onclick="saveSettings()">Simpan interval</button><button class="btn" onclick="clearSettings()">Reset interval</button></div>
     <p id="apiNote" class="note"></p>
   </section>
@@ -114,7 +114,7 @@ function openDetail(sym){
 }
 function showSettings(){document.getElementById('settings').classList.toggle('show')}
 function saveSettings(){localStorage.setItem('ihsg_interval',document.getElementById('interval').value);document.getElementById('apiNote').textContent='Interval disimpan. Data berikutnya akan diambil dari Maelyn melalui Vercel proxy.';refreshData();}
-function clearSettings(){localStorage.removeItem('ihsg_interval');document.getElementById('interval').value=60;document.getElementById('liveStatus').textContent='Connecting…';document.getElementById('apiNote').textContent='Interval di-reset ke 30 detik.';refreshData()}
+function clearSettings(){localStorage.removeItem('ihsg_interval');document.getElementById('interval').value=900;document.getElementById('liveStatus').textContent='Connecting…';document.getElementById('apiNote').textContent='Interval di-reset ke 15 menit.';refreshData()}
 async function apiGet(path){
  const u=new URL('/api/maelyn',window.location.origin); const parts=path.split('?'); u.searchParams.set('path',parts[0]);
  if(parts[1]) new URLSearchParams(parts[1]).forEach((v,k)=>u.searchParams.set(k,v));
@@ -124,8 +124,20 @@ async function apiGet(path){
  if(body?.success===false) throw new Error(body.message||body.error||'Provider API error');
  return body;
 }
-function liveRow(m,i){
- const price=Number(m.price)||0, change=Number(m.change)||0, rsi=Number(m.rsi)||0, vol=Number(m.volume)||0;
+async function apiPost(path, payload){
+ const u=new URL('/api/maelyn',window.location.origin); u.searchParams.set('path',path);
+ const r=await fetch(u.toString(),{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload),cache:'no-store'});
+ const body=await r.json().catch(()=>null);
+ if(!r.ok) throw new Error(body?.message||body?.error||('HTTP '+r.status));
+ if(body?.success===false) throw new Error(body.message||body.error||'Provider API error');
+ return body;
+}
+function liveRow(m,i,realtime){
+ const r=realtime||{};
+ const price=Number(r.price)||Number(m.price)||0;
+ const prev=Number(r.prevPrice)||Number(m.prevClose)||0;
+ const change=Number.isFinite(Number(r.tickPct)) ? Number(r.tickPct) : (prev ? (price-prev)/prev*100 : Number(m.change)||0);
+ const rsi=Number(m.rsi)||0, vol=Number(r.volume)||Number(m.volume)||0;
  const trend=String(m.trend||'').toUpperCase();
  const macd=String(m.macd_signal||'').toUpperCase();
  let score=0;
@@ -143,19 +155,28 @@ function liveRow(m,i){
  const tp1=Math.round(price*(1+risk*1.8));
  const tp2=Math.round(price*(1+risk*2.7));
  const mode=change>=5?'scalping':(trend==='UP'?'day':'swing');
- return {s:m.symbol,sector:'IDX',mode,price,score,conv,entry:String(price),sl,tp1,tp2,rr:'1:1.8',change,reason:[`Perubahan +${change.toFixed(2)}%`, `RSI ${rsi.toFixed(2)}`, `Trend ${m.trend||'-'} • MACD ${m.macd_signal||'-'}`,`Volume ${vol.toLocaleString('id-ID')}`, 'Foreign/Bandar belum terhubung']};
+ return {s:m.symbol,sector:m.sector||'IDX',mode,price,score,conv,entry:String(price),sl,tp1,tp2,rr:'1:1.8',change,
+   reason:[`Perubahan hari ini ${pct(change)}`, `RSI ${rsi.toFixed(2)}`, `Trend ${m.trend||'-'} • MACD ${m.macd_signal||'-'}`,`Volume ${vol.toLocaleString('id-ID')}`, 'Foreign/Bandar: belum terhubung']};
 }
+
 async function refreshData(){
  const status=document.getElementById('liveStatus'), note=document.getElementById('apiNote');
- status.textContent='Loading Live…'; note.textContent='Mengambil data real-time dari Maelyn…';
+ status.textContent='Loading Live…'; note.textContent='Mengambil kandidat + snapshot harga realtime…';
  try{
    const movers=await apiGet('/financial/idx/top-mover?top=15&ai=false');
    const all=[...(movers.data?.gainers||[]),...(movers.data?.losers||[])];
    if(!all.length) throw new Error('Maelyn tidak mengembalikan data saham');
    const unique=[...new Map(all.map(x=>[x.symbol,x])).values()];
-   data=unique.map(liveRow).sort((a,b)=>b.conv-a.conv);
+   const symbols=unique.map(x=>x.symbol).filter(Boolean);
+   const rt={};
+   for(let i=0;i<symbols.length;i+=20){
+     const batch=symbols.slice(i,i+20);
+     const snap=await apiPost('/financial/idx/realtime-price',{symbols:batch});
+     Object.assign(rt,snap.data?.prices||{});
+   }
+   data=unique.map((m,i)=>liveRow(m, i, rt[m.symbol])).sort((a,b)=>b.conv-a.conv);
    status.textContent='LIVE • '+new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
-   note.textContent=`Live: ${data.length} saham dari Maelyn. Foreign/Bandar: belum terhubung.`;
+   note.textContent=`Live: ${data.length} kandidat. Harga & % hari ini memakai snapshot realtime Maelyn. Foreign/Bandar: belum terhubung.`;
    render();
  }catch(e){
    status.textContent='LIVE ERROR';
@@ -164,9 +185,9 @@ async function refreshData(){
  }
 }
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');mode=b.dataset.mode;render()}));
-document.getElementById('interval').value=localStorage.getItem('ihsg_interval')||60;
+document.getElementById('interval').value=localStorage.getItem('ihsg_interval')||900;
 refreshData();
-setInterval(()=>{if(document.visibilityState==='visible') refreshData()}, Math.max(60,Number(localStorage.getItem('ihsg_interval')||60))*1000);
+setInterval(()=>{if(document.visibilityState==='visible') refreshData()}, Math.max(60,Number(localStorage.getItem('ihsg_interval')||900))*1000);
 </script>
 </body>
 </html>
