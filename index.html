@@ -1,193 +1,53 @@
 <!doctype html>
-<html lang="id">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0b0b0f">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>IHSG Momentum Screener</title>
+<html lang="id"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#09090c"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>IHSG Momentum Screener V6</title>
 <style>
-:root{--bg:#09090c;--panel:#121217;--panel2:#17171d;--line:#292932;--text:#f4f4f7;--muted:#9696a6;--accent:#a855f7;--accent2:#7c3aed;--good:#39d98a;--bad:#ff647c;--warn:#f5c451;--blue:#55a8ff}
-*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",sans-serif}
-body{min-height:100vh}.wrap{max-width:1440px;margin:auto;padding:18px 18px 50px}
-.header{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:14px}
-.brand{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#a855f7,#5b21b6);display:grid;place-items:center;font-weight:900;box-shadow:0 10px 30px #7c3aed35}.brand h1{font-size:19px;margin:0}.brand small{color:var(--muted)}
-.actions{display:flex;gap:8px;align-items:center}.btn{border:1px solid var(--line);background:var(--panel);color:var(--text);padding:10px 13px;border-radius:10px;font-weight:700;cursor:pointer}.btn.primary{background:linear-gradient(135deg,#a855f7,#7c3aed);border-color:transparent}.status{font-size:12px;color:var(--muted)}
-.alert{border:1px solid #6d28d955;background:#15121b;border-left:3px solid var(--accent);border-radius:12px;padding:13px 15px;margin:10px 0}.alert strong{display:block;margin-bottom:4px}.alert span{color:var(--muted);font-size:13px}
-.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}.metric{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px}.metric label{display:block;color:var(--muted);font-size:11px}.metric b{display:block;font-size:17px;margin-top:3px}.metric b.purple{color:#bd86ff}
-.toolbar{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:11px;display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.tab{border:0;background:transparent;color:var(--muted);padding:9px 12px;border-radius:9px;font-weight:800;cursor:pointer}.tab.active{background:linear-gradient(135deg,#a855f7,#7c3aed);color:white}.input,.select{background:#0c0c10;border:1px solid var(--line);color:var(--text);padding:9px 11px;border-radius:9px;min-height:38px}.grow{flex:1;min-width:180px}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;position:relative;overflow:hidden}.card:hover{border-color:#6d28d9}.topline{display:flex;justify-content:space-between;align-items:start}.symbol{font-size:18px;font-weight:900}.sector{color:var(--muted);font-size:11px;margin-top:2px}.badge{display:inline-flex;padding:5px 8px;border-radius:7px;font-size:10px;font-weight:900;margin-top:8px;background:#2a1a3b;color:#d6b3ff}.price{display:flex;justify-content:space-between;margin-top:13px}.price .big{font-size:22px;font-weight:900}.up{color:var(--good)}.down{color:var(--bad)}.muted{color:var(--muted)}.levels{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:10px}.level{background:#0d0d11;border:1px solid var(--line);padding:8px;border-radius:8px}.level label{display:block;color:var(--muted);font-size:9px}.level b{font-size:12px}.score{margin-top:12px}.bar{height:7px;border-radius:99px;background:#262630;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,#7c3aed,#c084fc);border-radius:99px}.scoreline{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px}.reason{margin:10px 0 0;padding-left:17px;color:#c5c5cf;font-size:11px;line-height:1.55}.footerrow{display:flex;justify-content:space-between;align-items:center;margin-top:11px;color:var(--muted);font-size:10px}.rr{font-weight:900;color:#d7b7ff}.empty{padding:40px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:14px;grid-column:1/-1}
-.detail{margin-top:14px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px;display:none}.detail.show{display:block}.detailgrid{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:12px}.bigscore{font-size:38px;font-weight:950;color:#c084fc}.pill{display:inline-block;border-radius:999px;padding:6px 9px;background:#21152f;color:#dcbcff;font-size:11px;font-weight:800}
-.settings{display:none;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}.settings.show{display:block}.settings label{display:block;color:var(--muted);font-size:12px;margin:10px 0 5px}.settings input{width:100%}.note{color:var(--muted);font-size:12px;line-height:1.55}.apiok{color:var(--good)}.apiwarn{color:var(--warn)}
-@media(max-width:1100px){.grid{grid-template-columns:repeat(2,1fr)}.detailgrid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:700px){.wrap{padding:12px 11px 38px}.header{align-items:flex-start}.header .actions .btn{padding:9px}.metrics{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.toolbar{position:sticky;top:0;z-index:5;backdrop-filter:blur(12px);background:#121217e8}.input.grow{min-width:100%}.detailgrid{grid-template-columns:1fr 1fr}}
-</style>
-</head>
-<body>
-<div class="wrap">
-  <header class="header">
-    <div class="brand"><div class="logo">IH</div><div><h1>IHSG Momentum Screener</h1><small>Scalping • Day Trade • Swing</small></div></div>
-    <div class="actions"><span id="liveStatus" class="status">Connecting…</span><button class="btn" onclick="refreshData()">↻ Refresh</button><button class="btn" onclick="showSettings()">⚙</button></div>
-  </header>
-
-  <div class="alert"><strong>Market Regime</strong><span id="marketText">Memuat kondisi pasar…</span></div>
-  <div class="alert"><strong>Risk Control</strong><span>Technical score sementara: Price Action • Momentum • Volume • Trend. Harga/perubahan harian diprioritaskan dari snapshot realtime. Foreign & Bandar belum dihitung sampai ada feed resmi yang terhubung.</span></div>
-
-  <div class="metrics">
-    <div class="metric"><label>Modal</label><b id="capital">Rp 50.000.000</b></div>
-    <div class="metric"><label>Risiko / trade</label><b id="risk">1% (Rp 500.000)</b></div>
-    <div class="metric"><label>Maks. alokasi / posisi</label><b>25%</b></div>
-    <div class="metric"><label>Saham kandidat</label><b id="count" class="purple">—</b></div>
-  </div>
-
-  <div class="toolbar">
-    <button class="tab active" data-mode="all">Semua</button>
-    <button class="tab" data-mode="scalping">Scalping</button>
-    <button class="tab" data-mode="day">Day Trade</button>
-    <button class="tab" data-mode="swing">Swing</button>
-    <input id="search" class="input grow" placeholder="Cari kode saham…" oninput="render()">
-    <select id="sector" class="select" onchange="render()"><option>Semua Sektor</option><option>Perbankan</option><option>Energi</option><option>Telko & Menara</option><option>Consumer</option><option>Infrastruktur</option></select>
-    <select id="minScore" class="select" onchange="render()"><option value="0">Score ≥ 0</option><option value="60">Score ≥ 60</option><option value="70">Score ≥ 70</option><option value="80">Score ≥ 80</option></select>
-  </div>
-
-  <main id="cards" class="grid"></main>
-  <section id="detail" class="detail"></section>
-
-  <section id="settings" class="settings">
-    <h3 style="margin-top:0">Live Data</h3>
-    <p class="note">Versi Live terhubung ke Maelyn melalui server proxy/Vercel. API key tidak disimpan di browser. Jika provider gagal, aplikasi menampilkan error dan TIDAK diam-diam mengganti data Live dengan data demo.</p>
-    <label>Refresh interval (detik)</label><input id="interval" class="input" type="number" min="60" value="900">
-    <div style="display:flex;gap:8px;margin-top:12px"><button class="btn primary" onclick="saveSettings()">Simpan interval</button><button class="btn" onclick="clearSettings()">Reset interval</button></div>
-    <p id="apiNote" class="note"></p>
-  </section>
+:root{--bg:#09090c;--panel:#121217;--panel2:#17171d;--line:#292932;--text:#f4f4f7;--muted:#9696a6;--accent:#a855f7;--good:#39d98a;--bad:#ff647c;--warn:#f5c451;--blue:#55a8ff}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",sans-serif}body{min-height:100vh}.wrap{max-width:1500px;margin:auto;padding:16px 16px 48px}
+.header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}.brand{display:flex;align-items:center;gap:10px}.logo{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#a855f7,#5b21b6);display:grid;place-items:center;font-weight:900}.brand h1{font-size:19px;margin:0}.brand small{color:var(--muted)}.actions{display:flex;gap:7px;align-items:center}.btn{border:1px solid var(--line);background:var(--panel);color:var(--text);padding:9px 12px;border-radius:10px;font-weight:800;cursor:pointer}.btn.primary{background:linear-gradient(135deg,#a855f7,#7c3aed);border-color:transparent}.status{font-size:12px;color:var(--muted)}
+.alert{border:1px solid #6d28d955;background:#15121b;border-left:3px solid var(--accent);border-radius:12px;padding:11px 13px;margin:9px 0}.alert strong{display:block;margin-bottom:3px}.alert span{color:var(--muted);font-size:12px;line-height:1.5}
+.metrics{display:grid;grid-template-columns:repeat(6,1fr);gap:9px;margin:10px 0}.metric{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:11px}.metric label{display:block;color:var(--muted);font-size:10px}.metric b{display:block;font-size:15px;margin-top:3px}.purple{color:#c084fc}.good{color:var(--good)}.warn{color:var(--warn)}
+.toolbar{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:10px;display:flex;gap:7px;flex-wrap:wrap;margin-bottom:11px}.tab{border:0;background:transparent;color:var(--muted);padding:8px 11px;border-radius:9px;font-weight:800;cursor:pointer}.tab.active{background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff}.input,.select{background:#0c0c10;border:1px solid var(--line);color:var(--text);padding:8px 10px;border-radius:9px;min-height:37px}.grow{flex:1;min-width:180px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:13px;cursor:pointer;transition:.15s}.card:hover{border-color:#6d28d9;transform:translateY(-1px)}.topline{display:flex;justify-content:space-between;gap:8px}.symbol{font-size:17px;font-weight:900}.sector{color:var(--muted);font-size:10px;margin-top:2px}.pill{display:inline-flex;padding:4px 7px;border-radius:7px;background:#241531;color:#dcbcff;font-size:9px;font-weight:900}.price{display:flex;justify-content:space-between;margin-top:11px}.big{font-size:21px;font-weight:900}.up{color:var(--good)}.down{color:var(--bad)}.muted{color:var(--muted)}.levels{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:9px}.level{background:#0d0d11;border:1px solid var(--line);padding:7px;border-radius:8px}.level label{display:block;color:var(--muted);font-size:8px}.level b{font-size:11px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:8px}.stat{background:#0d0d11;border:1px solid var(--line);padding:6px;border-radius:8px}.stat label{display:block;color:var(--muted);font-size:8px}.stat b{font-size:10px}.score{margin-top:10px}.scoreline{display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px}.bar{height:6px;border-radius:99px;background:#262630;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,#7c3aed,#c084fc);border-radius:99px}.reason{margin:8px 0 0;padding-left:16px;color:#c5c5cf;font-size:10px;line-height:1.5}.footerrow{display:flex;justify-content:space-between;margin-top:9px;color:var(--muted);font-size:9px}.empty{padding:36px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:13px;grid-column:1/-1}
+.detail{margin-top:12px;background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:14px;display:none}.detail.show{display:block}.detailgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}.box{background:#0d0d11;border:1px solid var(--line);border-radius:9px;padding:10px}.box label{display:block;color:var(--muted);font-size:9px;margin-bottom:4px}.box b{font-size:13px}.settings{display:none;margin-top:12px;background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:14px}.settings.show{display:block}.note{color:var(--muted);font-size:11px;line-height:1.55}.settings label{display:block;color:var(--muted);font-size:11px;margin:9px 0 4px}
+@media(max-width:1200px){.grid{grid-template-columns:repeat(3,1fr)}.metrics{grid-template-columns:repeat(3,1fr)}.detailgrid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}.metrics{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.wrap{padding:10px 9px 35px}.grid{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}.toolbar{position:sticky;top:0;z-index:5;backdrop-filter:blur(12px);background:#121217e8}.grow{min-width:100%}.detailgrid{grid-template-columns:1fr 1fr}.levels{grid-template-columns:repeat(2,1fr)}}
+</style></head><body><div class="wrap">
+<header class="header"><div class="brand"><div class="logo">IH</div><div><h1>IHSG Momentum Screener <span style="color:#c084fc">V6</span></h1><small>Full IDX • Scalping • Day Trade • Swing</small></div></div><div class="actions"><span id="liveStatus" class="status">Memuat…</span><button class="btn" onclick="refreshData()">↻ Scan</button><button class="btn" onclick="showSettings()">⚙</button></div></header>
+<div class="alert"><strong>Full IDX Rolling Scanner</strong><span id="marketText">Menyiapkan universe saham IDX…</span></div>
+<div class="alert"><strong>Data Integrity</strong><span>Harga utama memakai snapshot realtime Maelyn. Technical + liquidity score dihitung dari OHLCV. Foreign/Bandar tidak diisi sampai feed broker/foreign resmi terhubung. Jadi tidak ada angka palsu.</span></div>
+<div class="metrics"><div class="metric"><label>Universe IDX</label><b id="universeCount">—</b></div><div class="metric"><label>Coverage saat ini</label><b id="coverage">—</b></div><div class="metric"><label>Batch</label><b id="batch">—</b></div><div class="metric"><label>Strong Buy</label><b id="strong">—</b></div><div class="metric"><label>Watchlist</label><b id="watch">—</b></div><div class="metric"><label>Data update</label><b id="updated">—</b></div></div>
+<div class="toolbar"><button class="tab active" data-mode="all">Semua</button><button class="tab" data-mode="scalping">Scalping</button><button class="tab" data-mode="day">Day Trade</button><button class="tab" data-mode="swing">Swing</button><input id="search" class="input grow" placeholder="Cari kode saham…" oninput="render()"><select id="sector" class="select" onchange="render()"><option>Semua Sektor</option></select><select id="minScore" class="select" onchange="render()"><option value="0">Score ≥ 0</option><option value="30">Tech ≥ 30</option><option value="40">Tech ≥ 40</option><option value="50">Tech ≥ 50</option></select></div>
+<main id="cards" class="grid"></main><section id="detail" class="detail"></section>
+<section id="settings" class="settings"><h3 style="margin-top:0">Scanner Settings</h3><p class="note">V6 tidak lagi melakukan Top Mover + Realtime beruntun. Scanner berjalan satu request Maelyn per siklus dan menyimpan hasil di perangkat. Universe saham berasal dari dataset daftar emiten IDX publik dan digunakan sebagai daftar simbol; data harga/teknikal tetap berasal dari provider.</p><label>Interval antar request Maelyn (detik)</label><input id="interval" class="input" type="number" min="60" value="65"><label>Universe refresh (jam)</label><input id="universeRefresh" class="input" type="number" min="1" value="24"><div style="display:flex;gap:7px;margin-top:10px"><button class="btn primary" onclick="saveSettings()">Simpan</button><button class="btn" onclick="clearSettings()">Reset</button></div><p id="apiNote" class="note"></p></section>
 </div>
-
 <script>
-const DEMO = [
- {s:'ADRO',sector:'Energi',mode:'swing',price:2850,score:91,conv:88,entry:'2.800–2.850',sl:2710,tp1:3050,tp2:3200,rr:'1:2.1',change:3.64,reason:['Trend aligned: harga > SMA20 > SMA50','Volume 3,2× rata-rata 20 hari','Dekat/menembus resistance 52 minggu','Momentum 5D +4,5%']},
- {s:'BBRI',sector:'Perbankan',mode:'day',price:3400,score:85,conv:83,entry:'3.380–3.420',sl:3240,tp1:3650,tp2:3870,rr:'1:2.1',change:1.18,reason:['Uptrend penuh','RSI area pullback sehat','Momentum dan volume mendukung','Resistance berikutnya di area TP']},
- {s:'TLKM',sector:'Telko & Menara',mode:'day',price:2690,score:84,conv:81,entry:'2.670–2.700',sl:2625,tp1:2820,tp2:2900,rr:'1:2.2',change:1.12,reason:['Harga di atas MA pendek','Volume meningkat','Risk terdefinisi ketat','Cocok untuk day trade saat market mendukung']},
- {s:'BMRI',sector:'Perbankan',mode:'swing',price:4440,score:82,conv:80,entry:'4.400–4.450',sl:4275,tp1:4935,tp2:5100,rr:'1:2.8',change:0.91,reason:['Trend menengah bullish','Pullback dekat area MA20','Upside ke resistance berikutnya masih lebar','RR menarik']},
- {s:'CPIN',sector:'Consumer',mode:'scalping',price:3130,score:79,conv:77,entry:'3.120–3.140',sl:3045,tp1:3260,tp2:3320,rr:'1:1.5',change:1.60,reason:['Volatilitas intraday cukup','Volume aktif','Entry dekat support pendek','TP cepat, cocok scalping']},
- {s:'BBCA',sector:'Perbankan',mode:'swing',price:9650,score:76,conv:74,entry:'9.600–9.650',sl:9400,tp1:9900,tp2:10150,rr:'1:1.5',change:0.52,reason:['RSI 54, belum overbought','Harga > SMA20','Near breakout resistance','Butuh konfirmasi volume untuk entry agresif']},
- {s:'ANTM',sector:'Energi',mode:'day',price:3340,score:73,conv:71,entry:'3.320–3.350',sl:3240,tp1:3440,tp2:3530,rr:'1:1.8',change:1.42,reason:['Momentum positif','Harga dekat resistance','Volume meningkat','Entry ideal pada pullback/confirmation']},
- {s:'ASII',sector:'Consumer',mode:'swing',price:5250,score:68,conv:67,entry:'5.200–5.250',sl:5075,tp1:5500,tp2:5650,rr:'1:1.7',change:0.19,reason:['Trend masih positif','Support cukup jelas','Belum memenuhi conviction 80+','Lebih cocok watchlist']},
-];
-
-let data=[...DEMO], mode='all', selected=null;
-const rupiah=n=>'Rp '+Number(n).toLocaleString('id-ID');
-const pct=n=>(n>=0?'+':'')+n.toFixed(2)+'%';
-
-function marketRegime(){
- const avg=data.reduce((a,b)=>a+b.change,0)/data.length;
- const high=data.filter(x=>x.score>=80).length;
- return avg>1 ? `Breadth cenderung bullish — kandidat conviction tinggi ${high} saham. Tetap gunakan posisi standar dan tunggu konfirmasi entry.` :
- avg<-.5 ? `Breadth cenderung lemah — kurangi ukuran posisi dan prioritaskan setup dengan conviction tinggi.` :
- `Arah pasar belum terlalu jelas — pilih setup dengan RR ≥ 1:2 dan conviction tinggi.`;
-}
-function render(){
- const q=document.getElementById('search').value.toUpperCase();
- const sec=document.getElementById('sector').value, min=+document.getElementById('minScore').value;
- let rows=data.filter(x=>(mode==='all'||x.mode===mode)&&(x.s.includes(q))&&(sec==='Semua Sektor'||x.sector===sec)&&x.score>=min).sort((a,b)=>b.score-a.score);
- document.getElementById('count').textContent=rows.length;
- document.getElementById('marketText').textContent=marketRegime();
- const cards=document.getElementById('cards');
- cards.innerHTML=rows.length?rows.map(x=>`
- <article class="card" onclick="openDetail('${x.s}')">
-  <div class="topline"><div><div class="symbol">${x.s}</div><div class="sector">${x.sector}</div></div><span class="pill">${x.score>=80?'STRONG':x.score>=70?'WATCH+':'WATCH'}</span></div>
-  <span class="badge">${x.mode==='day'?'Day Trade':x.mode==='scalping'?'Scalping':'Swing'}</span>
-  <div class="price"><div><div class="muted" style="font-size:10px">Harga</div><div class="big">${x.price.toLocaleString('id-ID')}</div></div><div style="text-align:right"><div class="muted" style="font-size:10px">Hari ini</div><div class="${x.change>=0?'up':'down'}">${pct(x.change)}</div></div></div>
-  <div class="levels"><div class="level"><label>ENTRY</label><b>${x.entry}</b></div><div class="level"><label>SL</label><b class="down">${x.sl.toLocaleString('id-ID')}</b></div><div class="level"><label>TP1</label><b class="up">${x.tp1.toLocaleString('id-ID')}</b></div></div>
-  <div class="score"><div class="scoreline"><span>Conviction</span><b>${x.conv}%</b></div><div class="bar"><i style="width:${x.conv}%"></i></div></div>
-  <ul class="reason">${x.reason.map(r=>`<li>${r}</li>`).join('')}</ul>
-  <div class="footerrow"><span>R:R <b class="rr">${x.rr}</b></span><span>TP2 ${x.tp2.toLocaleString('id-ID')}</span></div>
- </article>`).join(''):`<div class="empty">Tidak ada saham yang memenuhi filter.</div>`;
-}
-function openDetail(sym){
- const x=data.find(a=>a.s===sym); if(!x)return; selected=x;
- const d=document.getElementById('detail'); d.classList.add('show');
- d.innerHTML=`<div class="topline"><div><span class="pill">${x.s} • ${x.mode==='day'?'DAY TRADE':x.mode.toUpperCase()}</span><h2 style="margin:10px 0 3px">${x.price.toLocaleString('id-ID')} <span class="${x.change>=0?'up':'down'}" style="font-size:14px">${pct(x.change)}</span></h2><div class="muted">${x.sector}</div></div><button class="btn" onclick="document.getElementById('detail').classList.remove('show')">Tutup</button></div>
- <div class="detailgrid" style="margin-top:15px"><div><div class="muted">Conviction</div><div class="bigscore">${x.conv}%</div></div><div><div class="muted">Entry</div><b>${x.entry}</b><div class="muted" style="margin-top:8px">Alasan: ${x.reason[0]}</div></div><div><div class="muted">Stop Loss</div><b class="down">${x.sl.toLocaleString('id-ID')}</b><div class="muted" style="margin-top:8px">Risk ≈ ${Math.abs((x.sl-x.price)/x.price*100).toFixed(2)}%</div></div><div><div class="muted">Take Profit</div><b class="up">${x.tp1.toLocaleString('id-ID')} / ${x.tp2.toLocaleString('id-ID')}</b><div class="muted" style="margin-top:8px">Upside TP1 ≈ ${((x.tp1-x.price)/x.price*100).toFixed(2)}%</div></div></div>
- <div style="margin-top:14px;padding:12px;border:1px solid var(--line);border-radius:10px;background:#0e0e12"><b>Keputusan</b><p class="note" style="margin-bottom:0">${x.score>=80?'ENTRY kandidat kuat, tetapi tetap tunggu trigger yang disebutkan dan jangan mengejar harga.':x.score>=70?'WATCH / ENTRY selektif. Tunggu konfirmasi volume dan price action.':'WAIT. Belum cukup kuat untuk entry agresif.'}</p></div>`;
- d.scrollIntoView({behavior:'smooth',block:'nearest'});
-}
-function showSettings(){document.getElementById('settings').classList.toggle('show')}
-function saveSettings(){localStorage.setItem('ihsg_interval',document.getElementById('interval').value);document.getElementById('apiNote').textContent='Interval disimpan. Data berikutnya akan diambil dari Maelyn melalui Vercel proxy.';refreshData();}
-function clearSettings(){localStorage.removeItem('ihsg_interval');document.getElementById('interval').value=900;document.getElementById('liveStatus').textContent='Connecting…';document.getElementById('apiNote').textContent='Interval di-reset ke 15 menit.';refreshData()}
-async function apiGet(path){
- const u=new URL('/api/maelyn',window.location.origin); const parts=path.split('?'); u.searchParams.set('path',parts[0]);
- if(parts[1]) new URLSearchParams(parts[1]).forEach((v,k)=>u.searchParams.set(k,v));
- const r=await fetch(u.toString(),{cache:'no-store'});
- const body=await r.json().catch(()=>null);
- if(!r.ok) throw new Error(body?.message||body?.error||('HTTP '+r.status));
- if(body?.success===false) throw new Error(body.message||body.error||'Provider API error');
- return body;
-}
-async function apiPost(path, payload){
- const u=new URL('/api/maelyn',window.location.origin); u.searchParams.set('path',path);
- const r=await fetch(u.toString(),{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload),cache:'no-store'});
- const body=await r.json().catch(()=>null);
- if(!r.ok) throw new Error(body?.message||body?.error||('HTTP '+r.status));
- if(body?.success===false) throw new Error(body.message||body.error||'Provider API error');
- return body;
-}
-function liveRow(m,i,realtime){
- const r=realtime||{};
- const price=Number(r.price)||Number(m.price)||0;
- const prev=Number(r.prevPrice)||Number(m.prevClose)||0;
- const change=Number.isFinite(Number(r.tickPct)) ? Number(r.tickPct) : (prev ? (price-prev)/prev*100 : Number(m.change)||0);
- const rsi=Number(m.rsi)||0, vol=Number(r.volume)||Number(m.volume)||0;
- const trend=String(m.trend||'').toUpperCase();
- const macd=String(m.macd_signal||'').toUpperCase();
- let score=0;
- if(change>0) score+=5; if(change>=3) score+=5;
- if(rsi>=50&&rsi<=70) score+=5;
- if(trend==='UP') score+=5;
- if(macd==='BULLISH') score+=5;
- if(vol>=5000000) score+=5;
- if(vol>=10000000) score+=5;
- if(Number(m.high52w)>0 && price>=Number(m.high52w)*0.9) score+=5;
- if(change>=8) score+=5;
- const conv=Math.min(95,Math.max(45,score+45));
- const risk=Math.max(0.025,Math.min(0.06,0.045-Math.max(change,0)/1000));
- const sl=Math.round(price*(1-risk));
- const tp1=Math.round(price*(1+risk*1.8));
- const tp2=Math.round(price*(1+risk*2.7));
- const mode=change>=5?'scalping':(trend==='UP'?'day':'swing');
- return {s:m.symbol,sector:m.sector||'IDX',mode,price,score,conv,entry:String(price),sl,tp1,tp2,rr:'1:1.8',change,
-   reason:[`Perubahan hari ini ${pct(change)}`, `RSI ${rsi.toFixed(2)}`, `Trend ${m.trend||'-'} • MACD ${m.macd_signal||'-'}`,`Volume ${vol.toLocaleString('id-ID')}`, 'Foreign/Bandar: belum terhubung']};
-}
-
-async function refreshData(){
- const status=document.getElementById('liveStatus'), note=document.getElementById('apiNote');
- status.textContent='Loading Live…'; note.textContent='Mengambil kandidat + snapshot harga realtime…';
- try{
-   const movers=await apiGet('/financial/idx/top-mover?top=15&ai=false');
-   const all=[...(movers.data?.gainers||[]),...(movers.data?.losers||[])];
-   if(!all.length) throw new Error('Maelyn tidak mengembalikan data saham');
-   const unique=[...new Map(all.map(x=>[x.symbol,x])).values()];
-   const symbols=unique.map(x=>x.symbol).filter(Boolean);
-   const rt={};
-   for(let i=0;i<symbols.length;i+=20){
-     const batch=symbols.slice(i,i+20);
-     const snap=await apiPost('/financial/idx/realtime-price',{symbols:batch});
-     Object.assign(rt,snap.data?.prices||{});
-   }
-   data=unique.map((m,i)=>liveRow(m, i, rt[m.symbol])).sort((a,b)=>b.conv-a.conv);
-   status.textContent='LIVE • '+new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
-   note.textContent=`Live: ${data.length} kandidat. Harga & % hari ini memakai snapshot realtime Maelyn. Foreign/Bandar: belum terhubung.`;
-   render();
- }catch(e){
-   status.textContent='LIVE ERROR';
-   note.textContent='Koneksi Live gagal: '+e.message;
-   data=[]; render();
- }
-}
+const UNIVERSE_URL='/api/universe';
+const BATCH=20, MIN_GAP=60000;
+let universe=[], data=[], mode='all', selected=null, cursor=0, cycle=0, busy=false;
+const $=id=>document.getElementById(id);
+const fmt=n=>Number(n||0).toLocaleString('id-ID');
+const pct=n=>{n=Number(n);return Number.isFinite(n)?(n>=0?'+':'')+n.toFixed(2)+'%':'—'};
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function saveLocal(){localStorage.setItem('ihsg_v6_data',JSON.stringify(data));localStorage.setItem('ihsg_v6_cursor',String(cursor));localStorage.setItem('ihsg_v6_cycle',String(cycle));}
+function loadLocal(){try{data=JSON.parse(localStorage.getItem('ihsg_v6_data')||'[]')||[]}catch{data=[]}cursor=Number(localStorage.getItem('ihsg_v6_cursor')||0)||0;cycle=Number(localStorage.getItem('ihsg_v6_cycle')||0)||0}
+async function apiGet(path){const u=new URL('/api/maelyn',location.origin);u.searchParams.set('path',path.split('?')[0]);const q=path.split('?')[1];if(q)new URLSearchParams(q).forEach((v,k)=>u.searchParams.set(k,v));const r=await fetch(u,{cache:'no-store'});const b=await r.json().catch(()=>null);if(!r.ok||b?.success===false)throw new Error(b?.message||b?.error||('HTTP '+r.status));return b}
+async function apiPost(path,payload){const u=new URL('/api/maelyn',location.origin);u.searchParams.set('path',path);const r=await fetch(u,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload),cache:'no-store'});const b=await r.json().catch(()=>null);if(!r.ok||b?.success===false)throw new Error(b?.message||b?.error||('HTTP '+r.status));return b}
+function calcRSI(closes){if(closes.length<15)return null;let g=0,l=0;for(let i=1;i<=14;i++){let d=closes[i]-closes[i-1];if(d>=0)g+=d;else l-=d}g/=14;l/=14;for(let i=15;i<closes.length;i++){let d=closes[i]-closes[i-1];g=(g*13+Math.max(d,0))/14;l=(l*13+Math.max(-d,0))/14}if(l===0)return 100;return 100-(100/(1+g/l))}
+function avg(a,n){if(a.length<n)return null;return a.slice(-n).reduce((x,y)=>x+y,0)/n}
+function ema(a,n){if(a.length<n)return null;let k=2/(n+1),e=avg(a.slice(0,n),n);for(let i=n;i<a.length;i++)e=a[i]*k+e*(1-k);return e}
+function analyze(symbol,meta,candles){const cs=(candles||[]).filter(x=>Number(x.close)>0).sort((a,b)=>new Date(a.timestamp||a.date)-new Date(b.timestamp||b.date));const closes=cs.map(x=>Number(x.close)),vols=cs.map(x=>Number(x.volume)||0);const last=cs.at(-1),prev=cs.at(-2);const price=Number(last?.close)||0;const prevClose=Number(prev?.close)||0;const change=prevClose?(price-prevClose)/prevClose*100:null;const rsi=calcRSI(closes);const ma5=avg(closes,5),ma20=avg(closes,20),ma50=avg(closes,50);const e12=ema(closes,12),e26=ema(closes,26),macd=(e12!=null&&e26!=null)?e12-e26:null;const avgVol20=avg(vols,20);const vol=Number(last?.volume)||0;const volRatio=avgVol20?vol/avgVol20:null;const high52=Math.max(...closes.slice(-252)),low52=Math.min(...closes.slice(-252));const value=price*vol;let priceAction=0,volumeScore=0,liquidity=0;if(price>0&&ma5&&price>ma5)priceAction+=5;if(price>0&&ma20&&price>ma20)priceAction+=5;if(change!=null&&change>0)priceAction+=5;if(rsi!=null&&rsi>=50&&rsi<=70)priceAction+=5;if(high52&&price>=high52*.97)priceAction+=5;if(volRatio>=1.5)volumeScore+=10;if(volRatio>=2)volumeScore+=10;if(value>=5e9)liquidity+=5;if(value>=1e10)liquidity+=5;const trend=ma20&&ma50?(price>ma20&&ma20>ma50?'UP':price<ma20&&ma20<ma50?'DOWN':'NEUTRAL'):'—';const breakout=high52&&price>=high52*.98;const tech=Math.min(55,priceAction+volumeScore+liquidity);const mode=change!=null&&change>=3?'scalping':trend==='UP'?'day':'swing';const risk=Math.max(.025,Math.min(.06,.045-Math.max(change||0,0)/1000));const sl=Math.round(price*(1-risk));const tp1=Math.round(price*(1+risk*1.8));const tp2=Math.round(price*(1+risk*2.7));const conv=Math.min(95,40+tech);return {s:symbol,name:meta?.name||last?.name||symbol,sector:meta?.sector||last?.sector||'IDX',mode,price,prevClose,change,rsi,ma5,ma20,ma50,macd,trend,vol,volRatio,value,high52,low52,breakout,tech,conv,sl,tp1,tp2,rr:'1:1.8',foreign:null,bandar:null,reason:[trend==='UP'?'Trend aligned bullish':trend==='DOWN'?'Trend bearish':'Trend neutral',rsi!=null?'RSI '+rsi.toFixed(1):'RSI belum tersedia',volRatio?'Volume '+volRatio.toFixed(1)+'× Avg20':'Volume ratio belum tersedia',value>=1e10?'Likuiditas > Rp10B':value>=5e9?'Likuiditas > Rp5B':'Likuiditas rendah','Foreign/Bandar: belum terhubung'],updated:Date.now()}}
+async function loadUniverse(){const r=await fetch(UNIVERSE_URL,{cache:'no-store'});if(!r.ok)throw new Error('Universe IDX gagal dimuat');const b=await r.json();universe=(b.symbols||[]).map(x=>typeof x==='string'?{symbol:x}:x).filter(x=>/^[A-Z0-9]{4}$/.test(x.symbol));$('universeCount').textContent=fmt(universe.length);const sectors=[...new Set(universe.map(x=>x.sector).filter(Boolean))].sort();$('sector').innerHTML='<option>Semua Sektor</option>'+sectors.map(s=>'<option>'+s+'</option>').join('');}
+async function scanNext(){if(busy||!universe.length)return;busy=true;const start=cursor;const batch=universe.slice(start,start+BATCH);if(!batch.length){cursor=0;cycle++;saveLocal();busy=false;return scanNext()}$('liveStatus').textContent='LIVE • batch '+(Math.floor(start/BATCH)+1);$('marketText').textContent='Scanning '+start+'–'+(start+batch.length-1)+' dari '+universe.length+' saham. Satu request Maelyn per siklus.';try{const symbols=batch.map(x=>x.symbol);const hist=await apiPost('/financial/idx/ohlcv',{symbols,range:'1y',interval:'1d',mode:'batch'});const hItems=hist.data?.items||hist.data?.data||[];const hmap={};for(const h of hItems){const sym=h.symbol||h.code;if(sym)hmap[sym]=h.candles||h.data||[]}for(const u of batch){const x=analyze(u.symbol,u,hmap[u.symbol]||[]);data=data.filter(d=>d.s!==u.symbol);if(x.price)data.push(x)}cursor=start+batch.length;if(cursor>=universe.length){cursor=0;cycle++;}saveLocal();$('coverage').textContent=fmt(new Set(data.map(x=>x.s)).size)+' / '+fmt(universe.length);$('batch').textContent=String(Math.floor(start/BATCH)+1)+' / '+Math.ceil(universe.length/BATCH);$('updated').textContent=new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});$('apiNote').textContent='Batch sukses. Technical + liquidity dihitung dari OHLCV. Foreign/Bandar masih pending feed khusus.';render()}catch(e){$('liveStatus').textContent='LIVE ERROR';$('apiNote').textContent='Batch gagal: '+e.message}finally{busy=false}}
+function refreshData(){scanNext()}
+function render(){const q=$('search').value.trim().toUpperCase(),sec=$('sector').value,min=Number($('minScore').value);let rows=data.filter(x=>(mode==='all'||x.mode===mode)&&(!q||x.s.includes(q)||x.name.toUpperCase().includes(q))&&(sec==='Semua Sektor'||x.sector===sec)&&x.tech>=min).sort((a,b)=>b.tech-a.tech);$('strong').textContent=rows.filter(x=>x.tech>=40).length;$('watch').textContent=rows.filter(x=>x.tech>=30&&x.tech<40).length;const cards=$('cards');cards.innerHTML=rows.length?rows.map(x=>`<article class="card" onclick="openDetail('${x.s}')"><div class="topline"><div><div class="symbol">${x.s}</div><div class="sector">${x.name} • ${x.sector}</div></div><span class="pill">${x.tech>=40?'STRONG TECH':x.tech>=30?'WATCH+':'WATCH'}</span></div><div style="margin-top:7px;color:#dcbcff;font-size:9px;font-weight:900">${x.mode==='scalping'?'SCALPING':x.mode==='day'?'DAY TRADE':'SWING'}</div><div class="price"><div><div class="muted" style="font-size:9px">Harga</div><div class="big">${fmt(x.price)}</div></div><div style="text-align:right"><div class="muted" style="font-size:9px">Hari ini</div><div class="${x.change>=0?'up':'down'}">${pct(x.change)}</div></div></div><div class="levels"><div class="level"><label>ENTRY</label><b>${fmt(x.price)}</b></div><div class="level"><label>SL</label><b class="down">${fmt(x.sl)}</b></div><div class="level"><label>TP1</label><b class="up">${fmt(x.tp1)}</b></div><div class="level"><label>TP2</label><b class="up">${fmt(x.tp2)}</b></div></div><div class="stats"><div class="stat"><label>RSI</label><b>${x.rsi==null?'—':x.rsi.toFixed(1)}</b></div><div class="stat"><label>MA20</label><b>${x.ma20?fmt(x.ma20):'—'}</b></div><div class="stat"><label>VOL/20D</label><b>${x.volRatio?x.volRatio.toFixed(1)+'×':'—'}</b></div><div class="stat"><label>TECH</label><b>${x.tech}/55</b></div></div><div class="score"><div class="scoreline"><span>Conviction teknikal</span><b>${x.conv}%</b></div><div class="bar"><i style="width:${x.conv}%"></i></div></div><ul class="reason">${x.reason.map(r=>'<li>'+r+'</li>').join('')}</ul><div class="footerrow"><span>R:R <b style="color:#d7b7ff">${x.rr}</b></span><span>Foreign/Bandar —</span></div></article>`).join(''):'<div class="empty">Belum ada saham pada filter ini. Scanner akan mengisi universe secara rolling.</div>'}
+function openDetail(sym){const x=data.find(a=>a.s===sym);if(!x)return;const d=$('detail');d.classList.add('show');d.innerHTML=`<div class="topline"><div><span class="pill">${x.s} • ${x.mode.toUpperCase()}</span><h2 style="margin:9px 0 3px">${fmt(x.price)} <span class="${x.change>=0?'up':'down'}" style="font-size:13px">${pct(x.change)}</span></h2><div class="muted">${x.name} • ${x.sector}</div></div><button class="btn" onclick="$('detail').classList.remove('show')">Tutup</button></div><div class="detailgrid" style="margin-top:12px"><div class="box"><label>Technical score</label><b class="purple">${x.tech}/55</b></div><div class="box"><label>RSI 14</label><b>${x.rsi==null?'—':x.rsi.toFixed(2)}</b></div><div class="box"><label>MA5 / MA20 / MA50</label><b>${x.ma5?fmt(x.ma5):'—'} / ${x.ma20?fmt(x.ma20):'—'} / ${x.ma50?fmt(x.ma50):'—'}</b></div><div class="box"><label>Volume ratio</label><b>${x.volRatio?x.volRatio.toFixed(2)+'×':'—'}</b></div><div class="box"><label>52W</label><b>${x.high52?fmt(x.low52)+'–'+fmt(x.high52):'—'}</b></div><div class="box"><label>Entry</label><b>${fmt(x.price)}</b></div><div class="box"><label>Stop Loss</label><b class="down">${fmt(x.sl)}</b></div><div class="box"><label>TP1 / TP2</label><b class="up">${fmt(x.tp1)} / ${fmt(x.tp2)}</b></div><div class="box"><label>Foreign</label><b class="warn">BELUM TERHUBUNG</b></div><div class="box"><label>Bandar</label><b class="warn">BELUM TERHUBUNG</b></div></div><div style="margin-top:12px;padding:11px;border:1px solid var(--line);border-radius:10px;background:#0e0e12"><b>Skor final 100 belum diaktifkan</b><p class="note" style="margin-bottom:0">Technical saat ini ${x.tech}/55. Komponen Foreign 30 + Bandar 15 belum diberi nilai karena belum ada feed broker/foreign. Liquidity 10 akan dimasukkan setelah feed nilai transaksi tersedia. Ini sengaja dibuat demikian agar screener tidak mengarang data.</p></div>`;d.scrollIntoView({behavior:'smooth',block:'nearest'})}
+function showSettings(){$('settings').classList.toggle('show')}
+function saveSettings(){localStorage.setItem('ihsg_v6_interval',$('interval').value);localStorage.setItem('ihsg_v6_universe_refresh',$('universeRefresh').value);$('apiNote').textContent='Disimpan. Interval minimum 60 detik untuk menghindari API queue.'}
+function clearSettings(){localStorage.removeItem('ihsg_v6_interval');localStorage.removeItem('ihsg_v6_universe_refresh');$('interval').value=65;$('universeRefresh').value=24;location.reload()}
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');mode=b.dataset.mode;render()}));
-document.getElementById('interval').value=localStorage.getItem('ihsg_interval')||900;
-refreshData();
-setInterval(()=>{if(document.visibilityState==='visible') refreshData()}, Math.max(60,Number(localStorage.getItem('ihsg_interval')||900))*1000);
-</script>
-</body>
-</html>
+(async function init(){loadLocal();$('interval').value=localStorage.getItem('ihsg_v6_interval')||65;$('universeRefresh').value=localStorage.getItem('ihsg_v6_universe_refresh')||24;try{await loadUniverse();$('coverage').textContent=fmt(new Set(data.map(x=>x.s)).size)+' / '+fmt(universe.length);render();await scanNext();setInterval(()=>{if(document.visibilityState==='visible')scanNext()},Math.max(60,Number(localStorage.getItem('ihsg_v6_interval')||65))*1000)}catch(e){$('liveStatus').textContent='ERROR';$('apiNote').textContent=e.message}})();
+</script></body></html>
