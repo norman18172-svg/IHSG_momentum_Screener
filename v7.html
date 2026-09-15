@@ -1885,14 +1885,62 @@ null;
 
 async function loadSummary(){
 
-const result =
-await zapi(
-"stock-summary",
-{
-length:5000,
-start:0
-}
-);
+  const allRows = [];
+  const PAGE_SIZE = 200;
+
+  for(let start = 0; start < 1000; start += PAGE_SIZE){
+
+    const result = await zapi(
+      "stock-summary",
+      {
+        length: PAGE_SIZE,
+        start: start
+      }
+    );
+
+    const rows =
+      Array.isArray(result?.data)
+        ? result.data
+        : Array.isArray(result?.data?.items)
+          ? result.data.items
+          : [];
+
+    if(!rows.length){
+
+      if(start === 0){
+        throw new Error(
+          "ZPI stock-summary kosong"
+        );
+      }
+
+      break;
+    }
+
+    allRows.push(...rows);
+
+    setStatus(
+      "ZPI stock-summary " +
+      allRows.length +
+      " rows"
+    );
+
+    if(rows.length < PAGE_SIZE){
+      break;
+    }
+
+    await sleep(300);
+  }
+
+  if(!allRows.length){
+    throw new Error(
+      "ZPI tidak mengembalikan data"
+    );
+  }
+
+  applySummary(allRows);
+
+  return allRows.length;
+};
 
 
 const rows =
