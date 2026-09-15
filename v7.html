@@ -18,6 +18,7 @@
   --good:#39d98a;
   --bad:#ff647c;
   --warn:#f5c451;
+  --blue:#60a5fa;
 }
 
 *{box-sizing:border-box}
@@ -32,9 +33,9 @@ html,body{
 body{min-height:100vh}
 
 .wrap{
-  max-width:1400px;
+  max-width:1500px;
   margin:auto;
-  padding:14px 12px 40px
+  padding:14px 12px 50px
 }
 
 .header{
@@ -52,8 +53,8 @@ body{min-height:100vh}
 }
 
 .logo{
-  width:42px;
-  height:42px;
+  width:43px;
+  height:43px;
   border-radius:13px;
   background:linear-gradient(135deg,#a855f7,#5b21b6);
   display:grid;
@@ -71,7 +72,9 @@ small{color:var(--muted)}
 .actions{
   display:flex;
   gap:7px;
-  align-items:center
+  align-items:center;
+  flex-wrap:wrap;
+  justify-content:flex-end
 }
 
 .btn{
@@ -87,6 +90,11 @@ small{color:var(--muted)}
 .btn.primary{
   background:linear-gradient(135deg,#a855f7,#7c3aed);
   border-color:transparent
+}
+
+.btn:disabled{
+  opacity:.45;
+  cursor:not-allowed
 }
 
 .status{
@@ -116,7 +124,7 @@ small{color:var(--muted)}
 
 .metrics{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  grid-template-columns:repeat(5,1fr);
   gap:8px;
   margin:10px 0
 }
@@ -136,7 +144,7 @@ small{color:var(--muted)}
 
 .metric b{
   display:block;
-  font-size:15px;
+  font-size:16px;
   margin-top:3px
 }
 
@@ -178,6 +186,30 @@ small{color:var(--muted)}
   padding:12px
 }
 
+.card.buy{
+  border-color:#39d98a55
+}
+
+.card.strong{
+  border-color:#39d98a99;
+  box-shadow:0 0 0 1px #39d98a22 inset
+}
+
+.card.watch{
+  border-color:#f5c45155
+}
+
+.card.avoid{
+  border-color:#ff647c44
+}
+
+.card-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:6px
+}
+
 .symbol{
   font-size:17px;
   font-weight:900
@@ -192,11 +224,43 @@ small{color:var(--muted)}
   text-overflow:ellipsis
 }
 
+.badge{
+  padding:5px 7px;
+  border-radius:7px;
+  font-size:8px;
+  font-weight:900;
+  white-space:nowrap
+}
+
+.badge.strong{
+  background:#39d98a18;
+  color:var(--good);
+  border:1px solid #39d98a44
+}
+
+.badge.buy{
+  background:#39d98a12;
+  color:var(--good);
+  border:1px solid #39d98a33
+}
+
+.badge.watch{
+  background:#f5c45114;
+  color:var(--warn);
+  border:1px solid #f5c45133
+}
+
+.badge.avoid{
+  background:#ff647c12;
+  color:var(--bad);
+  border:1px solid #ff647c33
+}
+
 .price{
   display:flex;
   justify-content:space-between;
   align-items:end;
-  margin-top:11px
+  margin-top:10px
 }
 
 .big{
@@ -214,28 +278,96 @@ small{color:var(--muted)}
   text-align:right
 }
 
+.score-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:5px;
+  margin-top:8px
+}
+
+.score-box{
+  background:#0d0d11;
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:8px
+}
+
+.score-box label{
+  display:block;
+  color:var(--muted);
+  font-size:8px
+}
+
+.score-box b{
+  font-size:14px
+}
+
 .info{
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:5px;
-  margin-top:9px
+  margin-top:6px
 }
 
 .box{
   background:#0d0d11;
   border:1px solid var(--line);
   padding:7px;
-  border-radius:8px
+  border-radius:8px;
+  min-width:0
 }
 
 .box label{
   display:block;
   color:var(--muted);
-  font-size:8px
+  font-size:8px;
+  margin-bottom:2px
 }
 
 .box b{
   font-size:10px
+}
+
+.level-title{
+  margin-top:9px;
+  font-size:9px;
+  color:var(--accent);
+  font-weight:900
+}
+
+.levels{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:5px;
+  margin-top:5px
+}
+
+.level{
+  background:#0d0d11;
+  border:1px solid var(--line);
+  padding:7px;
+  border-radius:8px
+}
+
+.level label{
+  display:block;
+  color:var(--muted);
+  font-size:8px
+}
+
+.level b{
+  font-size:11px
+}
+
+.foreign-in{color:var(--good)}
+.foreign-out{color:var(--bad)}
+.foreign-flat{color:var(--muted)}
+
+.note{
+  margin-top:7px;
+  color:var(--muted);
+  font-size:8px;
+  line-height:1.4
 }
 
 .live-dot{
@@ -256,17 +388,22 @@ small{color:var(--muted)}
   grid-column:1/-1
 }
 
-@media(max-width:1000px){
+.loading{
+  opacity:.55
+}
+
+@media(max-width:1100px){
   .grid{grid-template-columns:repeat(3,1fr)}
 }
 
-@media(max-width:700px){
+@media(max-width:800px){
   .grid{grid-template-columns:repeat(2,1fr)}
-  .metrics{grid-template-columns:repeat(2,1fr)}
+  .metrics{grid-template-columns:repeat(3,1fr)}
 }
 
-@media(max-width:500px){
+@media(max-width:560px){
   .grid{grid-template-columns:1fr}
+  .metrics{grid-template-columns:repeat(2,1fr)}
   .header{align-items:flex-start}
   h1{font-size:16px}
   .status{display:none}
@@ -275,152 +412,1300 @@ small{color:var(--muted)}
 </head>
 
 <body>
+
 <div class="wrap">
 
 <header class="header">
+
   <div class="brand">
     <div class="logo">IH</div>
+
     <div>
-      <h1>IHSG Momentum Screener <span style="color:#c084fc">V7</span></h1>
-      <small>Targeted Live Scanner</small>
+      <h1>
+        IHSG Momentum Screener
+        <span style="color:#c084fc">V7</span>
+      </h1>
+
+      <small>
+        Targeted Technical + Flow Scanner
+      </small>
     </div>
   </div>
 
   <div class="actions">
-    <span id="status" class="status">Memuat…</span>
-    <button class="btn primary" onclick="refreshNow()">↻ Refresh</button>
+
+    <span id="status" class="status">
+      Menunggu…
+    </span>
+
+    <button
+      id="analyzeBtn"
+      class="btn primary"
+      onclick="analyzeAll()">
+      ⚡ Analisis
+    </button>
+
+    <button
+      id="priceBtn"
+      class="btn"
+      onclick="refreshPrices()">
+      ↻ Harga Live
+    </button>
+
   </div>
+
 </header>
 
-<div class="alert">
-  <strong>Targeted Watchlist</strong>
-  <span>
-    Scanner hanya memantau saham pilihan pengguna. Tidak lagi melakukan rolling scan seluruh IDX.
-  </span>
-</div>
 
 <div class="alert">
-  <strong>Live Market Snapshot</strong>
+
+  <strong>
+    Targeted Watchlist
+  </strong>
+
   <span>
-    Harga menggunakan snapshot Maelyn. V7 tahap pertama fokus memastikan mesin targeted + live stabil sebelum technical dan flow ditambahkan.
+    V7 hanya memantau saham pilihan pengguna.
+    Technical dihitung dari OHLCV harian,
+    sedangkan Foreign Flow dan Liquidity berasal dari
+    snapshot harian ZPI.
   </span>
+
 </div>
+
+
+<div class="alert">
+
+  <strong>
+    Cara membaca V7
+  </strong>
+
+  <span>
+    🟢 STRONG BUY = technical sangat kuat.
+    🟢 BUY = setup positif.
+    🟡 WATCH = belum ideal untuk entry.
+    🔴 AVOID = setup lemah.
+    Entry/SL/TP adalah level model teknikal, bukan jaminan harga.
+  </span>
+
+</div>
+
 
 <div class="metrics">
+
   <div class="metric">
     <label>Watchlist</label>
-    <b id="total">53</b>
+    <b id="total">52</b>
   </div>
 
   <div class="metric">
-    <label>Ter-update</label>
+    <label>Ter-analisis</label>
     <b id="loaded">0</b>
   </div>
 
   <div class="metric">
-    <label>Naik</label>
-    <b id="up">0</b>
+    <label>Strong Buy</label>
+    <b id="strong">0</b>
   </div>
 
   <div class="metric">
-    <label>Turun</label>
-    <b id="down">0</b>
+    <label>Buy</label>
+    <b id="buy">0</b>
   </div>
+
+  <div class="metric">
+    <label>Avg Score</label>
+    <b id="avgScore">—</b>
+  </div>
+
 </div>
 
+
 <div class="toolbar">
+
   <input
     id="search"
     class="input grow"
-    placeholder="Cari kode saham…"
+    placeholder="Cari kode / nama saham…"
     oninput="render()"
   >
 
-  <button class="btn" onclick="sortBy('change')">
+  <button
+    class="btn"
+    onclick="sortBy('score')">
+    Sort Score
+  </button>
+
+  <button
+    class="btn"
+    onclick="sortBy('change')">
     Sort % Change
   </button>
 
-  <button class="btn" onclick="sortBy('price')">
-    Sort Harga
+  <button
+    class="btn"
+    onclick="sortBy('rr')">
+    Sort R:R
   </button>
+
+  <button
+    class="btn"
+    onclick="sortBy('foreign')">
+    Sort Foreign
+  </button>
+
 </div>
+
 
 <main id="cards" class="grid"></main>
 
 </div>
 
+
 <script>
 
 const WATCHLIST = [
-"AADI","ADMR","ADRO","AKRA","AMMN","ANTM","APLN","ASII","ASRI",
-"BACH","BBCA","BBRI","BEST","BMRI","BNBR","BREN","BRMS","BRPT",
-"BSSR","BULL","BUMI","BUVA","CDIA","COIN","CTRA","CUAN","DEWA",
-"DSSA","ELSA","EMAS","EMMI","ENRG","GGRM","HMSP","IMPC","INDY",
-"INET","INKP","ITMG","MDKA","MINA","PANI","PGEO","PTRO","PWON",
-"RAJA","RMKE","SRTG","SUPA","TINS","TKIM","TPIA"
+  "AADI","ADMR","ADRO","AKRA","AMMN","ANTM","APLN","ASII","ASRI",
+  "BACH","BBCA","BBRI","BEST","BMRI","BNBR","BREN","BRMS","BRPT",
+  "BSSR","BULL","BUMI","BUVA","CDIA","COIN","CTRA","CUAN","DEWA",
+  "DSSA","ELSA","EMAS","EMMI","ENRG","GGRM","HMSP","IMPC","INDY",
+  "INET","INKP","ITMG","MDKA","MINA","PANI","PGEO","PTRO","PWON",
+  "RAJA","RMKE","SRTG","SUPA","TINS","TKIM","TPIA"
 ];
 
 const BATCH_SIZE = 20;
 
 let data = {};
-let sortMode = "change";
+let sortMode = "score";
 let busy = false;
 
-const $ = id => document.getElementById(id);
 
-const fmt = n =>
-  Number(n || 0).toLocaleString("id-ID");
+/* =========================
+   BASIC HELPERS
+========================= */
 
-const pct = n => {
-  n = Number(n);
-  if(!Number.isFinite(n)) return "—";
-  return (n >= 0 ? "+" : "") + n.toFixed(2) + "%";
+const $ = id =>
+  document.getElementById(id);
+
+
+const num = n => {
+  const x = Number(n);
+  return Number.isFinite(x) ? x : null;
 };
 
-function sleep(ms){
-  return new Promise(resolve => setTimeout(resolve,ms));
+
+const fmt = n => {
+  if(n === null || n === undefined || !Number.isFinite(Number(n)))
+    return "—";
+
+  return Number(n).toLocaleString("id-ID",{
+    maximumFractionDigits:0
+  });
+};
+
+
+const fmt2 = n => {
+  if(n === null || n === undefined || !Number.isFinite(Number(n)))
+    return "—";
+
+  return Number(n).toLocaleString("id-ID",{
+    minimumFractionDigits:2,
+    maximumFractionDigits:2
+  });
+};
+
+
+const pct = n => {
+
+  if(n === null || n === undefined || !Number.isFinite(Number(n)))
+    return "—";
+
+  return (n >= 0 ? "+" : "") +
+    Number(n).toFixed(2) +
+    "%";
+};
+
+
+const sleep = ms =>
+  new Promise(resolve => setTimeout(resolve,ms));
+
+
+function esc(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
 }
+
+
+/* =========================
+   GENERIC API
+========================= */
+
+async function apiJSON(url,options={}){
+
+  const r = await fetch(url,{
+    cache:"no-store",
+    ...options
+  });
+
+  const b =
+    await r.json().catch(()=>null);
+
+  if(!r.ok || b?.success === false){
+
+    throw new Error(
+      b?.message ||
+      b?.error ||
+      ("HTTP "+r.status)
+    );
+
+  }
+
+  return b;
+
+}
+
+
+/* =========================
+   MAELYN REALTIME
+========================= */
 
 async function realtimeSnapshot(symbols){
 
-  const u = new URL("/api/v7",location.origin);
+  const u =
+    new URL("/api/v7",location.origin);
 
-  u.searchParams.set("path","realtime-price");
+  u.searchParams.set(
+    "path",
+    "realtime-price"
+  );
 
-  const r = await fetch(u,{
+  return await apiJSON(u,{
     method:"POST",
     headers:{
       "content-type":"application/json"
     },
     body:JSON.stringify({
       symbols
-    }),
-    cache:"no-store"
+    })
   });
 
-  const b = await r.json().catch(()=>null);
-
-  if(!r.ok || b?.success === false){
-    throw new Error(
-      b?.message ||
-      b?.error ||
-      ("HTTP "+r.status)
-    );
-  }
-
-  return b;
 }
 
-async function refreshNow(){
 
-  if(busy) return;
+/* =========================
+   MAELYN OHLCV
+========================= */
+
+async function ohlcvBatch(symbols){
+
+  const u =
+    new URL("/api/v7",location.origin);
+
+  u.searchParams.set(
+    "path",
+    "ohlcv"
+  );
+
+  return await apiJSON(u,{
+    method:"POST",
+    headers:{
+      "content-type":"application/json"
+    },
+    body:JSON.stringify({
+
+      symbols,
+
+      range:"1y",
+
+      interval:"1d",
+
+      mode:"batch"
+
+    })
+  });
+
+}
+
+
+/* =========================
+   ZPI STOCK SUMMARY
+========================= */
+
+async function zpiSummary(){
+
+  const u =
+    new URL("/api/zapi",location.origin);
+
+  u.searchParams.set(
+    "path",
+    "stock-summary"
+  );
+
+  u.searchParams.set(
+    "length",
+    "5000"
+  );
+
+  u.searchParams.set(
+    "start",
+    "0"
+  );
+
+  return await apiJSON(u);
+
+}
+
+
+/* =========================
+   RESPONSE NORMALIZER
+========================= */
+
+function extractBatchItems(result){
+
+  const d = result?.data;
+
+  if(Array.isArray(d))
+    return d;
+
+  if(Array.isArray(d?.items))
+    return d.items;
+
+  if(Array.isArray(result?.items))
+    return result.items;
+
+  return [];
+
+}
+
+
+function normalizeCandles(item){
+
+  let candles =
+    item?.candles ||
+    item?.data?.candles ||
+    [];
+
+  if(!Array.isArray(candles))
+    candles = [];
+
+  return candles
+    .map(c => ({
+
+      open:num(c.open),
+
+      high:num(c.high),
+
+      low:num(c.low),
+
+      close:num(c.close),
+
+      volume:num(c.volume),
+
+      timestamp:c.timestamp || null,
+
+      date:c.date || null
+
+    }))
+    .filter(c =>
+      c.close !== null &&
+      c.high !== null &&
+      c.low !== null
+    )
+    .sort((a,b)=>{
+
+      const da =
+        new Date(a.timestamp || a.date || 0).getTime();
+
+      const db =
+        new Date(b.timestamp || b.date || 0).getTime();
+
+      return da-db;
+
+    });
+
+}
+
+
+/* =========================
+   INDICATOR FUNCTIONS
+========================= */
+
+function sma(values,period){
+
+  if(values.length < period)
+    return null;
+
+  const arr =
+    values.slice(-period);
+
+  const valid =
+    arr.filter(Number.isFinite);
+
+  if(valid.length < period)
+    return null;
+
+  return valid.reduce((a,b)=>a+b,0)/period;
+
+}
+
+
+function smaAt(values,period,index){
+
+  if(index < period-1)
+    return null;
+
+  const arr =
+    values.slice(index-period+1,index+1);
+
+  if(arr.some(v=>!Number.isFinite(v)))
+    return null;
+
+  return arr.reduce((a,b)=>a+b,0)/period;
+
+}
+
+
+function rsi(values,period=14){
+
+  if(values.length < period+1)
+    return null;
+
+  let gain = 0;
+  let loss = 0;
+
+  for(let i=1;i<=period;i++){
+
+    const diff =
+      values[i]-values[i-1];
+
+    if(diff >= 0)
+      gain += diff;
+    else
+      loss -= diff;
+
+  }
+
+  let avgGain =
+    gain/period;
+
+  let avgLoss =
+    loss/period;
+
+  for(let i=period+1;i<values.length;i++){
+
+    const diff =
+      values[i]-values[i-1];
+
+    const g =
+      diff > 0 ? diff : 0;
+
+    const l =
+      diff < 0 ? -diff : 0;
+
+    avgGain =
+      ((avgGain*(period-1))+g)/period;
+
+    avgLoss =
+      ((avgLoss*(period-1))+l)/period;
+
+  }
+
+  if(avgLoss === 0)
+    return 100;
+
+  const rs =
+    avgGain/avgLoss;
+
+  return 100-(100/(1+rs));
+
+}
+
+
+function atr(candles,period=14){
+
+  if(candles.length < period+1)
+    return null;
+
+  const tr = [];
+
+  for(let i=1;i<candles.length;i++){
+
+    const c =
+      candles[i];
+
+    const p =
+      candles[i-1];
+
+    const a =
+      c.high-c.low;
+
+    const b =
+      Math.abs(c.high-p.close);
+
+    const d =
+      Math.abs(c.low-p.close);
+
+    tr.push(
+      Math.max(a,b,d)
+    );
+
+  }
+
+  if(tr.length < period)
+    return null;
+
+  let value =
+    tr.slice(0,period)
+      .reduce((a,b)=>a+b,0)/period;
+
+  for(let i=period;i<tr.length;i++){
+
+    value =
+      ((value*(period-1))+tr[i])/period;
+
+  }
+
+  return value;
+
+}
+
+
+function averageVolume(candles,period=20){
+
+  if(candles.length < period+1)
+    return null;
+
+  const arr =
+    candles
+      .slice(-(period+1),-1)
+      .map(x=>x.volume)
+      .filter(v=>v !== null);
+
+  if(arr.length < period)
+    return null;
+
+  return arr.reduce((a,b)=>a+b,0)/arr.length;
+
+}
+
+
+function recentHigh(candles,period){
+
+  if(candles.length < period+1)
+    return null;
+
+  return Math.max(
+    ...candles
+      .slice(-(period+1),-1)
+      .map(x=>x.high)
+  );
+
+}
+
+
+function recentLow(candles,period){
+
+  if(candles.length < period+1)
+    return null;
+
+  return Math.min(
+    ...candles
+      .slice(-(period+1),-1)
+      .map(x=>x.low)
+  );
+
+}
+
+
+/* =========================
+   TECHNICAL ENGINE
+========================= */
+
+function buildTechnical(candles,realtime,summary){
+
+  if(!candles || candles.length < 60)
+    return null;
+
+  const closes =
+    candles.map(x=>x.close);
+
+  const last =
+    candles[candles.length-1];
+
+  const close =
+    num(last.close);
+
+  if(close === null)
+    return null;
+
+
+  const ma20 =
+    sma(closes,20);
+
+  const ma50 =
+    sma(closes,50);
+
+  const ma20Prev =
+    smaAt(
+      closes,
+      20,
+      closes.length-6
+    );
+
+  const rsi14 =
+    rsi(closes,14);
+
+  const atr14 =
+    atr(candles,14);
+
+  const avgVol20 =
+    averageVolume(candles,20);
+
+  const volume =
+    num(last.volume);
+
+  const volRatio =
+    avgVol20 && volume !== null
+      ? volume/avgVol20
+      : null;
+
+
+  const ret5 =
+    closes.length >= 6
+      ? ((close/closes[closes.length-6])-1)*100
+      : null;
+
+  const ret20 =
+    closes.length >= 21
+      ? ((close/closes[closes.length-21])-1)*100
+      : null;
+
+
+  const high20 =
+    recentHigh(candles,20);
+
+  const low10 =
+    recentLow(candles,10);
+
+
+  const slopeBull =
+    ma20 !== null &&
+    ma20Prev !== null &&
+    ma20 > ma20Prev;
+
+
+  /* -------------------------
+     TREND SCORE 25
+  ------------------------- */
+
+  let trendScore = 0;
+
+  if(ma20 !== null && close > ma20)
+    trendScore += 10;
+
+  if(
+    ma20 !== null &&
+    ma50 !== null &&
+    ma20 > ma50
+  )
+    trendScore += 10;
+
+  if(slopeBull)
+    trendScore += 5;
+
+
+  let trend =
+    "BEARISH";
+
+  if(
+    ma20 !== null &&
+    ma50 !== null &&
+    close > ma20 &&
+    ma20 > ma50 &&
+    slopeBull
+  ){
+
+    trend = "BULLISH";
+
+  }else if(
+    ma20 !== null &&
+    close > ma20
+  ){
+
+    trend = "RECOVERY";
+
+  }
+
+
+  /* -------------------------
+     RSI SCORE 15
+  ------------------------- */
+
+  let rsiScore = 0;
+
+  if(rsi14 !== null){
+
+    if(rsi14 >= 50 && rsi14 <= 68)
+      rsiScore = 15;
+
+    else if(rsi14 >= 45 && rsi14 < 50)
+      rsiScore = 10;
+
+    else if(rsi14 > 68 && rsi14 <= 72)
+      rsiScore = 10;
+
+    else if(rsi14 >= 40 && rsi14 < 45)
+      rsiScore = 6;
+
+    else if(rsi14 > 72 && rsi14 <= 75)
+      rsiScore = 5;
+
+    else
+      rsiScore = 2;
+
+  }
+
+
+  /* -------------------------
+     VOLUME SCORE 15
+  ------------------------- */
+
+  let volumeScore = 0;
+
+  if(volRatio !== null){
+
+    if(volRatio >= 2)
+      volumeScore = 15;
+
+    else if(volRatio >= 1.5)
+      volumeScore = 12;
+
+    else if(volRatio >= 1.2)
+      volumeScore = 9;
+
+    else if(volRatio >= .8)
+      volumeScore = 6;
+
+    else
+      volumeScore = 3;
+
+  }
+
+
+  /* -------------------------
+     PRICE ACTION SCORE 25
+  ------------------------- */
+
+  let priceActionScore = 0;
+
+  if(
+    high20 !== null &&
+    close >= high20
+  )
+    priceActionScore += 10;
+
+  if(ret20 !== null){
+
+    if(ret20 > 10)
+      priceActionScore += 7;
+
+    else if(ret20 > 0)
+      priceActionScore += 4;
+
+  }
+
+  if(ret5 !== null && ret5 > 3)
+    priceActionScore += 4;
+
+  const high52 =
+    num(realtime?.high52) ||
+    num(summary?.High);
+
+  if(
+    high52 &&
+    close >= high52*.90
+  )
+    priceActionScore += 4;
+
+  priceActionScore =
+    Math.min(25,priceActionScore);
+
+
+  /* -------------------------
+     LIQUIDITY
+  ------------------------- */
+
+  const dailyValue =
+    num(summary?.Value);
+
+  let liquidity =
+    "LOW";
+
+  let liquidityScore = 2;
+
+  if(dailyValue !== null){
+
+    if(dailyValue >= 100000000000){
+
+      liquidity = "VERY HIGH";
+      liquidityScore = 10;
+
+    }else if(dailyValue >= 30000000000){
+
+      liquidity = "HIGH";
+      liquidityScore = 8;
+
+    }else if(dailyValue >= 10000000000){
+
+      liquidity = "MEDIUM";
+      liquidityScore = 6;
+
+    }else if(dailyValue >= 3000000000){
+
+      liquidity = "LOW";
+      liquidityScore = 4;
+
+    }
+
+  }
+
+
+  /* -------------------------
+     ENTRY / SL / TP
+  ------------------------- */
+
+  const price =
+    num(realtime?.price) ||
+    close;
+
+  const volatility =
+    atr14 ||
+    price*.03;
+
+
+  let sl = null;
+
+  if(low10 !== null && ma20 !== null){
+
+    const structural =
+      low10 - volatility*.20;
+
+    const maStop =
+      ma20 - volatility*.50;
+
+    sl =
+      Math.min(structural,maStop);
+
+  }else{
+
+    sl =
+      price-volatility*1.20;
+
+  }
+
+
+  if(sl <= 0)
+    sl = price-volatility;
+
+
+  let risk =
+    price-sl;
+
+  if(risk <= 0)
+    risk = volatility;
+
+
+  let tp1 =
+    price+risk*1.50;
+
+  let tp2 =
+    price+risk*2.50;
+
+
+  if(high20 !== null && high20 > price){
+
+    tp1 =
+      Math.max(
+        price+risk*1.50,
+        high20
+      );
+
+  }
+
+
+  if(high52 && high52 > tp1){
+
+    tp2 =
+      Math.max(
+        tp1+risk,
+        high52
+      );
+
+  }
+
+
+  const rr =
+    risk > 0
+      ? (tp2-price)/risk
+      : null;
+
+
+  let rrScore = 0;
+
+  if(rr !== null){
+
+    if(rr >= 2.5)
+      rrScore = 10;
+
+    else if(rr >= 2)
+      rrScore = 8;
+
+    else if(rr >= 1.5)
+      rrScore = 5;
+
+    else
+      rrScore = 2;
+
+  }
+
+
+  /* -------------------------
+     TOTAL SCORE
+  ------------------------- */
+
+  const technicalScore =
+    trendScore +
+    rsiScore +
+    volumeScore +
+    priceActionScore +
+    liquidityScore +
+    rrScore;
+
+
+  /* -------------------------
+     SIGNAL
+  ------------------------- */
+
+  let signal = "AVOID";
+
+  if(
+    technicalScore >= 80 &&
+    trend === "BULLISH" &&
+    rsi14 !== null &&
+    rsi14 >= 50 &&
+    rsi14 <= 75 &&
+    rr !== null &&
+    rr >= 2
+  ){
+
+    signal = "STRONG BUY";
+
+  }else if(
+    technicalScore >= 70 &&
+    (
+      trend === "BULLISH" ||
+      trend === "RECOVERY"
+    ) &&
+    rsi14 !== null &&
+    rsi14 >= 45 &&
+    rsi14 <= 75 &&
+    rr !== null &&
+    rr >= 1.5
+  ){
+
+    signal = "BUY";
+
+  }else if(
+    technicalScore >= 60 ||
+    trend === "BULLISH"
+  ){
+
+    signal = "WATCH";
+
+  }
+
+
+  return {
+
+    close,
+    ma20,
+    ma50,
+    rsi14,
+    atr14,
+
+    volume,
+    avgVol20,
+    volRatio,
+
+    ret5,
+    ret20,
+
+    trend,
+    trendScore,
+    rsiScore,
+    volumeScore,
+    priceActionScore,
+
+    liquidity,
+    liquidityScore,
+
+    entry:price,
+    sl,
+    tp1,
+    tp2,
+    risk,
+    rr,
+    rrScore,
+
+    technicalScore,
+    signal
+
+  };
+
+}
+
+
+/* =========================
+   FOREIGN / LIQUIDITY MAP
+========================= */
+
+function applySummary(rows){
+
+  if(!Array.isArray(rows))
+    return;
+
+  const map = {};
+
+  for(const row of rows){
+
+    const symbol =
+      String(
+        row.StockCode ||
+        row.Code ||
+        ""
+      ).toUpperCase();
+
+    if(!symbol)
+      continue;
+
+    map[symbol] = row;
+
+  }
+
+
+  for(const symbol of WATCHLIST){
+
+    if(!data[symbol])
+      data[symbol] = {
+        symbol
+      };
+
+    const s =
+      map[symbol];
+
+    if(!s)
+      continue;
+
+
+    const foreignBuy =
+      num(s.ForeignBuy);
+
+    const foreignSell =
+      num(s.ForeignSell);
+
+    const foreignNet =
+      foreignBuy !== null &&
+      foreignSell !== null
+        ? foreignBuy-foreignSell
+        : null;
+
+
+    data[symbol].summary = s;
+
+    data[symbol].foreignBuy =
+      foreignBuy;
+
+    data[symbol].foreignSell =
+      foreignSell;
+
+    data[symbol].foreignNet =
+      foreignNet;
+
+    data[symbol].dailyValue =
+      num(s.Value);
+
+  }
+
+}
+
+
+/* =========================
+   REALTIME PRICE
+========================= */
+
+function applyRealtime(result){
+
+  const prices =
+    result?.data?.prices || {};
+
+  for(const symbol of Object.keys(prices)){
+
+    const p =
+      prices[symbol];
+
+    if(!data[symbol])
+      data[symbol] = {
+        symbol
+      };
+
+
+    data[symbol].name =
+      p.name || data[symbol].name || symbol;
+
+    data[symbol].price =
+      num(p.price);
+
+    data[symbol].prevPrice =
+      num(p.prevPrice);
+
+    data[symbol].change =
+      num(p.tickPct);
+
+    data[symbol].tick =
+      num(p.tick);
+
+    data[symbol].direction =
+      p.direction || "FLAT";
+
+    data[symbol].volume =
+      num(p.volume);
+
+    data[symbol].high52 =
+      num(p.high52w);
+
+    data[symbol].low52 =
+      num(p.low52w);
+
+    data[symbol].timestamp =
+      p.timestamp || null;
+
+  }
+
+}
+
+
+/* =========================
+   APPLY OHLCV
+========================= */
+
+function applyOHLCV(result){
+
+  const items =
+    extractBatchItems(result);
+
+  for(const item of items){
+
+    const symbol =
+      String(
+        item?.symbol ||
+        item?.code ||
+        item?.ticker ||
+        item?.meta?.symbol ||
+        ""
+      ).toUpperCase();
+
+    if(!symbol)
+      continue;
+
+
+    const candles =
+      normalizeCandles(item);
+
+    if(!candles.length)
+      continue;
+
+
+    if(!data[symbol])
+      data[symbol] = {
+        symbol
+      };
+
+
+    data[symbol].candles =
+      candles;
+
+    data[symbol].name =
+      item.name ||
+      item.meta?.name ||
+      data[symbol].name ||
+      symbol;
+
+
+    data[symbol].ta =
+      buildTechnical(
+        candles,
+        data[symbol],
+        data[symbol].summary
+      );
+
+  }
+
+}
+
+
+/* =========================
+   ANALYZE ALL
+========================= */
+
+async function analyzeAll(){
+
+  if(busy)
+    return;
 
   busy = true;
 
+  $("analyzeBtn").disabled = true;
+
   $("status").innerHTML =
-    '<span class="live-dot"></span>Updating…';
+    '<span class="live-dot"></span>Analisis technical…';
+
 
   try{
+
+    /* STEP 1
+       ZPI daily summary
+    */
+
+    try{
+
+      const z =
+        await zpiSummary();
+
+      applySummary(
+        z?.data || []
+      );
+
+    }catch(e){
+
+      console.warn(
+        "ZPI summary gagal:",
+        e
+      );
+
+    }
+
+
+    render();
+
+
+    /* STEP 2
+       OHLCV 20 saham per batch
+    */
 
     const batches = [];
 
@@ -429,54 +1714,51 @@ async function refreshNow(){
       i<WATCHLIST.length;
       i+=BATCH_SIZE
     ){
+
       batches.push(
-        WATCHLIST.slice(i,i+BATCH_SIZE)
+        WATCHLIST.slice(
+          i,
+          i+BATCH_SIZE
+        )
       );
+
     }
 
-    let updated = 0;
 
-    for(const batch of batches){
+    for(let i=0;i<batches.length;i++){
 
-      const result =
-        await realtimeSnapshot(batch);
+      $("status").textContent =
+        `Technical batch ${i+1}/${batches.length}…`;
 
-      const prices =
-        result?.data?.prices || {};
+      try{
 
-      for(const symbol of Object.keys(prices)){
+        const result =
+          await ohlcvBatch(
+            batches[i]
+          );
 
-        const p = prices[symbol];
+        applyOHLCV(result);
 
-        data[symbol] = {
-          symbol,
-          name:p.name || symbol,
-          price:Number(p.price)||0,
-          prevPrice:Number(p.prevPrice)||0,
-          tick:Number(p.tick)||0,
-          change:Number(p.tickPct),
-          direction:p.direction || "FLAT",
-          volume:Number(p.volume)||0,
-          high52:Number(p.high52w)||0,
-          low52:Number(p.low52w)||0,
-          timestamp:p.timestamp || null
-        };
+        render();
 
-        updated++;
+      }catch(e){
+
+        console.error(
+          "OHLCV batch error:",
+          e
+        );
+
       }
 
-      render();
+      await sleep(700);
 
-      await sleep(500);
     }
 
+
+    updateMetrics();
+
     $("status").innerHTML =
-      '<span class="live-dot"></span>LIVE • ' +
-      new Date().toLocaleTimeString("id-ID",{
-        hour:"2-digit",
-        minute:"2-digit",
-        second:"2-digit"
-      });
+      '<span class="live-dot"></span>Technical selesai';
 
   }catch(e){
 
@@ -487,149 +1769,788 @@ async function refreshNow(){
 
     busy = false;
 
+    $("analyzeBtn").disabled = false;
+
   }
+
 }
+
+
+/* =========================
+   REFRESH REALTIME
+========================= */
+
+async function refreshPrices(){
+
+  if(busy)
+    return;
+
+  busy = true;
+
+  $("priceBtn").disabled = true;
+
+  $("status").innerHTML =
+    '<span class="live-dot"></span>Refresh harga…';
+
+
+  try{
+
+    const batches = [];
+
+    for(
+      let i=0;
+      i<WATCHLIST.length;
+      i+=BATCH_SIZE
+    ){
+
+      batches.push(
+        WATCHLIST.slice(
+          i,
+          i+BATCH_SIZE
+        )
+      );
+
+    }
+
+
+    for(let i=0;i<batches.length;i++){
+
+      $("status").textContent =
+        `Harga batch ${i+1}/${batches.length}…`;
+
+      const result =
+        await realtimeSnapshot(
+          batches[i]
+        );
+
+      applyRealtime(result);
+
+      render();
+
+      /*
+        Jangan spam Maelyn.
+        Beri jeda antar batch.
+      */
+
+      await sleep(1200);
+
+    }
+
+
+    /*
+      Recalculate technical levels
+      using latest realtime price.
+    */
+
+    for(const symbol of WATCHLIST){
+
+      const x =
+        data[symbol];
+
+      if(
+        x?.candles
+      ){
+
+        x.ta =
+          buildTechnical(
+            x.candles,
+            x,
+            x.summary
+          );
+
+      }
+
+    }
+
+
+    render();
+
+    $("status").innerHTML =
+      '<span class="live-dot"></span>Harga diperbarui';
+
+  }catch(e){
+
+    $("status").textContent =
+      "ERROR: "+e.message;
+
+  }finally{
+
+    busy = false;
+
+    $("priceBtn").disabled = false;
+
+  }
+
+}
+
+
+/* =========================
+   SIGNAL CLASS
+========================= */
+
+function signalClass(signal){
+
+  if(signal === "STRONG BUY")
+    return "strong";
+
+  if(signal === "BUY")
+    return "buy";
+
+  if(signal === "WATCH")
+    return "watch";
+
+  return "avoid";
+
+}
+
+
+/* =========================
+   FOREIGN FORMAT
+========================= */
+
+function foreignText(x){
+
+  if(
+    x.foreignNet === null ||
+    x.foreignNet === undefined
+  )
+    return {
+      text:"N/A",
+      cls:"foreign-flat"
+    };
+
+
+  if(x.foreignNet > 0){
+
+    return {
+      text:"IN "+fmt(x.foreignNet),
+      cls:"foreign-in"
+    };
+
+  }
+
+
+  if(x.foreignNet < 0){
+
+    return {
+      text:"OUT "+fmt(Math.abs(x.foreignNet)),
+      cls:"foreign-out"
+    };
+
+  }
+
+
+  return {
+    text:"FLAT",
+    cls:"foreign-flat"
+  };
+
+}
+
+
+/* =========================
+   CONVICTION
+========================= */
+
+function conviction(x){
+
+  const ta =
+    x.ta;
+
+  if(!ta)
+    return "—";
+
+
+  if(
+    ta.signal === "STRONG BUY" &&
+    x.foreignNet > 0
+  )
+    return "HIGH";
+
+
+  if(
+    ta.signal === "STRONG BUY"
+  )
+    return "HIGH TECH";
+
+
+  if(
+    ta.signal === "BUY"
+  )
+    return "MEDIUM";
+
+
+  if(
+    ta.signal === "WATCH"
+  )
+    return "WATCH";
+
+
+  return "LOW";
+
+}
+
+
+/* =========================
+   SORT
+========================= */
 
 function sortBy(mode){
 
-  sortMode = mode;
+  sortMode =
+    mode;
 
   render();
+
 }
+
+
+/* =========================
+   METRICS
+========================= */
+
+function updateMetrics(){
+
+  const rows =
+    Object.values(data);
+
+  const analyzed =
+    rows.filter(x=>x.ta);
+
+  const strong =
+    analyzed.filter(
+      x=>x.ta.signal === "STRONG BUY"
+    ).length;
+
+  const buy =
+    analyzed.filter(
+      x=>x.ta.signal === "BUY"
+    ).length;
+
+  const avg =
+    analyzed.length
+      ? analyzed.reduce(
+          (a,x)=>a+x.ta.technicalScore,
+          0
+        )/analyzed.length
+      : null;
+
+
+  $("total").textContent =
+    WATCHLIST.length;
+
+  $("loaded").textContent =
+    analyzed.length;
+
+  $("strong").textContent =
+    strong;
+
+  $("buy").textContent =
+    buy;
+
+  $("avgScore").textContent =
+    avg === null
+      ? "—"
+      : Math.round(avg);
+
+}
+
+
+/* =========================
+   RENDER
+========================= */
 
 function render(){
 
   const q =
-    $("search").value.trim().toUpperCase();
+    $("search")
+      .value
+      .trim()
+      .toUpperCase();
+
 
   let rows =
     Object.values(data)
-    .filter(x =>
-      !q ||
-      x.symbol.includes(q) ||
-      x.name.toUpperCase().includes(q)
+      .filter(x=>{
+
+        if(!q)
+          return true;
+
+        return (
+          String(x.symbol||"")
+            .toUpperCase()
+            .includes(q)
+          ||
+          String(x.name||"")
+            .toUpperCase()
+            .includes(q)
+        );
+
+      });
+
+
+  rows.sort((a,b)=>{
+
+    const ta =
+      a.ta;
+
+    const tb =
+      b.ta;
+
+
+    if(sortMode === "score"){
+
+      return (
+        (tb?.technicalScore || -1) -
+        (ta?.technicalScore || -1)
+      );
+
+    }
+
+
+    if(sortMode === "rr"){
+
+      return (
+        (tb?.rr || -1) -
+        (ta?.rr || -1)
+      );
+
+    }
+
+
+    if(sortMode === "foreign"){
+
+      return (
+        (b.foreignNet || -Infinity) -
+        (a.foreignNet || -Infinity)
+      );
+
+    }
+
+
+    return (
+      (b.change || 0) -
+      (a.change || 0)
     );
-
-  rows.sort((a,b) => {
-
-    if(sortMode === "price")
-      return b.price-a.price;
-
-    return (b.change||0)-(a.change||0);
 
   });
 
-  $("loaded").textContent =
-    rows.length;
 
-  $("up").textContent =
-    Object.values(data)
-    .filter(x => x.change > 0)
-    .length;
+  updateMetrics();
 
-  $("down").textContent =
-    Object.values(data)
-    .filter(x => x.change < 0)
-    .length;
 
   if(!rows.length){
 
     $("cards").innerHTML =
-      '<div class="empty">Belum ada data. Tekan Refresh.</div>';
+      '<div class="empty">Belum ada data.</div>';
 
     return;
+
   }
 
+
   $("cards").innerHTML =
-    rows.map(x => {
+    rows.map(x=>{
+
+      const ta =
+        x.ta;
+
+
+      const signal =
+        ta?.signal || "WAIT";
+
+      const sc =
+        signalClass(signal);
+
+
+      const change =
+        x.change;
+
 
       const cls =
-        x.change > 0
+        change > 0
           ? "up"
-          : x.change < 0
-          ? "down"
-          : "flat";
+          : change < 0
+            ? "down"
+            : "flat";
+
+
+      const foreign =
+        foreignText(x);
+
+
+      const rsi =
+        ta?.rsi14;
+
+      const ma20 =
+        ta?.ma20;
+
+      const ma50 =
+        ta?.ma50;
+
+      const volRatio =
+        ta?.volRatio;
+
+      const rr =
+        ta?.rr;
+
+
+      const levelEntry =
+        ta?.entry;
+
+      const levelSL =
+        ta?.sl;
+
+      const levelTP1 =
+        ta?.tp1;
+
+      const levelTP2 =
+        ta?.tp2;
+
 
       return `
-      <article class="card">
 
-        <div class="symbol">
-          ${x.symbol}
+      <article class="card ${sc}">
+
+        <div class="card-head">
+
+          <div>
+
+            <div class="symbol">
+              ${esc(x.symbol)}
+            </div>
+
+            <div class="name">
+              ${esc(x.name || x.symbol)}
+            </div>
+
+          </div>
+
+
+          <div class="badge ${sc}">
+            ${signal}
+          </div>
+
         </div>
 
-        <div class="name">
-          ${x.name}
-        </div>
 
         <div class="price">
 
           <div>
+
             <div style="font-size:9px;color:#9696a6">
               Harga
             </div>
 
             <div class="big">
-              ${fmt(x.price)}
+              ${fmt(x.price || ta?.close)}
             </div>
+
           </div>
 
+
           <div class="${cls} change">
-            ${pct(x.change)}
+            ${pct(change)}
           </div>
 
         </div>
+
+
+        <div class="score-row">
+
+          <div class="score-box">
+
+            <label>
+              TECHNICAL
+            </label>
+
+            <b>
+              ${ta ? Math.round(ta.technicalScore)+"/100" : "—"}
+            </b>
+
+          </div>
+
+
+          <div class="score-box">
+
+            <label>
+              CONVICTION
+            </label>
+
+            <b>
+              ${conviction(x)}
+            </b>
+
+          </div>
+
+        </div>
+
 
         <div class="info">
 
           <div class="box">
-            <label>Direction</label>
-            <b class="${cls}">
-              ${x.direction}
-            </b>
-          </div>
 
-          <div class="box">
-            <label>Volume</label>
-            <b>
-              ${fmt(x.volume)}
-            </b>
-          </div>
+            <label>
+              RSI 14
+            </label>
 
-          <div class="box">
-            <label>52W High</label>
             <b>
-              ${x.high52 ? fmt(x.high52) : "—"}
-            </b>
-          </div>
-
-          <div class="box">
-            <label>Update</label>
-            <b>
-              ${x.timestamp
-                ? new Date(x.timestamp)
-                  .toLocaleTimeString("id-ID",{
-                    hour:"2-digit",
-                    minute:"2-digit"
-                  })
+              ${rsi !== null && rsi !== undefined
+                ? fmt2(rsi)
                 : "—"}
             </b>
+
+          </div>
+
+
+          <div class="box">
+
+            <label>
+              Trend
+            </label>
+
+            <b class="${
+              ta?.trend === "BULLISH"
+                ? "up"
+                : ta?.trend === "BEARISH"
+                  ? "down"
+                  : "flat"
+            }">
+
+              ${ta?.trend || "—"}
+
+            </b>
+
+          </div>
+
+
+          <div class="box">
+
+            <label>
+              MA20
+            </label>
+
+            <b>
+              ${fmt2(ma20)}
+            </b>
+
+          </div>
+
+
+          <div class="box">
+
+            <label>
+              MA50
+            </label>
+
+            <b>
+              ${fmt2(ma50)}
+            </b>
+
+          </div>
+
+
+          <div class="box">
+
+            <label>
+              VOL / 20D
+            </label>
+
+            <b>
+              ${volRatio !== null &&
+                volRatio !== undefined
+                  ? volRatio.toFixed(2)+"×"
+                  : "—"}
+            </b>
+
+          </div>
+
+
+          <div class="box">
+
+            <label>
+              Liquidity
+            </label>
+
+            <b>
+              ${ta?.liquidity || "—"}
+            </b>
+
+          </div>
+
+
+          <div class="box">
+
+            <label>
+              Foreign Daily
+            </label>
+
+            <b class="${foreign.cls}">
+              ${foreign.text}
+            </b>
+
+          </div>
+
+
+          <div class="box">
+
+            <label>
+              ATR14
+            </label>
+
+            <b>
+              ${fmt2(ta?.atr14)}
+            </b>
+
           </div>
 
         </div>
 
+
+        <div class="level-title">
+          TRADE PLAN
+        </div>
+
+
+        <div class="levels">
+
+          <div class="level">
+
+            <label>
+              Entry
+            </label>
+
+            <b>
+              ${fmt(levelEntry)}
+            </b>
+
+          </div>
+
+
+          <div class="level">
+
+            <label>
+              Stop Loss
+            </label>
+
+            <b class="down">
+              ${fmt(levelSL)}
+            </b>
+
+          </div>
+
+
+          <div class="level">
+
+            <label>
+              TP1
+            </label>
+
+            <b class="up">
+              ${fmt(levelTP1)}
+            </b>
+
+          </div>
+
+
+          <div class="level">
+
+            <label>
+              TP2
+            </label>
+
+            <b class="up">
+              ${fmt(levelTP2)}
+            </b>
+
+          </div>
+
+
+          <div class="level">
+
+            <label>
+              Risk
+            </label>
+
+            <b>
+              ${fmt(ta?.risk)}
+            </b>
+
+          </div>
+
+
+          <div class="level">
+
+            <label>
+              R:R
+            </label>
+
+            <b>
+              ${rr !== null &&
+                rr !== undefined
+                  ? "1 : "+rr.toFixed(2)
+                  : "—"}
+            </b>
+
+          </div>
+
+        </div>
+
+
+        <div class="note">
+
+          Foreign = net foreign harian.
+          Technical Score = model 100 poin.
+          Entry/SL/TP = level kalkulasi teknikal,
+          bukan jaminan harga atau rekomendasi pasti.
+
+        </div>
+
+
       </article>
+
       `;
 
     }).join("");
+
 }
+
+
+/* =========================
+   INIT
+========================= */
 
 $("total").textContent =
   WATCHLIST.length;
 
 render();
 
-refreshNow();
+
+/*
+  Penting:
+  Kita TIDAK otomatis menembak
+  realtime Maelyn saat halaman dibuka.
+
+  Klik "Analisis" untuk:
+  - ZPI summary
+  - OHLCV 52 saham
+  - RSI
+  - MA20
+  - MA50
+  - Volume
+  - Trend
+  - Technical Score
+  - Entry / SL / TP / RR
+  - Foreign Daily
+  - Liquidity
+
+  Klik "Harga Live" hanya jika
+  ingin memperbarui snapshot harga.
+*/
+
+analyzeAll();
 
 </script>
+
 </body>
 </html>
