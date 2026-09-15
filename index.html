@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0b0f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>IHSG Momentum Screener</title>
+<style>
+:root{--bg:#09090c;--panel:#121217;--panel2:#17171d;--line:#292932;--text:#f4f4f7;--muted:#9696a6;--accent:#a855f7;--accent2:#7c3aed;--good:#39d98a;--bad:#ff647c;--warn:#f5c451;--blue:#55a8ff}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",sans-serif}
+body{min-height:100vh}.wrap{max-width:1440px;margin:auto;padding:18px 18px 50px}
+.header{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:14px}
+.brand{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#a855f7,#5b21b6);display:grid;place-items:center;font-weight:900;box-shadow:0 10px 30px #7c3aed35}.brand h1{font-size:19px;margin:0}.brand small{color:var(--muted)}
+.actions{display:flex;gap:8px;align-items:center}.btn{border:1px solid var(--line);background:var(--panel);color:var(--text);padding:10px 13px;border-radius:10px;font-weight:700;cursor:pointer}.btn.primary{background:linear-gradient(135deg,#a855f7,#7c3aed);border-color:transparent}.status{font-size:12px;color:var(--muted)}
+.alert{border:1px solid #6d28d955;background:#15121b;border-left:3px solid var(--accent);border-radius:12px;padding:13px 15px;margin:10px 0}.alert strong{display:block;margin-bottom:4px}.alert span{color:var(--muted);font-size:13px}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}.metric{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px}.metric label{display:block;color:var(--muted);font-size:11px}.metric b{display:block;font-size:17px;margin-top:3px}.metric b.purple{color:#bd86ff}
+.toolbar{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:11px;display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.tab{border:0;background:transparent;color:var(--muted);padding:9px 12px;border-radius:9px;font-weight:800;cursor:pointer}.tab.active{background:linear-gradient(135deg,#a855f7,#7c3aed);color:white}.input,.select{background:#0c0c10;border:1px solid var(--line);color:var(--text);padding:9px 11px;border-radius:9px;min-height:38px}.grow{flex:1;min-width:180px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;position:relative;overflow:hidden}.card:hover{border-color:#6d28d9}.topline{display:flex;justify-content:space-between;align-items:start}.symbol{font-size:18px;font-weight:900}.sector{color:var(--muted);font-size:11px;margin-top:2px}.badge{display:inline-flex;padding:5px 8px;border-radius:7px;font-size:10px;font-weight:900;margin-top:8px;background:#2a1a3b;color:#d6b3ff}.price{display:flex;justify-content:space-between;margin-top:13px}.price .big{font-size:22px;font-weight:900}.up{color:var(--good)}.down{color:var(--bad)}.muted{color:var(--muted)}.levels{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:10px}.level{background:#0d0d11;border:1px solid var(--line);padding:8px;border-radius:8px}.level label{display:block;color:var(--muted);font-size:9px}.level b{font-size:12px}.score{margin-top:12px}.bar{height:7px;border-radius:99px;background:#262630;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,#7c3aed,#c084fc);border-radius:99px}.scoreline{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px}.reason{margin:10px 0 0;padding-left:17px;color:#c5c5cf;font-size:11px;line-height:1.55}.footerrow{display:flex;justify-content:space-between;align-items:center;margin-top:11px;color:var(--muted);font-size:10px}.rr{font-weight:900;color:#d7b7ff}.empty{padding:40px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:14px;grid-column:1/-1}
+.detail{margin-top:14px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px;display:none}.detail.show{display:block}.detailgrid{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:12px}.bigscore{font-size:38px;font-weight:950;color:#c084fc}.pill{display:inline-block;border-radius:999px;padding:6px 9px;background:#21152f;color:#dcbcff;font-size:11px;font-weight:800}
+.settings{display:none;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}.settings.show{display:block}.settings label{display:block;color:var(--muted);font-size:12px;margin:10px 0 5px}.settings input{width:100%}.note{color:var(--muted);font-size:12px;line-height:1.55}.apiok{color:var(--good)}.apiwarn{color:var(--warn)}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(2,1fr)}.detailgrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.wrap{padding:12px 11px 38px}.header{align-items:flex-start}.header .actions .btn{padding:9px}.metrics{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.toolbar{position:sticky;top:0;z-index:5;backdrop-filter:blur(12px);background:#121217e8}.input.grow{min-width:100%}.detailgrid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="header">
+    <div class="brand"><div class="logo">IH</div><div><h1>IHSG Momentum Screener</h1><small>Scalping • Day Trade • Swing</small></div></div>
+    <div class="actions"><span id="liveStatus" class="status">Demo mode</span><button class="btn" onclick="refreshData()">↻ Refresh</button><button class="btn" onclick="showSettings()">⚙</button></div>
+  </header>
+
+  <div class="alert"><strong>Market Regime</strong><span id="marketText">Memuat kondisi pasar…</span></div>
+  <div class="alert"><strong>Risk Control</strong><span>Default scoring: Price Action 25 • Volume 20 • Foreign 30 • Bandar 15 • Likuiditas 10. Foreign/Bandar diberi status “belum terhubung” bila provider belum menyediakan datanya.</span></div>
+
+  <div class="metrics">
+    <div class="metric"><label>Modal</label><b id="capital">Rp 50.000.000</b></div>
+    <div class="metric"><label>Risiko / trade</label><b id="risk">1% (Rp 500.000)</b></div>
+    <div class="metric"><label>Maks. alokasi / posisi</label><b>25%</b></div>
+    <div class="metric"><label>Saham kandidat</label><b id="count" class="purple">—</b></div>
+  </div>
+
+  <div class="toolbar">
+    <button class="tab active" data-mode="all">Semua</button>
+    <button class="tab" data-mode="scalping">Scalping</button>
+    <button class="tab" data-mode="day">Day Trade</button>
+    <button class="tab" data-mode="swing">Swing</button>
+    <input id="search" class="input grow" placeholder="Cari kode saham…" oninput="render()">
+    <select id="sector" class="select" onchange="render()"><option>Semua Sektor</option><option>Perbankan</option><option>Energi</option><option>Telko & Menara</option><option>Consumer</option><option>Infrastruktur</option></select>
+    <select id="minScore" class="select" onchange="render()"><option value="0">Score ≥ 0</option><option value="60">Score ≥ 60</option><option value="70">Score ≥ 70</option><option value="80">Score ≥ 80</option></select>
+  </div>
+
+  <main id="cards" class="grid"></main>
+  <section id="detail" class="detail"></section>
+
+  <section id="settings" class="settings">
+    <h3 style="margin-top:0">Live Data</h3>
+    <p class="note">Mode demo bisa langsung dipakai. Untuk data pasar live, isi API key provider. Versi ini memakai endpoint Maelyn API sebagai adapter contoh. API resmi BEI menyediakan produk market-data real-time, delayed, EOD, dan market-depth; akses resminya dapat memerlukan lisensi. Jangan menaruh API key produksi di frontend publik—gunakan server proxy/Vercel function.</p>
+    <label>Maelyn API Key</label><input id="apiKey" class="input" type="password" placeholder="x-maelyn-auth">
+    <label>Refresh interval (detik)</label><input id="interval" class="input" type="number" min="10" value="30">
+    <div style="display:flex;gap:8px;margin-top:12px"><button class="btn primary" onclick="saveSettings()">Simpan & aktifkan Live</button><button class="btn" onclick="clearSettings()">Kembali Demo</button></div>
+    <p id="apiNote" class="note"></p>
+  </section>
+</div>
+
+<script>
+const DEMO = [
+ {s:'ADRO',sector:'Energi',mode:'swing',price:2850,score:91,conv:88,entry:'2.800–2.850',sl:2710,tp1:3050,tp2:3200,rr:'1:2.1',change:3.64,reason:['Trend aligned: harga > SMA20 > SMA50','Volume 3,2× rata-rata 20 hari','Dekat/menembus resistance 52 minggu','Momentum 5D +4,5%']},
+ {s:'BBRI',sector:'Perbankan',mode:'day',price:3400,score:85,conv:83,entry:'3.380–3.420',sl:3240,tp1:3650,tp2:3870,rr:'1:2.1',change:1.18,reason:['Uptrend penuh','RSI area pullback sehat','Momentum dan volume mendukung','Resistance berikutnya di area TP']},
+ {s:'TLKM',sector:'Telko & Menara',mode:'day',price:2690,score:84,conv:81,entry:'2.670–2.700',sl:2625,tp1:2820,tp2:2900,rr:'1:2.2',change:1.12,reason:['Harga di atas MA pendek','Volume meningkat','Risk terdefinisi ketat','Cocok untuk day trade saat market mendukung']},
+ {s:'BMRI',sector:'Perbankan',mode:'swing',price:4440,score:82,conv:80,entry:'4.400–4.450',sl:4275,tp1:4935,tp2:5100,rr:'1:2.8',change:0.91,reason:['Trend menengah bullish','Pullback dekat area MA20','Upside ke resistance berikutnya masih lebar','RR menarik']},
+ {s:'CPIN',sector:'Consumer',mode:'scalping',price:3130,score:79,conv:77,entry:'3.120–3.140',sl:3045,tp1:3260,tp2:3320,rr:'1:1.5',change:1.60,reason:['Volatilitas intraday cukup','Volume aktif','Entry dekat support pendek','TP cepat, cocok scalping']},
+ {s:'BBCA',sector:'Perbankan',mode:'swing',price:9650,score:76,conv:74,entry:'9.600–9.650',sl:9400,tp1:9900,tp2:10150,rr:'1:1.5',change:0.52,reason:['RSI 54, belum overbought','Harga > SMA20','Near breakout resistance','Butuh konfirmasi volume untuk entry agresif']},
+ {s:'ANTM',sector:'Energi',mode:'day',price:3340,score:73,conv:71,entry:'3.320–3.350',sl:3240,tp1:3440,tp2:3530,rr:'1:1.8',change:1.42,reason:['Momentum positif','Harga dekat resistance','Volume meningkat','Entry ideal pada pullback/confirmation']},
+ {s:'ASII',sector:'Consumer',mode:'swing',price:5250,score:68,conv:67,entry:'5.200–5.250',sl:5075,tp1:5500,tp2:5650,rr:'1:1.7',change:0.19,reason:['Trend masih positif','Support cukup jelas','Belum memenuhi conviction 80+','Lebih cocok watchlist']},
+];
+
+let data=[...DEMO], mode='all', selected=null;
+const rupiah=n=>'Rp '+Number(n).toLocaleString('id-ID');
+const pct=n=>(n>=0?'+':'')+n.toFixed(2)+'%';
+
+function marketRegime(){
+ const avg=data.reduce((a,b)=>a+b.change,0)/data.length;
+ const high=data.filter(x=>x.score>=80).length;
+ return avg>1 ? `Breadth cenderung bullish — kandidat conviction tinggi ${high} saham. Tetap gunakan posisi standar dan tunggu konfirmasi entry.` :
+ avg<-.5 ? `Breadth cenderung lemah — kurangi ukuran posisi dan prioritaskan setup dengan conviction tinggi.` :
+ `Arah pasar belum terlalu jelas — pilih setup dengan RR ≥ 1:2 dan conviction tinggi.`;
+}
+function render(){
+ const q=document.getElementById('search').value.toUpperCase();
+ const sec=document.getElementById('sector').value, min=+document.getElementById('minScore').value;
+ let rows=data.filter(x=>(mode==='all'||x.mode===mode)&&(x.s.includes(q))&&(sec==='Semua Sektor'||x.sector===sec)&&x.score>=min).sort((a,b)=>b.score-a.score);
+ document.getElementById('count').textContent=rows.length;
+ document.getElementById('marketText').textContent=marketRegime();
+ const cards=document.getElementById('cards');
+ cards.innerHTML=rows.length?rows.map(x=>`
+ <article class="card" onclick="openDetail('${x.s}')">
+  <div class="topline"><div><div class="symbol">${x.s}</div><div class="sector">${x.sector}</div></div><span class="pill">${x.score>=80?'STRONG':x.score>=70?'WATCH+':'WATCH'}</span></div>
+  <span class="badge">${x.mode==='day'?'Day Trade':x.mode==='scalping'?'Scalping':'Swing'}</span>
+  <div class="price"><div><div class="muted" style="font-size:10px">Harga</div><div class="big">${x.price.toLocaleString('id-ID')}</div></div><div style="text-align:right"><div class="muted" style="font-size:10px">Hari ini</div><div class="${x.change>=0?'up':'down'}">${pct(x.change)}</div></div></div>
+  <div class="levels"><div class="level"><label>ENTRY</label><b>${x.entry}</b></div><div class="level"><label>SL</label><b class="down">${x.sl.toLocaleString('id-ID')}</b></div><div class="level"><label>TP1</label><b class="up">${x.tp1.toLocaleString('id-ID')}</b></div></div>
+  <div class="score"><div class="scoreline"><span>Conviction</span><b>${x.conv}%</b></div><div class="bar"><i style="width:${x.conv}%"></i></div></div>
+  <ul class="reason">${x.reason.map(r=>`<li>${r}</li>`).join('')}</ul>
+  <div class="footerrow"><span>R:R <b class="rr">${x.rr}</b></span><span>TP2 ${x.tp2.toLocaleString('id-ID')}</span></div>
+ </article>`).join(''):`<div class="empty">Tidak ada saham yang memenuhi filter.</div>`;
+}
+function openDetail(sym){
+ const x=data.find(a=>a.s===sym); if(!x)return; selected=x;
+ const d=document.getElementById('detail'); d.classList.add('show');
+ d.innerHTML=`<div class="topline"><div><span class="pill">${x.s} • ${x.mode==='day'?'DAY TRADE':x.mode.toUpperCase()}</span><h2 style="margin:10px 0 3px">${x.price.toLocaleString('id-ID')} <span class="${x.change>=0?'up':'down'}" style="font-size:14px">${pct(x.change)}</span></h2><div class="muted">${x.sector}</div></div><button class="btn" onclick="document.getElementById('detail').classList.remove('show')">Tutup</button></div>
+ <div class="detailgrid" style="margin-top:15px"><div><div class="muted">Conviction</div><div class="bigscore">${x.conv}%</div></div><div><div class="muted">Entry</div><b>${x.entry}</b><div class="muted" style="margin-top:8px">Alasan: ${x.reason[0]}</div></div><div><div class="muted">Stop Loss</div><b class="down">${x.sl.toLocaleString('id-ID')}</b><div class="muted" style="margin-top:8px">Risk ≈ ${Math.abs((x.sl-x.price)/x.price*100).toFixed(2)}%</div></div><div><div class="muted">Take Profit</div><b class="up">${x.tp1.toLocaleString('id-ID')} / ${x.tp2.toLocaleString('id-ID')}</b><div class="muted" style="margin-top:8px">Upside TP1 ≈ ${((x.tp1-x.price)/x.price*100).toFixed(2)}%</div></div></div>
+ <div style="margin-top:14px;padding:12px;border:1px solid var(--line);border-radius:10px;background:#0e0e12"><b>Keputusan</b><p class="note" style="margin-bottom:0">${x.score>=80?'ENTRY kandidat kuat, tetapi tetap tunggu trigger yang disebutkan dan jangan mengejar harga.':x.score>=70?'WATCH / ENTRY selektif. Tunggu konfirmasi volume dan price action.':'WAIT. Belum cukup kuat untuk entry agresif.'}</p></div>`;
+ d.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function showSettings(){document.getElementById('settings').classList.toggle('show')}
+function saveSettings(){const k=document.getElementById('apiKey').value.trim();localStorage.setItem('ihsg_api_key',k);localStorage.setItem('ihsg_interval',document.getElementById('interval').value);document.getElementById('apiNote').textContent=k?'API key tersimpan di browser lokal. Tekan Refresh untuk mencoba Live Mode.':'API key kosong — tetap Demo.'; if(k) refreshData();}
+function clearSettings(){localStorage.removeItem('ihsg_api_key');document.getElementById('apiKey').value='';document.getElementById('liveStatus').textContent='Demo mode';data=[...DEMO];render()}
+async function apiGet(path){
+ const key=localStorage.getItem('ihsg_api_key'); if(!key) throw new Error('No API key');
+ const r=await fetch('https://api.maelyn.eu/api'+path,{headers:{'x-maelyn-auth':key}});
+ if(!r.ok) throw new Error('HTTP '+r.status); return r.json();
+}
+async function refreshData(){
+ const key=localStorage.getItem('ihsg_api_key');
+ if(!key){data=[...DEMO];document.getElementById('liveStatus').textContent='Demo mode';render();return}
+ document.getElementById('liveStatus').textContent='Loading live…';
+ try{
+   const scan=await apiGet('/financial/idx/breakout-early-warning?mode=scan');
+   const rank=scan.data?.ranking||[];
+   const symbols=rank.slice(0,12).map(x=>x.symbol);
+   const movers=await apiGet('/financial/idx/top-mover?top=15&ai=false');
+   const mv=[...(movers.data?.gainers||[])];
+   const map=new Map(mv.map(x=>[x.symbol,x]));
+   const rows=[];
+   for(const r of rank.slice(0,12)){
+      const m=map.get(r.symbol)||{};
+      let detail=null;
+      try{detail=await apiGet('/financial/idx/entry-exit-signal?symbol='+encodeURIComponent(r.symbol))}catch(e){}
+      const a=detail?.data;
+      const price=r.last_price||m.price||a?.indicators?.last_price||0;
+      const conv=Math.round(Math.min(98,Math.max(40,(r.score||0)*0.75+(r.trend_aligned?10:0)+(r.is_breakout?10:0))));
+      rows.push({s:r.symbol,sector:'IDX',mode:'day',price,score:r.score||0,conv,entry:a?.ai_signal?.entry_price||String(price),sl:Number(String(a?.ai_signal?.stop_loss||a?.atr_levels?.stopLoss||0).replace(/[^0-9.]/g,''))||Math.round(price*.96),tp1:Number(String(a?.ai_signal?.take_profit_1||a?.atr_levels?.takeProfit1||0).replace(/[^0-9.]/g,''))||Math.round(price*1.04),tp2:Number(String(a?.ai_signal?.take_profit_2||a?.atr_levels?.takeProfit2||0).replace(/[^0-9.]/g,''))||Math.round(price*1.07),rr:a?.ai_signal?.risk_reward_ratio||('1:'+((a?.atr_levels?.rrRatio)||2).toFixed(1)),change:m.change||0,reason:[`Breakout score ${r.score}/100`,r.trend_aligned?'Trend aligned':'Trend belum aligned',r.is_breakout?'Sudah breakout resistance':'Belum breakout resistance',`Volume ${r.vol_multiple||'-'}× rata-rata` ]});
+   }
+   data=rows.length?rows:DEMO;document.getElementById('liveStatus').textContent='Live • '+new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});render();
+ }catch(e){document.getElementById('liveStatus').textContent='Live gagal → Demo';data=[...DEMO];render();document.getElementById('apiNote').textContent='Live gagal: '+e.message+'. Jika Safari memblokir CORS, deploy versi proxy/serverless dari project ini.';}
+}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');mode=b.dataset.mode;render()}));
+document.getElementById('apiKey').value=localStorage.getItem('ihsg_api_key')||'';
+document.getElementById('interval').value=localStorage.getItem('ihsg_interval')||30;
+render();
+setInterval(()=>{const k=localStorage.getItem('ihsg_api_key'); if(k && document.visibilityState==='visible') refreshData()}, Math.max(10,Number(localStorage.getItem('ihsg_interval')||30))*1000);
+</script>
+</body>
+</html>
