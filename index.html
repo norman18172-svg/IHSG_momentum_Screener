@@ -28,7 +28,7 @@ body{min-height:100vh}.wrap{max-width:1440px;margin:auto;padding:18px 18px 50px}
 <div class="wrap">
   <header class="header">
     <div class="brand"><div class="logo">IH</div><div><h1>IHSG Momentum Screener</h1><small>Scalping • Day Trade • Swing</small></div></div>
-    <div class="actions"><span id="liveStatus" class="status">Demo mode</span><button class="btn" onclick="refreshData()">↻ Refresh</button><button class="btn" onclick="showSettings()">⚙</button></div>
+    <div class="actions"><span id="liveStatus" class="status">Connecting…</span><button class="btn" onclick="refreshData()">↻ Refresh</button><button class="btn" onclick="showSettings()">⚙</button></div>
   </header>
 
   <div class="alert"><strong>Market Regime</strong><span id="marketText">Memuat kondisi pasar…</span></div>
@@ -56,10 +56,9 @@ body{min-height:100vh}.wrap{max-width:1440px;margin:auto;padding:18px 18px 50px}
 
   <section id="settings" class="settings">
     <h3 style="margin-top:0">Live Data</h3>
-    <p class="note">Mode demo bisa langsung dipakai. Untuk data pasar live, isi API key provider. Versi ini memakai endpoint Maelyn API sebagai adapter contoh. API resmi BEI menyediakan produk market-data real-time, delayed, EOD, dan market-depth; akses resminya dapat memerlukan lisensi. Jangan menaruh API key produksi di frontend publik—gunakan server proxy/Vercel function.</p>
-    <label>Maelyn API Key</label><input id="apiKey" class="input" type="password" placeholder="x-maelyn-auth">
+    <p class="note">Versi Live terhubung ke Maelyn melalui server proxy/Vercel. API key tidak disimpan di browser. Jika provider gagal, aplikasi menampilkan error dan TIDAK diam-diam mengganti data Live dengan data demo.</p>
     <label>Refresh interval (detik)</label><input id="interval" class="input" type="number" min="10" value="30">
-    <div style="display:flex;gap:8px;margin-top:12px"><button class="btn primary" onclick="saveSettings()">Simpan & aktifkan Live</button><button class="btn" onclick="clearSettings()">Kembali Demo</button></div>
+    <div style="display:flex;gap:8px;margin-top:12px"><button class="btn primary" onclick="saveSettings()">Simpan interval</button><button class="btn" onclick="clearSettings()">Reset interval</button></div>
     <p id="apiNote" class="note"></p>
   </section>
 </div>
@@ -114,42 +113,60 @@ function openDetail(sym){
  d.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function showSettings(){document.getElementById('settings').classList.toggle('show')}
-function saveSettings(){const k=document.getElementById('apiKey').value.trim();localStorage.setItem('ihsg_api_key',k);localStorage.setItem('ihsg_interval',document.getElementById('interval').value);document.getElementById('apiNote').textContent=k?'API key tersimpan di browser lokal. Tekan Refresh untuk mencoba Live Mode.':'API key kosong — tetap Demo.'; if(k) refreshData();}
-function clearSettings(){localStorage.removeItem('ihsg_api_key');document.getElementById('apiKey').value='';document.getElementById('liveStatus').textContent='Demo mode';data=[...DEMO];render()}
+function saveSettings(){localStorage.setItem('ihsg_interval',document.getElementById('interval').value);document.getElementById('apiNote').textContent='Interval disimpan. Data berikutnya akan diambil dari Maelyn melalui Vercel proxy.';refreshData();}
+function clearSettings(){localStorage.removeItem('ihsg_interval');document.getElementById('interval').value=30;document.getElementById('liveStatus').textContent='Connecting…';document.getElementById('apiNote').textContent='Interval di-reset ke 30 detik.';refreshData()}
 async function apiGet(path){
- const key=localStorage.getItem('ihsg_api_key'); if(!key) throw new Error('No API key');
- const r=await fetch('https://api.maelyn.eu/api'+path,{headers:{'x-maelyn-auth':key}});
- if(!r.ok) throw new Error('HTTP '+r.status); return r.json();
+ const u=new URL('/api/maelyn',window.location.origin); const parts=path.split('?'); u.searchParams.set('path',parts[0]);
+ if(parts[1]) new URLSearchParams(parts[1]).forEach((v,k)=>u.searchParams.set(k,v));
+ const r=await fetch(u.toString(),{cache:'no-store'});
+ const body=await r.json().catch(()=>null);
+ if(!r.ok) throw new Error(body?.message||body?.error||('HTTP '+r.status));
+ if(body?.success===false) throw new Error(body.message||body.error||'Provider API error');
+ return body;
+}
+function liveRow(m,i){
+ const price=Number(m.price)||0, change=Number(m.change)||0, rsi=Number(m.rsi)||0, vol=Number(m.volume)||0;
+ const trend=String(m.trend||'').toUpperCase();
+ const macd=String(m.macd_signal||'').toUpperCase();
+ let score=0;
+ if(change>0) score+=5; if(change>=3) score+=5;
+ if(rsi>=50&&rsi<=70) score+=5;
+ if(trend==='UP') score+=5;
+ if(macd==='BULLISH') score+=5;
+ if(vol>=5000000) score+=5;
+ if(vol>=10000000) score+=5;
+ if(Number(m.high52w)>0 && price>=Number(m.high52w)*0.9) score+=5;
+ if(change>=8) score+=5;
+ const conv=Math.min(95,Math.max(45,score+45));
+ const risk=Math.max(0.025,Math.min(0.06,0.045-Math.max(change,0)/1000));
+ const sl=Math.round(price*(1-risk));
+ const tp1=Math.round(price*(1+risk*1.8));
+ const tp2=Math.round(price*(1+risk*2.7));
+ const mode=change>=5?'scalp':(trend==='UP'?'day':'swing');
+ return {s:m.symbol,sector:'IDX',mode,price,score,conv,entry:String(price),sl,tp1,tp2,rr:'1:1.8',change,reason:[`Perubahan +${change.toFixed(2)}%`, `RSI ${rsi.toFixed(2)}`, `Trend ${m.trend||'-'} • MACD ${m.macd_signal||'-'}`,`Volume ${vol.toLocaleString('id-ID')}`, 'Foreign/Bandar belum terhubung']};
 }
 async function refreshData(){
- const key=localStorage.getItem('ihsg_api_key');
- if(!key){data=[...DEMO];document.getElementById('liveStatus').textContent='Demo mode';render();return}
- document.getElementById('liveStatus').textContent='Loading live…';
+ const status=document.getElementById('liveStatus'), note=document.getElementById('apiNote');
+ status.textContent='Loading Live…'; note.textContent='Mengambil data real-time dari Maelyn…';
  try{
-   const scan=await apiGet('/financial/idx/breakout-early-warning?mode=scan');
-   const rank=scan.data?.ranking||[];
-   const symbols=rank.slice(0,12).map(x=>x.symbol);
-   const movers=await apiGet('/financial/idx/top-mover?top=15&ai=false');
-   const mv=[...(movers.data?.gainers||[])];
-   const map=new Map(mv.map(x=>[x.symbol,x]));
-   const rows=[];
-   for(const r of rank.slice(0,12)){
-      const m=map.get(r.symbol)||{};
-      let detail=null;
-      try{detail=await apiGet('/financial/idx/entry-exit-signal?symbol='+encodeURIComponent(r.symbol))}catch(e){}
-      const a=detail?.data;
-      const price=r.last_price||m.price||a?.indicators?.last_price||0;
-      const conv=Math.round(Math.min(98,Math.max(40,(r.score||0)*0.75+(r.trend_aligned?10:0)+(r.is_breakout?10:0))));
-      rows.push({s:r.symbol,sector:'IDX',mode:'day',price,score:r.score||0,conv,entry:a?.ai_signal?.entry_price||String(price),sl:Number(String(a?.ai_signal?.stop_loss||a?.atr_levels?.stopLoss||0).replace(/[^0-9.]/g,''))||Math.round(price*.96),tp1:Number(String(a?.ai_signal?.take_profit_1||a?.atr_levels?.takeProfit1||0).replace(/[^0-9.]/g,''))||Math.round(price*1.04),tp2:Number(String(a?.ai_signal?.take_profit_2||a?.atr_levels?.takeProfit2||0).replace(/[^0-9.]/g,''))||Math.round(price*1.07),rr:a?.ai_signal?.risk_reward_ratio||('1:'+((a?.atr_levels?.rrRatio)||2).toFixed(1)),change:m.change||0,reason:[`Breakout score ${r.score}/100`,r.trend_aligned?'Trend aligned':'Trend belum aligned',r.is_breakout?'Sudah breakout resistance':'Belum breakout resistance',`Volume ${r.vol_multiple||'-'}× rata-rata` ]});
-   }
-   data=rows.length?rows:DEMO;document.getElementById('liveStatus').textContent='Live • '+new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});render();
- }catch(e){document.getElementById('liveStatus').textContent='Live gagal → Demo';data=[...DEMO];render();document.getElementById('apiNote').textContent='Live gagal: '+e.message+'. Jika Safari memblokir CORS, deploy versi proxy/serverless dari project ini.';}
+   const movers=await apiGet('/financial/idx/top-mover?top=44&ai=false');
+   const all=[...(movers.data?.gainers||[]),...(movers.data?.losers||[])];
+   if(!all.length) throw new Error('Maelyn tidak mengembalikan data saham');
+   const unique=[...new Map(all.map(x=>[x.symbol,x])).values()];
+   data=unique.map(liveRow).sort((a,b)=>b.conv-a.conv);
+   status.textContent='LIVE • '+new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+   note.textContent=`Live: ${data.length} saham dari Maelyn. Foreign/Bandar: belum terhubung.`;
+   render();
+ }catch(e){
+   status.textContent='LIVE ERROR';
+   note.textContent='Koneksi Live gagal: '+e.message;
+   data=[]; render();
+ }
 }
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');mode=b.dataset.mode;render()}));
-document.getElementById('apiKey').value=localStorage.getItem('ihsg_api_key')||'';
 document.getElementById('interval').value=localStorage.getItem('ihsg_interval')||30;
-render();
-setInterval(()=>{const k=localStorage.getItem('ihsg_api_key'); if(k && document.visibilityState==='visible') refreshData()}, Math.max(10,Number(localStorage.getItem('ihsg_interval')||30))*1000);
+refreshData();
+setInterval(()=>{if(document.visibilityState==='visible') refreshData()}, Math.max(10,Number(localStorage.getItem('ihsg_interval')||30))*1000);
 </script>
 </body>
 </html>
