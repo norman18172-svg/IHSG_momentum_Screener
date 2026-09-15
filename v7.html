@@ -17,8 +17,7 @@
   --accent:#a855f7;
   --good:#39d98a;
   --bad:#ff647c;
-  --warn:#f5c451;
-  --blue:#60a5fa;
+  --warn:#f5c451
 }
 
 *{box-sizing:border-box}
@@ -35,7 +34,7 @@ body{min-height:100vh}
 .wrap{
   max-width:1500px;
   margin:auto;
-  padding:14px 12px 50px
+  padding:14px 12px 40px
 }
 
 .header{
@@ -53,8 +52,8 @@ body{min-height:100vh}
 }
 
 .logo{
-  width:43px;
-  height:43px;
+  width:42px;
+  height:42px;
   border-radius:13px;
   background:linear-gradient(135deg,#a855f7,#5b21b6);
   display:grid;
@@ -67,14 +66,14 @@ h1{
   margin:0
 }
 
-small{color:var(--muted)}
+small,.muted{
+  color:var(--muted)
+}
 
 .actions{
   display:flex;
   gap:7px;
-  align-items:center;
-  flex-wrap:wrap;
-  justify-content:flex-end
+  align-items:center
 }
 
 .btn{
@@ -93,8 +92,7 @@ small{color:var(--muted)}
 }
 
 .btn:disabled{
-  opacity:.45;
-  cursor:not-allowed
+  opacity:.45
 }
 
 .status{
@@ -124,7 +122,7 @@ small{color:var(--muted)}
 
 .metrics{
   display:grid;
-  grid-template-columns:repeat(5,1fr);
+  grid-template-columns:repeat(6,1fr);
   gap:8px;
   margin:10px 0
 }
@@ -144,7 +142,7 @@ small{color:var(--muted)}
 
 .metric b{
   display:block;
-  font-size:16px;
+  font-size:15px;
   margin-top:3px
 }
 
@@ -175,7 +173,7 @@ small{color:var(--muted)}
 
 .grid{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  grid-template-columns:repeat(3,1fr);
   gap:9px
 }
 
@@ -186,28 +184,10 @@ small{color:var(--muted)}
   padding:12px
 }
 
-.card.buy{
-  border-color:#39d98a55
-}
-
-.card.strong{
-  border-color:#39d98a99;
-  box-shadow:0 0 0 1px #39d98a22 inset
-}
-
-.card.watch{
-  border-color:#f5c45155
-}
-
-.card.avoid{
-  border-color:#ff647c44
-}
-
-.card-head{
+.top{
   display:flex;
   justify-content:space-between;
-  align-items:flex-start;
-  gap:6px
+  gap:8px
 }
 
 .symbol{
@@ -222,38 +202,6 @@ small{color:var(--muted)}
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis
-}
-
-.badge{
-  padding:5px 7px;
-  border-radius:7px;
-  font-size:8px;
-  font-weight:900;
-  white-space:nowrap
-}
-
-.badge.strong{
-  background:#39d98a18;
-  color:var(--good);
-  border:1px solid #39d98a44
-}
-
-.badge.buy{
-  background:#39d98a12;
-  color:var(--good);
-  border:1px solid #39d98a33
-}
-
-.badge.watch{
-  background:#f5c45114;
-  color:var(--warn);
-  border:1px solid #f5c45133
-}
-
-.badge.avoid{
-  background:#ff647c12;
-  color:var(--bad);
-  border:1px solid #ff647c33
 }
 
 .price{
@@ -278,35 +226,44 @@ small{color:var(--muted)}
   text-align:right
 }
 
-.score-row{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:5px;
-  margin-top:8px
-}
-
-.score-box{
-  background:#0d0d11;
-  border:1px solid var(--line);
+.badge{
+  padding:5px 8px;
   border-radius:8px;
-  padding:8px
+  font-size:9px;
+  font-weight:900;
+  white-space:nowrap
 }
 
-.score-box label{
-  display:block;
-  color:var(--muted);
-  font-size:8px
+.buy{
+  background:#123c2b;
+  color:var(--good)
 }
 
-.score-box b{
-  font-size:14px
+.strongbuy{
+  background:#154b35;
+  color:#69f0ad
+}
+
+.watch{
+  background:#443814;
+  color:var(--warn)
+}
+
+.avoid{
+  background:#451b26;
+  color:var(--bad)
+}
+
+.neutral{
+  background:#262630;
+  color:var(--muted)
 }
 
 .info{
   display:grid;
-  grid-template-columns:repeat(2,1fr);
+  grid-template-columns:repeat(4,1fr);
   gap:5px;
-  margin-top:6px
+  margin-top:9px
 }
 
 .box{
@@ -325,21 +282,15 @@ small{color:var(--muted)}
 }
 
 .box b{
-  font-size:10px
-}
-
-.level-title{
-  margin-top:9px;
-  font-size:9px;
-  color:var(--accent);
-  font-weight:900
+  font-size:10px;
+  word-break:break-word
 }
 
 .levels{
   display:grid;
-  grid-template-columns:repeat(2,1fr);
+  grid-template-columns:repeat(5,1fr);
   gap:5px;
-  margin-top:5px
+  margin-top:7px
 }
 
 .level{
@@ -356,27 +307,32 @@ small{color:var(--muted)}
 }
 
 .level b{
-  font-size:11px
+  font-size:10px
 }
 
-.foreign-in{color:var(--good)}
-.foreign-out{color:var(--bad)}
-.foreign-flat{color:var(--muted)}
-
-.note{
-  margin-top:7px;
-  color:var(--muted);
-  font-size:8px;
-  line-height:1.4
+.entry{
+  color:#c084fc
 }
 
-.live-dot{
-  display:inline-block;
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:var(--good);
-  margin-right:5px
+.sl{
+  color:var(--bad)
+}
+
+.tp{
+  color:var(--good)
+}
+
+.rr{
+  color:var(--warn)
+}
+
+.footerline{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  margin-top:8px;
+  font-size:9px;
+  color:var(--muted)
 }
 
 .empty{
@@ -388,25 +344,53 @@ small{color:var(--muted)}
   grid-column:1/-1
 }
 
-.loading{
-  opacity:.55
+.live-dot{
+  display:inline-block;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--good);
+  margin-right:5px
 }
 
 @media(max-width:1100px){
-  .grid{grid-template-columns:repeat(3,1fr)}
+  .grid{
+    grid-template-columns:repeat(2,1fr)
+  }
+
+  .metrics{
+    grid-template-columns:repeat(3,1fr)
+  }
 }
 
-@media(max-width:800px){
-  .grid{grid-template-columns:repeat(2,1fr)}
-  .metrics{grid-template-columns:repeat(3,1fr)}
-}
+@media(max-width:650px){
+  .grid{
+    grid-template-columns:1fr
+  }
 
-@media(max-width:560px){
-  .grid{grid-template-columns:1fr}
-  .metrics{grid-template-columns:repeat(2,1fr)}
-  .header{align-items:flex-start}
-  h1{font-size:16px}
-  .status{display:none}
+  .metrics{
+    grid-template-columns:repeat(2,1fr)
+  }
+
+  .info{
+    grid-template-columns:repeat(2,1fr)
+  }
+
+  .levels{
+    grid-template-columns:repeat(2,1fr)
+  }
+
+  .header{
+    align-items:flex-start
+  }
+
+  h1{
+    font-size:16px
+  }
+
+  .status{
+    display:none
+  }
 }
 </style>
 </head>
@@ -417,146 +401,150 @@ small{color:var(--muted)}
 
 <header class="header">
 
-  <div class="brand">
-    <div class="logo">IH</div>
+<div class="brand">
 
-    <div>
-      <h1>
-        IHSG Momentum Screener
-        <span style="color:#c084fc">V7</span>
-      </h1>
+<div class="logo">IH</div>
 
-      <small>
-        Targeted Technical + Flow Scanner
-      </small>
-    </div>
-  </div>
+<div>
+<h1>
+IHSG Momentum Screener
+<span style="color:#c084fc">V7</span>
+</h1>
 
-  <div class="actions">
+<small>
+Targeted Swing & Momentum Scanner
+</small>
 
-    <span id="status" class="status">
-      Menunggu…
-    </span>
+</div>
 
-    <button
-      id="analyzeBtn"
-      class="btn primary"
-      onclick="analyzeAll()">
-      ⚡ Analisis
-    </button>
+</div>
 
-    <button
-      id="priceBtn"
-      class="btn"
-      onclick="refreshPrices()">
-      ↻ Harga Live
-    </button>
+<div class="actions">
 
-  </div>
+<span id="status" class="status">
+Siap
+</span>
+
+<button
+id="analyzeBtn"
+class="btn primary"
+onclick="analyzeAll()">
+⚡ Analisis
+</button>
+
+<button
+id="liveBtn"
+class="btn"
+onclick="refreshPrices()">
+↻ Harga Live
+</button>
+
+</div>
 
 </header>
 
 
 <div class="alert">
 
-  <strong>
-    Targeted Watchlist
-  </strong>
+<strong>
+V7 — Cara baca
+</strong>
 
-  <span>
-    V7 hanya memantau saham pilihan pengguna.
-    Technical dihitung dari OHLCV harian,
-    sedangkan Foreign Flow dan Liquidity berasal dari
-    snapshot harian ZPI.
-  </span>
-
-</div>
-
-
-<div class="alert">
-
-  <strong>
-    Cara membaca V7
-  </strong>
-
-  <span>
-    🟢 STRONG BUY = technical sangat kuat.
-    🟢 BUY = setup positif.
-    🟡 WATCH = belum ideal untuk entry.
-    🔴 AVOID = setup lemah.
-    Entry/SL/TP adalah level model teknikal, bukan jaminan harga.
-  </span>
+<span>
+Urutan utama:
+Signal → Technical → Trend → RSI → Volume → Foreign → Entry/SL/TP → R:R.
+Ini decision-support untuk swing/momentum, bukan jaminan profit.
+</span>
 
 </div>
 
 
 <div class="metrics">
 
-  <div class="metric">
-    <label>Watchlist</label>
-    <b id="total">52</b>
-  </div>
+<div class="metric">
+<label>Watchlist</label>
+<b id="total">52</b>
+</div>
 
-  <div class="metric">
-    <label>Ter-analisis</label>
-    <b id="loaded">0</b>
-  </div>
+<div class="metric">
+<label>Ter-analisis</label>
+<b id="analyzed">0</b>
+</div>
 
-  <div class="metric">
-    <label>Strong Buy</label>
-    <b id="strong">0</b>
-  </div>
+<div class="metric">
+<label>Strong Buy</label>
+<b id="strong">0</b>
+</div>
 
-  <div class="metric">
-    <label>Buy</label>
-    <b id="buy">0</b>
-  </div>
+<div class="metric">
+<label>Buy</label>
+<b id="buys">0</b>
+</div>
 
-  <div class="metric">
-    <label>Avg Score</label>
-    <b id="avgScore">—</b>
-  </div>
+<div class="metric">
+<label>Avg Score</label>
+<b id="avg">—</b>
+</div>
+
+<div class="metric">
+<label>Foreign +</label>
+<b id="foreignPlus">0</b>
+</div>
 
 </div>
 
 
 <div class="toolbar">
 
-  <input
-    id="search"
-    class="input grow"
-    placeholder="Cari kode / nama saham…"
-    oninput="render()"
-  >
+<input
+id="search"
+class="input grow"
+placeholder="Cari kode saham…"
+oninput="render()"
+>
 
-  <button
-    class="btn"
-    onclick="sortBy('score')">
-    Sort Score
-  </button>
+<button
+class="btn"
+onclick="sortBy('score')">
+Sort Score
+</button>
 
-  <button
-    class="btn"
-    onclick="sortBy('change')">
-    Sort % Change
-  </button>
+<button
+class="btn"
+onclick="sortBy('change')">
+Sort %
+</button>
 
-  <button
-    class="btn"
-    onclick="sortBy('rr')">
-    Sort R:R
-  </button>
+<button
+class="btn"
+onclick="sortBy('rr')">
+Sort R:R
+</button>
 
-  <button
-    class="btn"
-    onclick="sortBy('foreign')">
-    Sort Foreign
-  </button>
+<button
+class="btn"
+onclick="sortBy('foreign')">
+Sort Foreign
+</button>
+
+<button
+class="btn"
+onclick="sortBy('price')">
+Sort Harga
+</button>
 
 </div>
 
 
-<main id="cards" class="grid"></main>
+<main
+id="cards"
+class="grid">
+
+<div class="empty">
+Tekan ⚡ Analisis untuk mengambil data harian + foreign flow.
+</div>
+
+</main>
 
 </div>
 
@@ -564,79 +552,167 @@ small{color:var(--muted)}
 <script>
 
 const WATCHLIST = [
-  "AADI","ADMR","ADRO","AKRA","AMMN","ANTM","APLN","ASII","ASRI",
-  "BACH","BBCA","BBRI","BEST","BMRI","BNBR","BREN","BRMS","BRPT",
-  "BSSR","BULL","BUMI","BUVA","CDIA","COIN","CTRA","CUAN","DEWA",
-  "DSSA","ELSA","EMAS","EMMI","ENRG","GGRM","HMSP","IMPC","INDY",
-  "INET","INKP","ITMG","MDKA","MINA","PANI","PGEO","PTRO","PWON",
-  "RAJA","RMKE","SRTG","SUPA","TINS","TKIM","TPIA"
+
+"AADI",
+"ADMR",
+"ADRO",
+"AKRA",
+"AMMN",
+"ANTM",
+"APLN",
+"ASII",
+"ASRI",
+"BACH",
+"BBCA",
+"BBRI",
+"BEST",
+"BMRI",
+"BNBR",
+"BREN",
+"BRMS",
+"BRPT",
+"BSSR",
+"BULL",
+"BUMI",
+"BUVA",
+"CDIA",
+"COIN",
+"CTRA",
+"CUAN",
+"DEWA",
+"DSSA",
+"ELSA",
+"EMAS",
+"EMMI",
+"ENRG",
+"GGRM",
+"HMSP",
+"IMPC",
+"INDY",
+"INET",
+"INKP",
+"ITMG",
+"MDKA",
+"MINA",
+"PANI",
+"PGEO",
+"PTRO",
+"PWON",
+"RAJA",
+"RMKE",
+"SRTG",
+"SUPA",
+"TINS",
+"TKIM",
+"TPIA"
+
 ];
 
 const BATCH_SIZE = 20;
 
-let data = {};
+const MIN_CANDLES = 52;
+
+let data =
+Object.fromEntries(
+WATCHLIST.map(
+symbol => [symbol,{symbol}]
+)
+);
+
 let sortMode = "score";
+
 let busy = false;
 
-
-/* =========================
-   BASIC HELPERS
-========================= */
-
-const $ = id =>
-  document.getElementById(id);
+const $ =
+id => document.getElementById(id);
 
 
-const num = n => {
-  const x = Number(n);
-  return Number.isFinite(x) ? x : null;
+const num = value => {
+
+if(
+value === null ||
+value === undefined ||
+value === ""
+)
+return null;
+
+const n = Number(value);
+
+return Number.isFinite(n)
+? n
+: null;
+
 };
 
 
 const fmt = n => {
-  if(n === null || n === undefined || !Number.isFinite(Number(n)))
-    return "—";
 
-  return Number(n).toLocaleString("id-ID",{
-    maximumFractionDigits:0
-  });
-};
+if(
+n === null ||
+n === undefined ||
+!Number.isFinite(Number(n))
+)
+return "—";
 
+return Number(n).toLocaleString(
+"id-ID",
+{
+maximumFractionDigits:2
+}
+);
 
-const fmt2 = n => {
-  if(n === null || n === undefined || !Number.isFinite(Number(n)))
-    return "—";
-
-  return Number(n).toLocaleString("id-ID",{
-    minimumFractionDigits:2,
-    maximumFractionDigits:2
-  });
 };
 
 
 const pct = n => {
 
-  if(n === null || n === undefined || !Number.isFinite(Number(n)))
-    return "—";
+if(
+n === null ||
+n === undefined ||
+!Number.isFinite(Number(n))
+)
+return "—";
 
-  return (n >= 0 ? "+" : "") +
-    Number(n).toFixed(2) +
-    "%";
+return (
+Number(n) >= 0 ? "+" : ""
+) +
+Number(n).toFixed(2) +
+"%";
+
 };
 
 
-const sleep = ms =>
-  new Promise(resolve => setTimeout(resolve,ms));
+const sleep =
+ms =>
+new Promise(
+resolve => setTimeout(resolve,ms)
+);
 
 
-function esc(value){
+function setStatus(text){
 
-  return String(value ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+$("status").textContent = text;
+
+}
+
+
+function batches(array){
+
+const result = [];
+
+for(
+let i=0;
+i<array.length;
+i+=BATCH_SIZE
+){
+
+result.push(
+array.slice(i,i+BATCH_SIZE)
+);
+
+}
+
+return result;
 
 }
 
@@ -645,379 +721,489 @@ function esc(value){
    GENERIC API
 ========================= */
 
-async function apiJSON(url,options={}){
+async function apiJSON(
+url,
+options={}
+){
 
-  const r = await fetch(url,{
-    cache:"no-store",
-    ...options
-  });
+const response =
+await fetch(
+url,
+{
+...options,
+cache:"no-store"
+}
+);
 
-  const b =
-    await r.json().catch(()=>null);
+const body =
+await response
+.json()
+.catch(
+()=>null
+);
 
-  if(!r.ok || b?.success === false){
+if(
+!response.ok ||
+body?.success === false
+){
 
-    throw new Error(
-      b?.message ||
-      b?.error ||
-      ("HTTP "+r.status)
-    );
+throw new Error(
+body?.message ||
+body?.error ||
+("HTTP "+response.status)
+);
 
-  }
+}
 
-  return b;
+return body;
 
 }
 
 
 /* =========================
-   MAELYN REALTIME
+   MAELYN
 ========================= */
 
-async function realtimeSnapshot(symbols){
+async function maelyn(
+path,
+body
+){
 
-  const u =
-    new URL("/api/v7",location.origin);
+const url =
+new URL(
+"/api/v7",
+location.origin
+);
 
-  u.searchParams.set(
-    "path",
-    "realtime-price"
-  );
+url.searchParams.set(
+"path",
+path
+);
 
-  return await apiJSON(u,{
-    method:"POST",
-    headers:{
-      "content-type":"application/json"
-    },
-    body:JSON.stringify({
-      symbols
-    })
-  });
+return apiJSON(
+url,
+{
+method:"POST",
+
+headers:{
+"content-type":
+"application/json"
+},
+
+body:
+JSON.stringify(body)
+
+}
+);
 
 }
 
 
 /* =========================
-   MAELYN OHLCV
+   ZPI
 ========================= */
 
-async function ohlcvBatch(symbols){
+async function zapi(
+path,
+params={}
+){
 
-  const u =
-    new URL("/api/v7",location.origin);
+const url =
+new URL(
+"/api/zapi",
+location.origin
+);
 
-  u.searchParams.set(
-    "path",
-    "ohlcv"
-  );
+url.searchParams.set(
+"path",
+path
+);
 
-  return await apiJSON(u,{
-    method:"POST",
-    headers:{
-      "content-type":"application/json"
-    },
-    body:JSON.stringify({
+Object.entries(params)
+.forEach(
+([key,value])=>{
 
-      symbols,
+if(
+value !== undefined &&
+value !== null
+){
 
-      range:"1y",
+url.searchParams.set(
+key,
+String(value)
+);
 
-      interval:"1d",
+}
 
-      mode:"batch"
+}
+);
 
-    })
-  });
+return apiJSON(url);
 
 }
 
 
 /* =========================
-   ZPI STOCK SUMMARY
+   OHLCV PARSER
 ========================= */
 
-async function zpiSummary(){
+function extractItems(result){
 
-  const u =
-    new URL("/api/zapi",location.origin);
-
-  u.searchParams.set(
-    "path",
-    "stock-summary"
-  );
-
-  u.searchParams.set(
-    "length",
-    "5000"
-  );
-
-  u.searchParams.set(
-    "start",
-    "0"
-  );
-
-  return await apiJSON(u);
-
-}
+const d = result?.data;
 
 
-/* =========================
-   RESPONSE NORMALIZER
-========================= */
+/*
+   Maelyn batch:
+   data.items
+*/
 
-function extractBatchItems(result){
+if(
+Array.isArray(d?.items)
+)
+return d.items;
 
-  const d = result?.data;
 
-  if(Array.isArray(d))
-    return d;
+/*
+   fallback
+*/
 
-  if(Array.isArray(d?.items))
-    return d.items;
+if(
+Array.isArray(result?.items)
+)
+return result.items;
 
-  if(Array.isArray(result?.items))
-    return result.items;
 
-  return [];
+/*
+   fallback array
+*/
+
+if(
+Array.isArray(d)
+)
+return d;
+
+return [];
 
 }
 
 
 function normalizeCandles(item){
 
-  let candles =
-    item?.candles ||
-    item?.data?.candles ||
-    [];
+let candles =
+item?.candles ||
+item?.data?.candles ||
+item?.result?.candles ||
+item?.data?.result?.candles ||
+[];
 
-  if(!Array.isArray(candles))
-    candles = [];
+if(
+!Array.isArray(candles)
+)
+candles = [];
 
-  return candles
-    .map(c => ({
 
-      open:num(c.open),
+return candles
 
-      high:num(c.high),
+.map(
+c => ({
 
-      low:num(c.low),
+open:
+num(c.open ?? c.o),
 
-      close:num(c.close),
+high:
+num(c.high ?? c.h),
 
-      volume:num(c.volume),
+low:
+num(c.low ?? c.l),
 
-      timestamp:c.timestamp || null,
+close:
+num(c.close ?? c.c),
 
-      date:c.date || null
+volume:
+num(c.volume ?? c.v),
 
-    }))
-    .filter(c =>
-      c.close !== null &&
-      c.high !== null &&
-      c.low !== null
-    )
-    .sort((a,b)=>{
+timestamp:
+c.timestamp ??
+c.time ??
+null,
 
-      const da =
-        new Date(a.timestamp || a.date || 0).getTime();
+date:
+c.date ??
+null
 
-      const db =
-        new Date(b.timestamp || b.date || 0).getTime();
+})
+)
 
-      return da-db;
+.filter(
+c =>
+c.close !== null &&
+c.high !== null &&
+c.low !== null
+)
 
-    });
+.sort(
+(a,b)=>
+new Date(
+a.timestamp ||
+a.date ||
+0
+) -
+new Date(
+b.timestamp ||
+b.date ||
+0
+)
+);
 
 }
 
 
 /* =========================
-   INDICATOR FUNCTIONS
+   TECHNICAL CALCULATIONS
 ========================= */
 
-function sma(values,period){
+function sma(
+array,
+period
+){
 
-  if(values.length < period)
-    return null;
+if(
+array.length < period
+)
+return null;
 
-  const arr =
-    values.slice(-period);
-
-  const valid =
-    arr.filter(Number.isFinite);
-
-  if(valid.length < period)
-    return null;
-
-  return valid.reduce((a,b)=>a+b,0)/period;
-
-}
-
-
-function smaAt(values,period,index){
-
-  if(index < period-1)
-    return null;
-
-  const arr =
-    values.slice(index-period+1,index+1);
-
-  if(arr.some(v=>!Number.isFinite(v)))
-    return null;
-
-  return arr.reduce((a,b)=>a+b,0)/period;
+return array
+.slice(-period)
+.reduce(
+(sum,value)=>sum+value,
+0
+) / period;
 
 }
 
 
-function rsi(values,period=14){
+function rsi(
+array,
+period=14
+){
 
-  if(values.length < period+1)
-    return null;
+if(
+array.length <
+period+1
+)
+return null;
 
-  let gain = 0;
-  let loss = 0;
+let gain = 0;
+let loss = 0;
 
-  for(let i=1;i<=period;i++){
 
-    const diff =
-      values[i]-values[i-1];
+for(
+let i=array.length-period;
+i<array.length;
+i++
+){
 
-    if(diff >= 0)
-      gain += diff;
-    else
-      loss -= diff;
+const diff =
+array[i] -
+array[i-1];
 
-  }
+if(diff>0)
+gain += diff;
 
-  let avgGain =
-    gain/period;
-
-  let avgLoss =
-    loss/period;
-
-  for(let i=period+1;i<values.length;i++){
-
-    const diff =
-      values[i]-values[i-1];
-
-    const g =
-      diff > 0 ? diff : 0;
-
-    const l =
-      diff < 0 ? -diff : 0;
-
-    avgGain =
-      ((avgGain*(period-1))+g)/period;
-
-    avgLoss =
-      ((avgLoss*(period-1))+l)/period;
-
-  }
-
-  if(avgLoss === 0)
-    return 100;
-
-  const rs =
-    avgGain/avgLoss;
-
-  return 100-(100/(1+rs));
+else
+loss -= diff;
 
 }
 
 
-function atr(candles,period=14){
+if(loss===0)
+return 100;
 
-  if(candles.length < period+1)
-    return null;
 
-  const tr = [];
+const rs =
+(gain/period) /
+(loss/period);
 
-  for(let i=1;i<candles.length;i++){
-
-    const c =
-      candles[i];
-
-    const p =
-      candles[i-1];
-
-    const a =
-      c.high-c.low;
-
-    const b =
-      Math.abs(c.high-p.close);
-
-    const d =
-      Math.abs(c.low-p.close);
-
-    tr.push(
-      Math.max(a,b,d)
-    );
-
-  }
-
-  if(tr.length < period)
-    return null;
-
-  let value =
-    tr.slice(0,period)
-      .reduce((a,b)=>a+b,0)/period;
-
-  for(let i=period;i<tr.length;i++){
-
-    value =
-      ((value*(period-1))+tr[i])/period;
-
-  }
-
-  return value;
+return 100 -
+100/(1+rs);
 
 }
 
 
-function averageVolume(candles,period=20){
+function atr(
+candles,
+period=14
+){
 
-  if(candles.length < period+1)
-    return null;
+if(
+candles.length <
+period+1
+)
+return null;
 
-  const arr =
-    candles
-      .slice(-(period+1),-1)
-      .map(x=>x.volume)
-      .filter(v=>v !== null);
+const tr=[];
 
-  if(arr.length < period)
-    return null;
 
-  return arr.reduce((a,b)=>a+b,0)/arr.length;
+for(
+let i=1;
+i<candles.length;
+i++
+){
+
+tr.push(
+
+Math.max(
+
+candles[i].high -
+candles[i].low,
+
+Math.abs(
+candles[i].high -
+candles[i-1].close
+),
+
+Math.abs(
+candles[i].low -
+candles[i-1].close
+)
+
+)
+
+);
 
 }
 
 
-function recentHigh(candles,period){
-
-  if(candles.length < period+1)
-    return null;
-
-  return Math.max(
-    ...candles
-      .slice(-(period+1),-1)
-      .map(x=>x.high)
-  );
+return sma(
+tr,
+period
+);
 
 }
 
 
-function recentLow(candles,period){
+function avgVolume(
+candles,
+period=20
+){
 
-  if(candles.length < period+1)
-    return null;
+const volumes =
+candles
+.map(
+x=>x.volume ?? 0
+)
+.filter(
+Number.isFinite
+);
 
-  return Math.min(
-    ...candles
-      .slice(-(period+1),-1)
-      .map(x=>x.low)
-  );
+if(
+volumes.length <
+period
+)
+return null;
+
+return sma(
+volumes,
+period
+);
+
+}
+
+
+function recentHigh(
+candles,
+period=20
+){
+
+if(
+candles.length <
+period
+)
+return null;
+
+return Math.max(
+...candles
+.slice(-period)
+.map(
+x=>x.high
+)
+);
+
+}
+
+
+function recentLow(
+candles,
+period=20
+){
+
+if(
+candles.length <
+period
+)
+return null;
+
+return Math.min(
+...candles
+.slice(-period)
+.map(
+x=>x.low
+)
+);
+
+}
+
+
+/* =========================
+   LIQUIDITY
+========================= */
+
+function liquidityScore(
+value
+){
+
+if(value===null)
+return {
+score:0,
+label:"N/A"
+};
+
+if(
+value >= 100000000000
+)
+return {
+score:10,
+label:"VERY HIGH"
+};
+
+if(
+value >= 20000000000
+)
+return {
+score:8,
+label:"HIGH"
+};
+
+if(
+value >= 5000000000
+)
+return {
+score:6,
+label:"MEDIUM"
+};
+
+if(
+value >= 1000000000
+)
+return {
+score:3,
+label:"LOW"
+};
+
+return {
+score:1,
+label:"VERY LOW"
+};
 
 }
 
@@ -1026,575 +1212,502 @@ function recentLow(candles,period){
    TECHNICAL ENGINE
 ========================= */
 
-function buildTechnical(candles,realtime,summary){
-
-  if(!candles || candles.length < 60)
-    return null;
-
-  const closes =
-    candles.map(x=>x.close);
-
-  const last =
-    candles[candles.length-1];
-
-  const close =
-    num(last.close);
-
-  if(close === null)
-    return null;
-
-
-  const ma20 =
-    sma(closes,20);
-
-  const ma50 =
-    sma(closes,50);
-
-  const ma20Prev =
-    smaAt(
-      closes,
-      20,
-      closes.length-6
-    );
-
-  const rsi14 =
-    rsi(closes,14);
-
-  const atr14 =
-    atr(candles,14);
-
-  const avgVol20 =
-    averageVolume(candles,20);
-
-  const volume =
-    num(last.volume);
-
-  const volRatio =
-    avgVol20 && volume !== null
-      ? volume/avgVol20
-      : null;
-
-
-  const ret5 =
-    closes.length >= 6
-      ? ((close/closes[closes.length-6])-1)*100
-      : null;
-
-  const ret20 =
-    closes.length >= 21
-      ? ((close/closes[closes.length-21])-1)*100
-      : null;
-
-
-  const high20 =
-    recentHigh(candles,20);
-
-  const low10 =
-    recentLow(candles,10);
-
-
-  const slopeBull =
-    ma20 !== null &&
-    ma20Prev !== null &&
-    ma20 > ma20Prev;
-
-
-  /* -------------------------
-     TREND SCORE 25
-  ------------------------- */
-
-  let trendScore = 0;
-
-  if(ma20 !== null && close > ma20)
-    trendScore += 10;
-
-  if(
-    ma20 !== null &&
-    ma50 !== null &&
-    ma20 > ma50
-  )
-    trendScore += 10;
-
-  if(slopeBull)
-    trendScore += 5;
-
-
-  let trend =
-    "BEARISH";
-
-  if(
-    ma20 !== null &&
-    ma50 !== null &&
-    close > ma20 &&
-    ma20 > ma50 &&
-    slopeBull
-  ){
-
-    trend = "BULLISH";
-
-  }else if(
-    ma20 !== null &&
-    close > ma20
-  ){
-
-    trend = "RECOVERY";
-
-  }
-
-
-  /* -------------------------
-     RSI SCORE 15
-  ------------------------- */
-
-  let rsiScore = 0;
-
-  if(rsi14 !== null){
-
-    if(rsi14 >= 50 && rsi14 <= 68)
-      rsiScore = 15;
-
-    else if(rsi14 >= 45 && rsi14 < 50)
-      rsiScore = 10;
-
-    else if(rsi14 > 68 && rsi14 <= 72)
-      rsiScore = 10;
-
-    else if(rsi14 >= 40 && rsi14 < 45)
-      rsiScore = 6;
-
-    else if(rsi14 > 72 && rsi14 <= 75)
-      rsiScore = 5;
-
-    else
-      rsiScore = 2;
-
-  }
-
-
-  /* -------------------------
-     VOLUME SCORE 15
-  ------------------------- */
-
-  let volumeScore = 0;
-
-  if(volRatio !== null){
-
-    if(volRatio >= 2)
-      volumeScore = 15;
-
-    else if(volRatio >= 1.5)
-      volumeScore = 12;
-
-    else if(volRatio >= 1.2)
-      volumeScore = 9;
-
-    else if(volRatio >= .8)
-      volumeScore = 6;
-
-    else
-      volumeScore = 3;
-
-  }
-
-
-  /* -------------------------
-     PRICE ACTION SCORE 25
-  ------------------------- */
-
-  let priceActionScore = 0;
-
-  if(
-    high20 !== null &&
-    close >= high20
-  )
-    priceActionScore += 10;
-
-  if(ret20 !== null){
-
-    if(ret20 > 10)
-      priceActionScore += 7;
-
-    else if(ret20 > 0)
-      priceActionScore += 4;
-
-  }
-
-  if(ret5 !== null && ret5 > 3)
-    priceActionScore += 4;
-
-  const high52 =
-    num(realtime?.high52) ||
-    num(summary?.High);
-
-  if(
-    high52 &&
-    close >= high52*.90
-  )
-    priceActionScore += 4;
-
-  priceActionScore =
-    Math.min(25,priceActionScore);
-
-
-  /* -------------------------
-     LIQUIDITY
-  ------------------------- */
-
-  const dailyValue =
-    num(summary?.Value);
-
-  let liquidity =
-    "LOW";
-
-  let liquidityScore = 2;
-
-  if(dailyValue !== null){
-
-    if(dailyValue >= 100000000000){
-
-      liquidity = "VERY HIGH";
-      liquidityScore = 10;
-
-    }else if(dailyValue >= 30000000000){
-
-      liquidity = "HIGH";
-      liquidityScore = 8;
-
-    }else if(dailyValue >= 10000000000){
-
-      liquidity = "MEDIUM";
-      liquidityScore = 6;
-
-    }else if(dailyValue >= 3000000000){
-
-      liquidity = "LOW";
-      liquidityScore = 4;
-
-    }
-
-  }
-
-
-  /* -------------------------
-     ENTRY / SL / TP
-  ------------------------- */
-
-  const price =
-    num(realtime?.price) ||
-    close;
-
-  const volatility =
-    atr14 ||
-    price*.03;
-
-
-  let sl = null;
-
-  if(low10 !== null && ma20 !== null){
-
-    const structural =
-      low10 - volatility*.20;
-
-    const maStop =
-      ma20 - volatility*.50;
-
-    sl =
-      Math.min(structural,maStop);
-
-  }else{
-
-    sl =
-      price-volatility*1.20;
-
-  }
-
-
-  if(sl <= 0)
-    sl = price-volatility;
-
-
-  let risk =
-    price-sl;
-
-  if(risk <= 0)
-    risk = volatility;
-
-
-  let tp1 =
-    price+risk*1.50;
-
-  let tp2 =
-    price+risk*2.50;
-
-
-  if(high20 !== null && high20 > price){
-
-    tp1 =
-      Math.max(
-        price+risk*1.50,
-        high20
-      );
-
-  }
-
-
-  if(high52 && high52 > tp1){
-
-    tp2 =
-      Math.max(
-        tp1+risk,
-        high52
-      );
-
-  }
-
-
-  const rr =
-    risk > 0
-      ? (tp2-price)/risk
-      : null;
-
-
-  let rrScore = 0;
-
-  if(rr !== null){
-
-    if(rr >= 2.5)
-      rrScore = 10;
-
-    else if(rr >= 2)
-      rrScore = 8;
-
-    else if(rr >= 1.5)
-      rrScore = 5;
-
-    else
-      rrScore = 2;
-
-  }
-
-
-  /* -------------------------
-     TOTAL SCORE
-  ------------------------- */
-
-  const technicalScore =
-    trendScore +
-    rsiScore +
-    volumeScore +
-    priceActionScore +
-    liquidityScore +
-    rrScore;
-
-
-  /* -------------------------
-     SIGNAL
-  ------------------------- */
-
-  let signal = "AVOID";
-
-  if(
-    technicalScore >= 80 &&
-    trend === "BULLISH" &&
-    rsi14 !== null &&
-    rsi14 >= 50 &&
-    rsi14 <= 75 &&
-    rr !== null &&
-    rr >= 2
-  ){
-
-    signal = "STRONG BUY";
-
-  }else if(
-    technicalScore >= 70 &&
-    (
-      trend === "BULLISH" ||
-      trend === "RECOVERY"
-    ) &&
-    rsi14 !== null &&
-    rsi14 >= 45 &&
-    rsi14 <= 75 &&
-    rr !== null &&
-    rr >= 1.5
-  ){
-
-    signal = "BUY";
-
-  }else if(
-    technicalScore >= 60 ||
-    trend === "BULLISH"
-  ){
-
-    signal = "WATCH";
-
-  }
-
-
-  return {
-
-    close,
-    ma20,
-    ma50,
-    rsi14,
-    atr14,
-
-    volume,
-    avgVol20,
-    volRatio,
-
-    ret5,
-    ret20,
-
-    trend,
-    trendScore,
-    rsiScore,
-    volumeScore,
-    priceActionScore,
-
-    liquidity,
-    liquidityScore,
-
-    entry:price,
-    sl,
-    tp1,
-    tp2,
-    risk,
-    rr,
-    rrScore,
-
-    technicalScore,
-    signal
-
-  };
+function buildTechnical(
+candles,
+info
+){
+
+if(
+candles.length <
+MIN_CANDLES
+)
+return null;
+
+
+const closes =
+candles.map(
+x=>x.close
+);
+
+const price =
+closes.at(-1);
+
+const ma20 =
+sma(
+closes,
+20
+);
+
+const ma50 =
+sma(
+closes,
+50
+);
+
+const r =
+rsi(
+closes,
+14
+);
+
+const a =
+atr(
+candles,
+14
+);
+
+const avgVol =
+avgVolume(
+candles,
+20
+);
+
+const volume =
+candles.at(-1).volume ?? 0;
+
+const volumeRatio =
+avgVol
+? volume/avgVol
+: null;
+
+const high20 =
+recentHigh(
+candles,
+20
+);
+
+const low20 =
+recentLow(
+candles,
+20
+);
+
+
+/* TREND */
+
+let trend;
+
+if(
+price > ma20 &&
+ma20 > ma50
+){
+
+trend="BULLISH";
+
+}
+else if(
+price > ma20 &&
+ma20 <= ma50
+){
+
+trend="RECOVERY";
+
+}
+else if(
+price < ma20 &&
+ma20 < ma50
+){
+
+trend="BEARISH";
+
+}
+else{
+
+trend="MIXED";
 
 }
 
 
-/* =========================
-   FOREIGN / LIQUIDITY MAP
-========================= */
+/* TREND SCORE */
 
-function applySummary(rows){
+let trendScore;
 
-  if(!Array.isArray(rows))
-    return;
+if(
+trend==="BULLISH"
+)
+trendScore=25;
 
-  const map = {};
+else if(
+trend==="RECOVERY"
+)
+trendScore=17;
 
-  for(const row of rows){
+else if(
+trend==="MIXED"
+)
+trendScore=9;
 
-    const symbol =
-      String(
-        row.StockCode ||
-        row.Code ||
-        ""
-      ).toUpperCase();
-
-    if(!symbol)
-      continue;
-
-    map[symbol] = row;
-
-  }
+else
+trendScore=3;
 
 
-  for(const symbol of WATCHLIST){
+/* RSI SCORE */
 
-    if(!data[symbol])
-      data[symbol] = {
-        symbol
-      };
+let rsiScore;
 
-    const s =
-      map[symbol];
+if(
+r>=50 &&
+r<=70
+)
+rsiScore=15;
 
-    if(!s)
-      continue;
+else if(
+r>=45 &&
+r<50
+)
+rsiScore=10;
+
+else if(
+r>70 &&
+r<=78
+)
+rsiScore=9;
+
+else if(
+r>78
+)
+rsiScore=4;
+
+else if(
+r>=35
+)
+rsiScore=6;
+
+else
+rsiScore=2;
 
 
-    const foreignBuy =
-      num(s.ForeignBuy);
+/* VOLUME SCORE */
 
-    const foreignSell =
-      num(s.ForeignSell);
+let volumeScore;
 
-    const foreignNet =
-      foreignBuy !== null &&
-      foreignSell !== null
-        ? foreignBuy-foreignSell
-        : null;
+if(
+volumeRatio===null
+)
+volumeScore=5;
+
+else if(
+volumeRatio>=1.5
+)
+volumeScore=15;
+
+else if(
+volumeRatio>=1.2
+)
+volumeScore=12;
+
+else if(
+volumeRatio>=1
+)
+volumeScore=9;
+
+else if(
+volumeRatio>=.8
+)
+volumeScore=5;
+
+else
+volumeScore=2;
 
 
-    data[symbol].summary = s;
+/* PRICE ACTION */
 
-    data[symbol].foreignBuy =
-      foreignBuy;
+const aboveMA20 =
+price >= ma20;
 
-    data[symbol].foreignSell =
-      foreignSell;
+const nearHigh =
+high20 &&
+price >= high20*.97;
 
-    data[symbol].foreignNet =
-      foreignNet;
+const breakout =
+high20 &&
+price > high20*.995;
 
-    data[symbol].dailyValue =
-      num(s.Value);
+let priceActionScore;
 
-  }
+if(
+breakout
+)
+priceActionScore=25;
+
+else if(
+nearHigh
+)
+priceActionScore=21;
+
+else if(
+aboveMA20
+)
+priceActionScore=17;
+
+else if(
+price >= low20
+)
+priceActionScore=10;
+
+else
+priceActionScore=3;
+
+
+/* LIQUIDITY */
+
+const liquidity =
+liquidityScore(
+info?.dailyValue
+);
+
+
+/* ENTRY */
+
+let entryLow =
+Math.max(
+ma20-a*.35,
+low20+a*.15
+);
+
+let entryHigh =
+ma20+a*.35;
+
+if(
+entryLow >
+entryHigh
+){
+
+[
+entryLow,
+entryHigh
+] =
+[
+entryHigh,
+entryLow
+];
 
 }
 
 
-/* =========================
-   REALTIME PRICE
-========================= */
+/*
+   Kalau harga sudah
+   di bawah entry,
+   entry ikut disesuaikan
+*/
 
-function applyRealtime(result){
+if(
+price < entryLow
+){
 
-  const prices =
-    result?.data?.prices || {};
+entryLow =
+price-a*.25;
 
-  for(const symbol of Object.keys(prices)){
-
-    const p =
-      prices[symbol];
-
-    if(!data[symbol])
-      data[symbol] = {
-        symbol
-      };
+}
 
 
-    data[symbol].name =
-      p.name || data[symbol].name || symbol;
+/*
+   Kalau harga sudah
+   terlalu jauh di atas,
+   jangan mengejar
+*/
 
-    data[symbol].price =
-      num(p.price);
+if(
+price > entryHigh
+){
 
-    data[symbol].prevPrice =
-      num(p.prevPrice);
+entryHigh =
+price+a*.10;
 
-    data[symbol].change =
-      num(p.tickPct);
+}
 
-    data[symbol].tick =
-      num(p.tick);
 
-    data[symbol].direction =
-      p.direction || "FLAT";
+const entry =
+(
+entryLow +
+entryHigh
+)/2;
 
-    data[symbol].volume =
-      num(p.volume);
 
-    data[symbol].high52 =
-      num(p.high52w);
+/* STOP LOSS */
 
-    data[symbol].low52 =
-      num(p.low52w);
+const sl =
+entry -
+a*1.15;
 
-    data[symbol].timestamp =
-      p.timestamp || null;
 
-  }
+/* TARGET */
+
+const tp1 =
+entry +
+a*1.6;
+
+const tp2 =
+entry +
+a*2.8;
+
+
+/* R:R */
+
+const rr =
+(tp2-entry) /
+(entry-sl);
+
+
+/* R:R SCORE */
+
+let rrScore;
+
+if(
+rr>=3
+)
+rrScore=10;
+
+else if(
+rr>=2
+)
+rrScore=9;
+
+else if(
+rr>=1.5
+)
+rrScore=7;
+
+else if(
+rr>=1
+)
+rrScore=4;
+
+else
+rrScore=1;
+
+
+/* TOTAL */
+
+const score =
+Math.round(
+trendScore +
+rsiScore +
+volumeScore +
+priceActionScore +
+liquidity.score +
+rrScore
+);
+
+
+/* SIGNAL */
+
+let signal;
+
+if(
+score>=80 &&
+trend==="BULLISH" &&
+r>=50 &&
+r<=75 &&
+rr>=2
+){
+
+signal="STRONG BUY";
+
+}
+else if(
+score>=70 &&
+(
+trend==="BULLISH" ||
+trend==="RECOVERY"
+) &&
+r>=45 &&
+r<=75 &&
+rr>=1.5
+){
+
+signal="BUY";
+
+}
+else if(
+score>=60 ||
+trend==="BULLISH"
+){
+
+signal="WATCH";
+
+}
+else{
+
+signal="AVOID";
+
+}
+
+
+/* CONVICTION */
+
+let conviction;
+
+if(
+score>=80
+)
+conviction="HIGH";
+
+else if(
+score>=70
+)
+conviction="MEDIUM";
+
+else if(
+score>=60
+)
+conviction="LOW";
+
+else
+conviction="VERY LOW";
+
+
+return {
+
+price,
+
+ma20,
+
+ma50,
+
+rsi:r,
+
+atr:a,
+
+avgVol,
+
+volume,
+
+volumeRatio,
+
+trend,
+
+score,
+
+signal,
+
+conviction,
+
+liquidity:
+liquidity.label,
+
+dailyValue:
+info?.dailyValue ?? null,
+
+entryLow,
+
+entryHigh,
+
+entry,
+
+sl,
+
+tp1,
+
+tp2,
+
+rr,
+
+high20,
+
+low20
+
+};
 
 }
 
@@ -1603,390 +1716,536 @@ function applyRealtime(result){
    APPLY OHLCV
 ========================= */
 
-function applyOHLCV(result){
+function symbolFromItem(
+item
+){
 
-  const items =
-    extractBatchItems(result);
+return String(
 
-  for(const item of items){
+item?.symbol ||
+item?.code ||
+item?.ticker ||
+item?.meta?.symbol ||
+item?.data?.symbol ||
+""
 
-    const symbol =
-      String(
-        item?.symbol ||
-        item?.code ||
-        item?.ticker ||
-        item?.meta?.symbol ||
-        ""
-      ).toUpperCase();
+)
+.toUpperCase();
 
-    if(!symbol)
-      continue;
-
-
-    const candles =
-      normalizeCandles(item);
-
-    if(!candles.length)
-      continue;
+}
 
 
-    if(!data[symbol])
-      data[symbol] = {
-        symbol
-      };
+function applyOHLCV(
+result
+){
+
+const items =
+extractItems(result);
 
 
-    data[symbol].candles =
-      candles;
+for(
+const item of items
+){
 
-    data[symbol].name =
-      item.name ||
-      item.meta?.name ||
-      data[symbol].name ||
-      symbol;
+const symbol =
+symbolFromItem(item);
 
 
-    data[symbol].ta =
-      buildTechnical(
-        candles,
-        data[symbol],
-        data[symbol].summary
-      );
+if(
+!symbol ||
+!data[symbol]
+)
+continue;
 
-  }
+
+const candles =
+normalizeCandles(item);
+
+
+if(
+!candles.length
+)
+continue;
+
+
+data[symbol].candles =
+candles;
+
+
+data[symbol].name =
+item?.name ||
+item?.meta?.name ||
+item?.data?.name ||
+symbol;
+
+
+data[symbol].ta =
+buildTechnical(
+candles,
+data[symbol]
+);
+
+}
 
 }
 
 
 /* =========================
-   ANALYZE ALL
+   APPLY ZPI
+========================= */
+
+function applySummary(
+rows
+){
+
+for(
+const row of rows
+){
+
+const symbol =
+String(
+
+row?.StockCode ||
+row?.Code ||
+row?.code ||
+""
+
+)
+.toUpperCase();
+
+
+if(
+!symbol ||
+!data[symbol]
+)
+continue;
+
+
+data[symbol].summary =
+row;
+
+
+data[symbol].name =
+row.StockName ||
+row.name ||
+data[symbol].name ||
+symbol;
+
+
+data[symbol].dailyValue =
+num(
+row.Value ??
+row.value
+);
+
+
+data[symbol].volumeSummary =
+num(
+row.Volume ??
+row.volume
+);
+
+
+data[symbol].foreignBuy =
+num(
+row.ForeignBuy ??
+row.foreignBuy
+);
+
+
+data[symbol].foreignSell =
+num(
+row.ForeignSell ??
+row.foreignSell
+);
+
+
+data[symbol].foreignNet =
+
+data[symbol].foreignBuy !== null &&
+data[symbol].foreignSell !== null
+
+?
+
+data[symbol].foreignBuy -
+data[symbol].foreignSell
+
+:
+
+null;
+
+}
+
+}
+
+
+/* =========================
+   LOAD ZPI
+========================= */
+
+async function loadSummary(){
+
+const result =
+await zapi(
+"stock-summary",
+{
+length:5000,
+start:0
+}
+);
+
+
+const rows =
+Array.isArray(result?.data)
+
+? result.data
+
+: Array.isArray(
+result?.data?.items
+)
+
+? result.data.items
+
+: [];
+
+
+if(
+!rows.length
+)
+throw new Error(
+"ZPI stock-summary kosong"
+);
+
+
+applySummary(rows);
+
+return rows.length;
+
+}
+
+
+/* =========================
+   LOAD OHLCV
+========================= */
+
+async function loadOHLCV(){
+
+let done=0;
+
+for(
+const batch
+of batches(WATCHLIST)
+){
+
+const result =
+await maelyn(
+"ohlcv",
+{
+symbols:batch,
+range:"1y",
+interval:"1d",
+mode:"batch"
+}
+);
+
+
+applyOHLCV(result);
+
+
+done += batch.length;
+
+
+setStatus(
+"OHLCV "+
+done+
+"/"+
+WATCHLIST.length
+);
+
+
+await sleep(900);
+
+}
+
+}
+
+
+/* =========================
+   ANALYSIS
 ========================= */
 
 async function analyzeAll(){
 
-  if(busy)
-    return;
-
-  busy = true;
-
-  $("analyzeBtn").disabled = true;
-
-  $("status").innerHTML =
-    '<span class="live-dot"></span>Analisis technical…';
+if(busy)
+return;
 
 
-  try{
+busy=true;
 
-    /* STEP 1
-       ZPI daily summary
-    */
+$("analyzeBtn").disabled=true;
 
-    try{
-
-      const z =
-        await zpiSummary();
-
-      applySummary(
-        z?.data || []
-      );
-
-    }catch(e){
-
-      console.warn(
-        "ZPI summary gagal:",
-        e
-      );
-
-    }
+$("liveBtn").disabled=true;
 
 
-    render();
+data =
+Object.fromEntries(
+WATCHLIST.map(
+symbol=>[
+symbol,
+{symbol}
+]
+)
+);
 
 
-    /* STEP 2
-       OHLCV 20 saham per batch
-    */
+$("cards").innerHTML =
 
-    const batches = [];
-
-    for(
-      let i=0;
-      i<WATCHLIST.length;
-      i+=BATCH_SIZE
-    ){
-
-      batches.push(
-        WATCHLIST.slice(
-          i,
-          i+BATCH_SIZE
-        )
-      );
-
-    }
+'<div class="empty">'+
+'Mengambil stock-summary, OHLCV 1Y, dan menghitung technical…'+
+'</div>';
 
 
-    for(let i=0;i<batches.length;i++){
+try{
 
-      $("status").textContent =
-        `Technical batch ${i+1}/${batches.length}…`;
-
-      try{
-
-        const result =
-          await ohlcvBatch(
-            batches[i]
-          );
-
-        applyOHLCV(result);
-
-        render();
-
-      }catch(e){
-
-        console.error(
-          "OHLCV batch error:",
-          e
-        );
-
-      }
-
-      await sleep(700);
-
-    }
+let zpiStatus =
+"Foreign / likuiditas";
 
 
-    updateMetrics();
+/*
+   ZPI jangan sampai
+   menggagalkan seluruh
+   technical engine
+*/
 
-    $("status").innerHTML =
-      '<span class="live-dot"></span>Technical selesai';
+try{
 
-  }catch(e){
+const count =
+await loadSummary();
 
-    $("status").textContent =
-      "ERROR: "+e.message;
+zpiStatus =
+"ZPI "+count+" rows";
 
-  }finally{
+}
 
-    busy = false;
+catch(error){
 
-    $("analyzeBtn").disabled = false;
+zpiStatus =
+"ZPI ERROR: "+
+error.message;
 
-  }
+}
+
+
+setStatus(
+zpiStatus
+);
+
+
+await loadOHLCV();
+
+
+render();
+
+
+const analyzed =
+WATCHLIST.filter(
+symbol =>
+data[symbol].ta
+).length;
+
+
+setStatus(
+"Analisis selesai • "+
+analyzed+
+"/"+
+WATCHLIST.length
+);
+
+
+}
+
+catch(error){
+
+setStatus(
+"ERROR: "+
+error.message
+);
+
+}
+
+finally{
+
+$("analyzeBtn").disabled=false;
+
+$("liveBtn").disabled=false;
+
+busy=false;
+
+render();
+
+}
 
 }
 
 
 /* =========================
-   REFRESH REALTIME
+   REALTIME
 ========================= */
 
 async function refreshPrices(){
 
-  if(busy)
-    return;
-
-  busy = true;
-
-  $("priceBtn").disabled = true;
-
-  $("status").innerHTML =
-    '<span class="live-dot"></span>Refresh harga…';
+if(busy)
+return;
 
 
-  try{
+busy=true;
 
-    const batches = [];
-
-    for(
-      let i=0;
-      i<WATCHLIST.length;
-      i+=BATCH_SIZE
-    ){
-
-      batches.push(
-        WATCHLIST.slice(
-          i,
-          i+BATCH_SIZE
-        )
-      );
-
-    }
+$("liveBtn").disabled=true;
 
 
-    for(let i=0;i<batches.length;i++){
-
-      $("status").textContent =
-        `Harga batch ${i+1}/${batches.length}…`;
-
-      const result =
-        await realtimeSnapshot(
-          batches[i]
-        );
-
-      applyRealtime(result);
-
-      render();
-
-      /*
-        Jangan spam Maelyn.
-        Beri jeda antar batch.
-      */
-
-      await sleep(1200);
-
-    }
+setStatus(
+"Harga live…"
+);
 
 
-    /*
-      Recalculate technical levels
-      using latest realtime price.
-    */
+try{
 
-    for(const symbol of WATCHLIST){
-
-      const x =
-        data[symbol];
-
-      if(
-        x?.candles
-      ){
-
-        x.ta =
-          buildTechnical(
-            x.candles,
-            x,
-            x.summary
-          );
-
-      }
-
-    }
+let updated=0;
 
 
-    render();
+for(
+const batch
+of batches(WATCHLIST)
+){
 
-    $("status").innerHTML =
-      '<span class="live-dot"></span>Harga diperbarui';
+const result =
+await maelyn(
+"realtime-price",
+{
+symbols:batch
+}
+);
 
-  }catch(e){
 
-    $("status").textContent =
-      "ERROR: "+e.message;
+const prices =
+result?.data?.prices ||
+{};
 
-  }finally{
 
-    busy = false;
+for(
+const [
+symbol,
+priceData
+]
+of Object.entries(prices)
+){
 
-    $("priceBtn").disabled = false;
+if(
+!data[symbol]
+)
+data[symbol]={
+symbol
+};
 
-  }
+
+data[symbol].price =
+num(
+priceData.price
+);
+
+
+data[symbol].prevPrice =
+num(
+priceData.prevPrice
+);
+
+
+data[symbol].change =
+num(
+priceData.tickPct
+);
+
+
+data[symbol].direction =
+priceData.direction ||
+"FLAT";
+
+
+data[symbol].liveVolume =
+num(
+priceData.volume
+);
+
+
+data[symbol].timestamp =
+priceData.timestamp ||
+null;
+
+
+data[symbol].high52 =
+num(
+priceData.high52w
+);
+
+
+data[symbol].low52 =
+num(
+priceData.low52w
+);
+
+
+data[symbol].name =
+priceData.name ||
+data[symbol].name ||
+symbol;
+
+
+updated++;
 
 }
 
 
-/* =========================
-   SIGNAL CLASS
-========================= */
+render();
 
-function signalClass(signal){
 
-  if(signal === "STRONG BUY")
-    return "strong";
+/*
+   Delay untuk mengurangi
+   risiko cooldown
+*/
 
-  if(signal === "BUY")
-    return "buy";
-
-  if(signal === "WATCH")
-    return "watch";
-
-  return "avoid";
+await sleep(1200);
 
 }
 
 
-/* =========================
-   FOREIGN FORMAT
-========================= */
+setStatus(
+"LIVE • "+
+updated+
+" saham • "+
+new Date().toLocaleTimeString(
+"id-ID"
+)
+);
 
-function foreignText(x){
-
-  if(
-    x.foreignNet === null ||
-    x.foreignNet === undefined
-  )
-    return {
-      text:"N/A",
-      cls:"foreign-flat"
-    };
-
-
-  if(x.foreignNet > 0){
-
-    return {
-      text:"IN "+fmt(x.foreignNet),
-      cls:"foreign-in"
-    };
-
-  }
-
-
-  if(x.foreignNet < 0){
-
-    return {
-      text:"OUT "+fmt(Math.abs(x.foreignNet)),
-      cls:"foreign-out"
-    };
-
-  }
-
-
-  return {
-    text:"FLAT",
-    cls:"foreign-flat"
-  };
 
 }
 
+catch(error){
 
-/* =========================
-   CONVICTION
-========================= */
+setStatus(
+"ERROR: "+
+error.message
+);
 
-function conviction(x){
+}
 
-  const ta =
-    x.ta;
+finally{
 
-  if(!ta)
-    return "—";
+$("liveBtn").disabled=false;
 
+busy=false;
 
-  if(
-    ta.signal === "STRONG BUY" &&
-    x.foreignNet > 0
-  )
-    return "HIGH";
-
-
-  if(
-    ta.signal === "STRONG BUY"
-  )
-    return "HIGH TECH";
-
-
-  if(
-    ta.signal === "BUY"
-  )
-    return "MEDIUM";
-
-
-  if(
-    ta.signal === "WATCH"
-  )
-    return "WATCH";
-
-
-  return "LOW";
+}
 
 }
 
@@ -1995,63 +2254,66 @@ function conviction(x){
    SORT
 ========================= */
 
-function sortBy(mode){
+function sortBy(
+mode
+){
 
-  sortMode =
-    mode;
+sortMode=mode;
 
-  render();
+render();
 
 }
 
 
 /* =========================
-   METRICS
+   SIGNAL STYLE
 ========================= */
 
-function updateMetrics(){
+function signalClass(
+signal
+){
 
-  const rows =
-    Object.values(data);
+if(
+signal==="STRONG BUY"
+)
+return "strongbuy";
 
-  const analyzed =
-    rows.filter(x=>x.ta);
+if(
+signal==="BUY"
+)
+return "buy";
 
-  const strong =
-    analyzed.filter(
-      x=>x.ta.signal === "STRONG BUY"
-    ).length;
+if(
+signal==="WATCH"
+)
+return "watch";
 
-  const buy =
-    analyzed.filter(
-      x=>x.ta.signal === "BUY"
-    ).length;
+if(
+signal==="AVOID"
+)
+return "avoid";
 
-  const avg =
-    analyzed.length
-      ? analyzed.reduce(
-          (a,x)=>a+x.ta.technicalScore,
-          0
-        )/analyzed.length
-      : null;
+return "neutral";
+
+}
 
 
-  $("total").textContent =
-    WATCHLIST.length;
+/* =========================
+   LEVEL FORMAT
+========================= */
 
-  $("loaded").textContent =
-    analyzed.length;
+function moneyLevel(
+value
+){
 
-  $("strong").textContent =
-    strong;
+return value===null ||
+value===undefined
 
-  $("buy").textContent =
-    buy;
+? "—"
 
-  $("avgScore").textContent =
-    avg === null
-      ? "—"
-      : Math.round(avg);
+: fmt(
+Math.round(value)
+);
 
 }
 
@@ -2062,456 +2324,653 @@ function updateMetrics(){
 
 function render(){
 
-  const q =
-    $("search")
-      .value
-      .trim()
-      .toUpperCase();
+const query =
+$("search")
+.value
+.trim()
+.toUpperCase();
+
+
+let rows =
+WATCHLIST
+.map(
+symbol=>data[symbol]
+)
+.filter(
+x =>
+!query ||
+x.symbol.includes(query) ||
+(
+x.name || ""
+)
+.toUpperCase()
+.includes(query)
+);
+
+
+rows.sort(
+(a,b)=>{
+
+if(
+sortMode==="score"
+){
+
+return (
+b.ta?.score ?? -1
+) -
+(
+a.ta?.score ?? -1
+);
+
+}
+
+
+if(
+sortMode==="rr"
+){
 
+return (
+b.ta?.rr ?? -1
+) -
+(
+a.ta?.rr ?? -1
+);
 
-  let rows =
-    Object.values(data)
-      .filter(x=>{
+}
+
+
+if(
+sortMode==="foreign"
+){
+
+return (
+b.foreignNet ??
+-Infinity
+) -
+(
+a.foreignNet ??
+-Infinity
+);
 
-        if(!q)
-          return true;
+}
 
-        return (
-          String(x.symbol||"")
-            .toUpperCase()
-            .includes(q)
-          ||
-          String(x.name||"")
-            .toUpperCase()
-            .includes(q)
-        );
 
-      });
+if(
+sortMode==="price"
+){
 
+return (
+b.price ??
+-1
+) -
+(
+a.price ??
+-1
+);
 
-  rows.sort((a,b)=>{
+}
 
-    const ta =
-      a.ta;
 
-    const tb =
-      b.ta;
+return (
+b.change ??
+-Infinity
+) -
+(
+a.change ??
+-Infinity
+);
 
+}
+);
 
-    if(sortMode === "score"){
 
-      return (
-        (tb?.technicalScore || -1) -
-        (ta?.technicalScore || -1)
-      );
+const analyzed =
+WATCHLIST
+.map(
+symbol=>data[symbol]
+)
+.filter(
+x=>x.ta
+);
 
-    }
 
+const strong =
+analyzed.filter(
+x =>
+x.ta.signal==="STRONG BUY"
+)
+.length;
 
-    if(sortMode === "rr"){
 
-      return (
-        (tb?.rr || -1) -
-        (ta?.rr || -1)
-      );
+const buys =
+analyzed.filter(
+x =>
+x.ta.signal==="BUY"
+)
+.length;
 
-    }
 
+const average =
+analyzed.length
 
-    if(sortMode === "foreign"){
+?
 
-      return (
-        (b.foreignNet || -Infinity) -
-        (a.foreignNet || -Infinity)
-      );
+Math.round(
 
-    }
+analyzed.reduce(
+(sum,x)=>
+sum+x.ta.score,
+0
+) /
+analyzed.length
 
+)
 
-    return (
-      (b.change || 0) -
-      (a.change || 0)
-    );
+:
 
-  });
+null;
 
 
-  updateMetrics();
+const foreignPlus =
+WATCHLIST
+.map(
+symbol=>data[symbol]
+)
+.filter(
+x =>
+x.foreignNet>0
+)
+.length;
 
 
-  if(!rows.length){
+$("analyzed").textContent =
+analyzed.length;
 
-    $("cards").innerHTML =
-      '<div class="empty">Belum ada data.</div>';
 
-    return;
+$("strong").textContent =
+strong;
 
-  }
 
+$("buys").textContent =
+buys;
 
-  $("cards").innerHTML =
-    rows.map(x=>{
 
-      const ta =
-        x.ta;
+$("avg").textContent =
+average ??
+"—";
 
 
-      const signal =
-        ta?.signal || "WAIT";
+$("foreignPlus").textContent =
+foreignPlus;
 
-      const sc =
-        signalClass(signal);
 
+if(
+!rows.length
+){
 
-      const change =
-        x.change;
+$("cards").innerHTML =
+'<div class="empty">'+
+"Tidak ada hasil."+
+'</div>';
 
+return;
 
-      const cls =
-        change > 0
-          ? "up"
-          : change < 0
-            ? "down"
-            : "flat";
+}
 
 
-      const foreign =
-        foreignText(x);
+$("cards").innerHTML =
 
+rows
+.map(
+x=>{
 
-      const rsi =
-        ta?.rsi14;
+const ta =
+x.ta;
 
-      const ma20 =
-        ta?.ma20;
 
-      const ma50 =
-        ta?.ma50;
+const changeClass =
 
-      const volRatio =
-        ta?.volRatio;
+(
+x.change ?? 0
+)>0
 
-      const rr =
-        ta?.rr;
+? "up"
 
+:
 
-      const levelEntry =
-        ta?.entry;
+(
+x.change ?? 0
+)<0
 
-      const levelSL =
-        ta?.sl;
+? "down"
 
-      const levelTP1 =
-        ta?.tp1;
+: "flat";
 
-      const levelTP2 =
-        ta?.tp2;
 
+const signal =
+ta?.signal ||
+"WAIT";
 
-      return `
 
-      <article class="card ${sc}">
+const foreign =
 
-        <div class="card-head">
+x.foreignNet === null ||
+x.foreignNet === undefined
 
-          <div>
+? "N/A"
 
-            <div class="symbol">
-              ${esc(x.symbol)}
-            </div>
+:
 
-            <div class="name">
-              ${esc(x.name || x.symbol)}
-            </div>
+(
+x.foreignNet>=0
+? "+"
+: ""
+) +
+fmt(
+x.foreignNet
+);
 
-          </div>
 
+const entry =
 
-          <div class="badge ${sc}">
-            ${signal}
-          </div>
+ta
 
-        </div>
+?
 
+moneyLevel(
+ta.entryLow
+)+
+" – "+
+moneyLevel(
+ta.entryHigh
+)
 
-        <div class="price">
+: "—";
 
-          <div>
 
-            <div style="font-size:9px;color:#9696a6">
-              Harga
-            </div>
+const rr =
 
-            <div class="big">
-              ${fmt(x.price || ta?.close)}
-            </div>
+ta?.rr !== null &&
+ta?.rr !== undefined
 
-          </div>
+?
 
+ta.rr.toFixed(2)+"R"
 
-          <div class="${cls} change">
-            ${pct(change)}
-          </div>
+: "—";
 
-        </div>
 
+const livePrice =
+x.price ??
+ta?.price;
 
-        <div class="score-row">
 
-          <div class="score-box">
+return `
 
-            <label>
-              TECHNICAL
-            </label>
+<article class="card">
 
-            <b>
-              ${ta ? Math.round(ta.technicalScore)+"/100" : "—"}
-            </b>
+<div class="top">
 
-          </div>
+<div>
 
+<div class="symbol">
+${x.symbol}
+</div>
 
-          <div class="score-box">
+<div class="name">
+${x.name || x.symbol}
+</div>
 
-            <label>
-              CONVICTION
-            </label>
+</div>
 
-            <b>
-              ${conviction(x)}
-            </b>
+<span class="badge ${signalClass(signal)}">
+${signal}
+</span>
 
-          </div>
+</div>
 
-        </div>
 
+<div class="price">
 
-        <div class="info">
+<div>
 
-          <div class="box">
+<div
+class="muted"
+style="font-size:9px"
+>
+Harga
+</div>
 
-            <label>
-              RSI 14
-            </label>
+<div class="big">
+${fmt(livePrice)}
+</div>
 
-            <b>
-              ${rsi !== null && rsi !== undefined
-                ? fmt2(rsi)
-                : "—"}
-            </b>
+</div>
 
-          </div>
 
+<div
+class="${changeClass} change"
+>
+${pct(x.change)}
+</div>
 
-          <div class="box">
+</div>
 
-            <label>
-              Trend
-            </label>
 
-            <b class="${
-              ta?.trend === "BULLISH"
-                ? "up"
-                : ta?.trend === "BEARISH"
-                  ? "down"
-                  : "flat"
-            }">
+<div class="info">
 
-              ${ta?.trend || "—"}
 
-            </b>
+<div class="box">
 
-          </div>
+<label>
+Technical
+</label>
 
+<b>
+${ta ? ta.score+"/100" : "—"}
+</b>
 
-          <div class="box">
+</div>
 
-            <label>
-              MA20
-            </label>
 
-            <b>
-              ${fmt2(ma20)}
-            </b>
+<div class="box">
 
-          </div>
+<label>
+Conviction
+</label>
 
+<b>
+${ta?.conviction || "—"}
+</b>
 
-          <div class="box">
+</div>
 
-            <label>
-              MA50
-            </label>
 
-            <b>
-              ${fmt2(ma50)}
-            </b>
+<div class="box">
 
-          </div>
+<label>
+RSI14
+</label>
 
+<b>
+${ta ? ta.rsi.toFixed(2) : "—"}
+</b>
 
-          <div class="box">
+</div>
 
-            <label>
-              VOL / 20D
-            </label>
 
-            <b>
-              ${volRatio !== null &&
-                volRatio !== undefined
-                  ? volRatio.toFixed(2)+"×"
-                  : "—"}
-            </b>
+<div class="box">
 
-          </div>
+<label>
+Trend
+</label>
 
+<b>
+${ta?.trend || "—"}
+</b>
 
-          <div class="box">
+</div>
 
-            <label>
-              Liquidity
-            </label>
 
-            <b>
-              ${ta?.liquidity || "—"}
-            </b>
+<div class="box">
 
-          </div>
+<label>
+MA20
+</label>
 
+<b>
+${moneyLevel(ta?.ma20)}
+</b>
 
-          <div class="box">
+</div>
 
-            <label>
-              Foreign Daily
-            </label>
 
-            <b class="${foreign.cls}">
-              ${foreign.text}
-            </b>
+<div class="box">
 
-          </div>
+<label>
+MA50
+</label>
 
+<b>
+${moneyLevel(ta?.ma50)}
+</b>
 
-          <div class="box">
+</div>
 
-            <label>
-              ATR14
-            </label>
 
-            <b>
-              ${fmt2(ta?.atr14)}
-            </b>
+<div class="box">
 
-          </div>
+<label>
+Vol / 20D
+</label>
 
-        </div>
+<b>
+${
+ta?.volumeRatio !== null &&
+ta?.volumeRatio !== undefined
 
+?
 
-        <div class="level-title">
-          TRADE PLAN
-        </div>
+ta.volumeRatio.toFixed(2)+"×"
 
+: "—"
+}
+</b>
 
-        <div class="levels">
+</div>
 
-          <div class="level">
 
-            <label>
-              Entry
-            </label>
+<div class="box">
 
-            <b>
-              ${fmt(levelEntry)}
-            </b>
+<label>
+Liquidity
+</label>
 
-          </div>
+<b>
+${ta?.liquidity || "—"}
+</b>
 
+</div>
 
-          <div class="level">
 
-            <label>
-              Stop Loss
-            </label>
+<div class="box">
 
-            <b class="down">
-              ${fmt(levelSL)}
-            </b>
+<label>
+Foreign Daily
+</label>
 
-          </div>
+<b
+class="${
+x.foreignNet>0
+? "up"
+:
+x.foreignNet<0
+? "down"
+: ""
+}"
+>
 
+${foreign}
 
-          <div class="level">
+</b>
 
-            <label>
-              TP1
-            </label>
+</div>
 
-            <b class="up">
-              ${fmt(levelTP1)}
-            </b>
 
-          </div>
+<div class="box">
 
+<label>
+ATR14
+</label>
 
-          <div class="level">
+<b>
+${moneyLevel(ta?.atr)}
+</b>
 
-            <label>
-              TP2
-            </label>
+</div>
 
-            <b class="up">
-              ${fmt(levelTP2)}
-            </b>
 
-          </div>
+<div class="box">
 
+<label>
+52W High
+</label>
 
-          <div class="level">
+<b>
+${moneyLevel(x.high52)}
+</b>
 
-            <label>
-              Risk
-            </label>
+</div>
 
-            <b>
-              ${fmt(ta?.risk)}
-            </b>
 
-          </div>
+<div class="box">
 
+<label>
+Live
+</label>
 
-          <div class="level">
+<b>
 
-            <label>
-              R:R
-            </label>
+${
+x.timestamp
 
-            <b>
-              ${rr !== null &&
-                rr !== undefined
-                  ? "1 : "+rr.toFixed(2)
-                  : "—"}
-            </b>
+?
 
-          </div>
+new Date(
+x.timestamp
+)
+.toLocaleTimeString(
+"id-ID",
+{
+hour:"2-digit",
+minute:"2-digit",
+second:"2-digit"
+}
+)
 
-        </div>
+: "—"
+}
 
+</b>
 
-        <div class="note">
+</div>
 
-          Foreign = net foreign harian.
-          Technical Score = model 100 poin.
-          Entry/SL/TP = level kalkulasi teknikal,
-          bukan jaminan harga atau rekomendasi pasti.
 
-        </div>
+</div>
 
 
-      </article>
+<div class="levels">
 
-      `;
 
-    }).join("");
+<div class="level">
+
+<label>
+ENTRY
+</label>
+
+<b class="entry">
+${entry}
+</b>
+
+</div>
+
+
+<div class="level">
+
+<label>
+SL
+</label>
+
+<b class="sl">
+${moneyLevel(ta?.sl)}
+</b>
+
+</div>
+
+
+<div class="level">
+
+<label>
+TP1
+</label>
+
+<b class="tp">
+${moneyLevel(ta?.tp1)}
+</b>
+
+</div>
+
+
+<div class="level">
+
+<label>
+TP2
+</label>
+
+<b class="tp">
+${moneyLevel(ta?.tp2)}
+</b>
+
+</div>
+
+
+<div class="level">
+
+<label>
+R:R
+</label>
+
+<b class="rr">
+${rr}
+</b>
+
+</div>
+
+
+</div>
+
+
+<div class="footerline">
+
+<span>
+
+${
+ta
+?
+
+"Daily technical • model-derived levels"
+
+:
+
+"Belum cukup data teknikal"
+}
+
+</span>
+
+
+<span>
+
+${
+x.candles
+?
+x.candles.length+
+" candle"
+:
+"—"
+}
+
+</span>
+
+</div>
+
+
+</article>
+
+`;
+
+}
+)
+.join("");
 
 }
 
@@ -2521,34 +2980,9 @@ function render(){
 ========================= */
 
 $("total").textContent =
-  WATCHLIST.length;
+WATCHLIST.length;
 
 render();
-
-
-/*
-  Penting:
-  Kita TIDAK otomatis menembak
-  realtime Maelyn saat halaman dibuka.
-
-  Klik "Analisis" untuk:
-  - ZPI summary
-  - OHLCV 52 saham
-  - RSI
-  - MA20
-  - MA50
-  - Volume
-  - Trend
-  - Technical Score
-  - Entry / SL / TP / RR
-  - Foreign Daily
-  - Liquidity
-
-  Klik "Harga Live" hanya jika
-  ingin memperbarui snapshot harga.
-*/
-
-analyzeAll();
 
 </script>
 
