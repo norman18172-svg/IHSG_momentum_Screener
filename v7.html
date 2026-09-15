@@ -1,0 +1,635 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#09090c">
+<title>IHSG Momentum Screener V7</title>
+
+<style>
+:root{
+  --bg:#09090c;
+  --panel:#121217;
+  --panel2:#17171d;
+  --line:#292932;
+  --text:#f4f4f7;
+  --muted:#9696a6;
+  --accent:#a855f7;
+  --good:#39d98a;
+  --bad:#ff647c;
+  --warn:#f5c451;
+}
+
+*{box-sizing:border-box}
+
+html,body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",sans-serif
+}
+
+body{min-height:100vh}
+
+.wrap{
+  max-width:1400px;
+  margin:auto;
+  padding:14px 12px 40px
+}
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px
+}
+
+.logo{
+  width:42px;
+  height:42px;
+  border-radius:13px;
+  background:linear-gradient(135deg,#a855f7,#5b21b6);
+  display:grid;
+  place-items:center;
+  font-weight:900
+}
+
+h1{
+  font-size:19px;
+  margin:0
+}
+
+small{color:var(--muted)}
+
+.actions{
+  display:flex;
+  gap:7px;
+  align-items:center
+}
+
+.btn{
+  border:1px solid var(--line);
+  background:var(--panel);
+  color:var(--text);
+  padding:9px 12px;
+  border-radius:10px;
+  font-weight:800;
+  cursor:pointer
+}
+
+.btn.primary{
+  background:linear-gradient(135deg,#a855f7,#7c3aed);
+  border-color:transparent
+}
+
+.status{
+  font-size:11px;
+  color:var(--muted)
+}
+
+.alert{
+  border:1px solid #6d28d955;
+  background:#15121b;
+  border-left:3px solid var(--accent);
+  border-radius:12px;
+  padding:11px 13px;
+  margin:9px 0
+}
+
+.alert strong{
+  display:block;
+  margin-bottom:3px
+}
+
+.alert span{
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.5
+}
+
+.metrics{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+  margin:10px 0
+}
+
+.metric{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:10px
+}
+
+.metric label{
+  display:block;
+  color:var(--muted);
+  font-size:9px
+}
+
+.metric b{
+  display:block;
+  font-size:15px;
+  margin-top:3px
+}
+
+.toolbar{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:10px;
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  margin-bottom:11px
+}
+
+.input{
+  background:#0c0c10;
+  border:1px solid var(--line);
+  color:var(--text);
+  padding:8px 10px;
+  border-radius:9px;
+  min-height:37px
+}
+
+.grow{
+  flex:1;
+  min-width:180px
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:9px
+}
+
+.card{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:12px
+}
+
+.symbol{
+  font-size:17px;
+  font-weight:900
+}
+
+.name{
+  color:var(--muted);
+  font-size:9px;
+  margin-top:2px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis
+}
+
+.price{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  margin-top:11px
+}
+
+.big{
+  font-size:21px;
+  font-weight:900
+}
+
+.up{color:var(--good)}
+.down{color:var(--bad)}
+.flat{color:var(--muted)}
+
+.change{
+  font-size:13px;
+  font-weight:900;
+  text-align:right
+}
+
+.info{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:5px;
+  margin-top:9px
+}
+
+.box{
+  background:#0d0d11;
+  border:1px solid var(--line);
+  padding:7px;
+  border-radius:8px
+}
+
+.box label{
+  display:block;
+  color:var(--muted);
+  font-size:8px
+}
+
+.box b{
+  font-size:10px
+}
+
+.live-dot{
+  display:inline-block;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--good);
+  margin-right:5px
+}
+
+.empty{
+  padding:35px;
+  text-align:center;
+  color:var(--muted);
+  border:1px dashed var(--line);
+  border-radius:13px;
+  grid-column:1/-1
+}
+
+@media(max-width:1000px){
+  .grid{grid-template-columns:repeat(3,1fr)}
+}
+
+@media(max-width:700px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .metrics{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:500px){
+  .grid{grid-template-columns:1fr}
+  .header{align-items:flex-start}
+  h1{font-size:16px}
+  .status{display:none}
+}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+<header class="header">
+  <div class="brand">
+    <div class="logo">IH</div>
+    <div>
+      <h1>IHSG Momentum Screener <span style="color:#c084fc">V7</span></h1>
+      <small>Targeted Live Scanner</small>
+    </div>
+  </div>
+
+  <div class="actions">
+    <span id="status" class="status">Memuat…</span>
+    <button class="btn primary" onclick="refreshNow()">↻ Refresh</button>
+  </div>
+</header>
+
+<div class="alert">
+  <strong>Targeted Watchlist</strong>
+  <span>
+    Scanner hanya memantau saham pilihan pengguna. Tidak lagi melakukan rolling scan seluruh IDX.
+  </span>
+</div>
+
+<div class="alert">
+  <strong>Live Market Snapshot</strong>
+  <span>
+    Harga menggunakan snapshot Maelyn. V7 tahap pertama fokus memastikan mesin targeted + live stabil sebelum technical dan flow ditambahkan.
+  </span>
+</div>
+
+<div class="metrics">
+  <div class="metric">
+    <label>Watchlist</label>
+    <b id="total">53</b>
+  </div>
+
+  <div class="metric">
+    <label>Ter-update</label>
+    <b id="loaded">0</b>
+  </div>
+
+  <div class="metric">
+    <label>Naik</label>
+    <b id="up">0</b>
+  </div>
+
+  <div class="metric">
+    <label>Turun</label>
+    <b id="down">0</b>
+  </div>
+</div>
+
+<div class="toolbar">
+  <input
+    id="search"
+    class="input grow"
+    placeholder="Cari kode saham…"
+    oninput="render()"
+  >
+
+  <button class="btn" onclick="sortBy('change')">
+    Sort % Change
+  </button>
+
+  <button class="btn" onclick="sortBy('price')">
+    Sort Harga
+  </button>
+</div>
+
+<main id="cards" class="grid"></main>
+
+</div>
+
+<script>
+
+const WATCHLIST = [
+"AADI","ADMR","ADRO","AKRA","AMMN","ANTM","APLN","ASII","ASRI",
+"BACH","BBCA","BBRI","BEST","BMRI","BNBR","BREN","BRMS","BRPT",
+"BSSR","BULL","BUMI","BUVA","CDIA","COIN","CTRA","CUAN","DEWA",
+"DSSA","ELSA","EMAS","EMMI","ENRG","GGRM","HMSP","IMPC","INDY",
+"INET","INKP","ITMG","MDKA","MINA","PANI","PGEO","PTRO","PWON",
+"RAJA","RMKE","SRTG","SUPA","TINS","TKIM","TPIA"
+];
+
+const BATCH_SIZE = 20;
+
+let data = {};
+let sortMode = "change";
+let busy = false;
+
+const $ = id => document.getElementById(id);
+
+const fmt = n =>
+  Number(n || 0).toLocaleString("id-ID");
+
+const pct = n => {
+  n = Number(n);
+  if(!Number.isFinite(n)) return "—";
+  return (n >= 0 ? "+" : "") + n.toFixed(2) + "%";
+};
+
+function sleep(ms){
+  return new Promise(resolve => setTimeout(resolve,ms));
+}
+
+async function realtimeSnapshot(symbols){
+
+  const u = new URL("/api/v7",location.origin);
+
+  u.searchParams.set("path","realtime-price");
+
+  const r = await fetch(u,{
+    method:"POST",
+    headers:{
+      "content-type":"application/json"
+    },
+    body:JSON.stringify({
+      symbols
+    }),
+    cache:"no-store"
+  });
+
+  const b = await r.json().catch(()=>null);
+
+  if(!r.ok || b?.success === false){
+    throw new Error(
+      b?.message ||
+      b?.error ||
+      ("HTTP "+r.status)
+    );
+  }
+
+  return b;
+}
+
+async function refreshNow(){
+
+  if(busy) return;
+
+  busy = true;
+
+  $("status").innerHTML =
+    '<span class="live-dot"></span>Updating…';
+
+  try{
+
+    const batches = [];
+
+    for(
+      let i=0;
+      i<WATCHLIST.length;
+      i+=BATCH_SIZE
+    ){
+      batches.push(
+        WATCHLIST.slice(i,i+BATCH_SIZE)
+      );
+    }
+
+    let updated = 0;
+
+    for(const batch of batches){
+
+      const result =
+        await realtimeSnapshot(batch);
+
+      const prices =
+        result?.data?.prices || {};
+
+      for(const symbol of Object.keys(prices)){
+
+        const p = prices[symbol];
+
+        data[symbol] = {
+          symbol,
+          name:p.name || symbol,
+          price:Number(p.price)||0,
+          prevPrice:Number(p.prevPrice)||0,
+          tick:Number(p.tick)||0,
+          change:Number(p.tickPct),
+          direction:p.direction || "FLAT",
+          volume:Number(p.volume)||0,
+          high52:Number(p.high52w)||0,
+          low52:Number(p.low52w)||0,
+          timestamp:p.timestamp || null
+        };
+
+        updated++;
+      }
+
+      render();
+
+      await sleep(500);
+    }
+
+    $("status").innerHTML =
+      '<span class="live-dot"></span>LIVE • ' +
+      new Date().toLocaleTimeString("id-ID",{
+        hour:"2-digit",
+        minute:"2-digit",
+        second:"2-digit"
+      });
+
+  }catch(e){
+
+    $("status").textContent =
+      "ERROR: "+e.message;
+
+  }finally{
+
+    busy = false;
+
+  }
+}
+
+function sortBy(mode){
+
+  sortMode = mode;
+
+  render();
+}
+
+function render(){
+
+  const q =
+    $("search").value.trim().toUpperCase();
+
+  let rows =
+    Object.values(data)
+    .filter(x =>
+      !q ||
+      x.symbol.includes(q) ||
+      x.name.toUpperCase().includes(q)
+    );
+
+  rows.sort((a,b) => {
+
+    if(sortMode === "price")
+      return b.price-a.price;
+
+    return (b.change||0)-(a.change||0);
+
+  });
+
+  $("loaded").textContent =
+    rows.length;
+
+  $("up").textContent =
+    Object.values(data)
+    .filter(x => x.change > 0)
+    .length;
+
+  $("down").textContent =
+    Object.values(data)
+    .filter(x => x.change < 0)
+    .length;
+
+  if(!rows.length){
+
+    $("cards").innerHTML =
+      '<div class="empty">Belum ada data. Tekan Refresh.</div>';
+
+    return;
+  }
+
+  $("cards").innerHTML =
+    rows.map(x => {
+
+      const cls =
+        x.change > 0
+          ? "up"
+          : x.change < 0
+          ? "down"
+          : "flat";
+
+      return `
+      <article class="card">
+
+        <div class="symbol">
+          ${x.symbol}
+        </div>
+
+        <div class="name">
+          ${x.name}
+        </div>
+
+        <div class="price">
+
+          <div>
+            <div style="font-size:9px;color:#9696a6">
+              Harga
+            </div>
+
+            <div class="big">
+              ${fmt(x.price)}
+            </div>
+          </div>
+
+          <div class="${cls} change">
+            ${pct(x.change)}
+          </div>
+
+        </div>
+
+        <div class="info">
+
+          <div class="box">
+            <label>Direction</label>
+            <b class="${cls}">
+              ${x.direction}
+            </b>
+          </div>
+
+          <div class="box">
+            <label>Volume</label>
+            <b>
+              ${fmt(x.volume)}
+            </b>
+          </div>
+
+          <div class="box">
+            <label>52W High</label>
+            <b>
+              ${x.high52 ? fmt(x.high52) : "—"}
+            </b>
+          </div>
+
+          <div class="box">
+            <label>Update</label>
+            <b>
+              ${x.timestamp
+                ? new Date(x.timestamp)
+                  .toLocaleTimeString("id-ID",{
+                    hour:"2-digit",
+                    minute:"2-digit"
+                  })
+                : "—"}
+            </b>
+          </div>
+
+        </div>
+
+      </article>
+      `;
+
+    }).join("");
+}
+
+$("total").textContent =
+  WATCHLIST.length;
+
+render();
+
+refreshNow();
+
+</script>
+</body>
+</html>
