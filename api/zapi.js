@@ -1,4 +1,4 @@
-// NOR.Finance V7.18 — normalized ZPI data layer
+// NOR.Finance V7.18D — diagnostic ZPI data layer
 export default async function handler(req, res) {
   try {
     const path = typeof req.query?.path === "string" ? req.query.path : "";
@@ -14,6 +14,23 @@ export default async function handler(req, res) {
       if(!r.ok) throw new Error(body?.message||body?.error||`ZPI ${r.status}`);
       return body;
     };
+
+    // Temporary diagnostic endpoint: returns upstream shapes/statuses, never the API key.
+    if(path === "diagnostic"){
+      const code=String(req.query?.code||"AMMN").toUpperCase();
+      const probe=async(family,endpoint,params={})=>{
+        try{const body=await call(family,endpoint,params);return {ok:true,keys:Object.keys(body||{}),body};}
+        catch(e){return {ok:false,error:e?.message||String(e)}}
+      };
+      const [idx,stock,resolve,broker,running]=await Promise.all([
+        probe("idx","index-summary",{length:50,start:0}),
+        probe("idx","stock-summary",{length:20,start:0,code}),
+        probe("pluang","resolve",{code}),
+        probe("pluang","broker-summary",{code,net:"true"}),
+        probe("pluang","running-trades",{code,minLot:100})
+      ]);
+      return res.json({success:true,diagnostic:"V7.18D",code,idx,stock,resolve,broker,running});
+    }
 
     // Normalized IHSG endpoint: use official IDX index-summary, default latest trading day.
     if(path === "ihsg"){
