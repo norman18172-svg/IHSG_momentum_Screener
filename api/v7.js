@@ -1,9 +1,10 @@
 // V7 Targeted Live Scanner API
 export default async function handler(req, res) {
   try {
-    const path = typeof req.query?.path === "string"
-      ? req.query.path
-      : "";
+    const path =
+      typeof req.query?.path === "string"
+        ? req.query.path
+        : "";
 
     const allowed = [
       "realtime-price",
@@ -17,7 +18,8 @@ export default async function handler(req, res) {
     if (!allowed.includes(path)) {
       return res.status(400).json({
         success: false,
-        error: "Unsupported V7 endpoint"
+        error: "Unsupported V7 endpoint",
+        path
       });
     }
 
@@ -30,44 +32,122 @@ export default async function handler(req, res) {
       });
     }
 
-    const qs = new URLSearchParams();
+    // Endpoint Maelyn yang WAJIB POST
+    const postEndpoints = [
+      "realtime-price",
+      "ohlcv",
+      "historical-data"
+    ];
 
-    for (const [k, v] of Object.entries(req.query || {})) {
-      if (k !== "path" && typeof v === "string") {
-        qs.set(k, v);
-      }
-    }
+    const usePost = postEndpoints.includes(path);
 
-    const url =
-      `https://api.maelyn.eu/api/financial/idx/${path}` +
-      (qs.toString() ? `?${qs.toString()}` : "");
+    const baseUrl =
+      `https://api.maelyn.eu/api/financial/idx/${path}`;
+
+    let url = baseUrl;
 
     const options = {
-      method: req.method === "POST" ? "POST" : "GET",
+      method: usePost ? "POST" : "GET",
       headers: {
         "x-maelyn-auth": key,
-        "Content-Type": "application/json",
         "Accept": "application/json"
       }
     };
 
-    if (options.method === "POST") {
-      options.body =
-        typeof req.body === "string"
-          ? req.body
-          : JSON.stringify(req.body || {});
+    // =========================
+    // POST ENDPOINT
+    // =========================
+    if (usePost) {
+      options.headers["Content-Type"] = "application/json";
+
+      let body = {};
+
+      // Kalau frontend memang mengirim POST body,
+      // pertahankan body tersebut.
+      if (
+        req.method === "POST" &&
+        req.body &&
+        typeof req.body === "object"
+      ) {
+        body = { ...req.body };
+      }
+
+      // Support frontend lama yang masih mengirim query parameter.
+      for (const [k, v] of Object.entries(req.query || {})) {
+        if (k === "path") continue;
+
+        if (k === "symbols") {
+          if (Array.isArray(v)) {
+            body.symbols = v;
+          } else if (typeof v === "string") {
+            body.symbols = v
+              .split(",")
+              .map(s => s.trim())
+              .filter(Boolean);
+          }
+
+          continue;
+        }
+
+        if (typeof v === "string") {
+          body[k] = v;
+        }
+      }
+
+      options.body = JSON.stringify(body);
+    }
+
+    // =========================
+    // GET ENDPOINT
+    // =========================
+    else {
+      const qs = new URLSearchParams();
+
+      for (const [k, v] of Object.entries(req.query || {})) {
+        if (k === "path") continue;
+
+        if (Array.isArray(v)) {
+          for (const item of v) {
+            qs.append(k, item);
+          }
+        } else if (typeof v === "string") {
+          qs.set(k, v);
+        }
+      }
+
+      if (qs.toString()) {
+        url += `?${qs.toString()}`;
+      }
     }
 
     const upstream = await fetch(url, options);
+
     const text = await upstream.text();
 
-    res.status(upstream.status);
+    let data;
 
     try {
-      return res.json(JSON.parse(text));
+      data = JSON.parse(text);
     } catch {
-      return res.send(text);
+      data = {
+        success: false,
+        raw: text
+      };
     }
+
+    // Debug information tanpa expose API key
+    if (!upstream.ok) {
+      return res.status(upstream.status).json({
+        success: false,
+        error: "Maelyn upstream error",
+        endpoint: path,
+        method: options.method,
+        upstreamStatus: upstream.status,
+        upstream: data
+      });
+    }
+
+    return res.status(200).json(data);
 
   } catch (err) {
     return res.status(500).json({
